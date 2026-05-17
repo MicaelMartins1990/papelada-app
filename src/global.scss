@@ -35,3 +35,20 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+/* Cores do Protótipo Papelada */
+ion-content {
+  --background: #f4f1ea; /* Fundo bege */
+}
+
+ion-toolbar {
+  --background: #8c5a47; /* Castanho dos cabeçalhos */
+  --color: white; /* Texto branco nos cabeçalhos */
+}
+
+/* Cor dos botões e barras de pesquisa*/
+.botao-roxo {
+  --background: #805d68;
+  --border-radius: 12px;
+}

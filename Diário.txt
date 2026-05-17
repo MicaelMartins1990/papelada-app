@@ -1,0 +1,18 @@
+#### Diário de Desenvolvimento ####
+
+# Dia 17 de Maio
+
+# Objetivo: Criação do repositório e configuração inicial do sistema de navegação (Tabs).
+
+# Desenvolvido:
+
+- Criei o projeto base em Ionic/Angular com o Capacitor;
+- Configurei o repositório no GitHub e adicionei os elementos do grupo;
+- Eliminei as tabs antigas e criei as 5 novas páginas do protótipo (Pesquisar, Amigos, Biblioteca, Empréstimos, Perfil);
+- Configurei o ficheiro global.scss com as cores base do protótipo (+/-)
+- Rotas a funcionar
+
+# Micael Martins
+
+--------------------------------------------------------------------------------------------------------------------------------
+
