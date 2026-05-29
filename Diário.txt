@@ -16,3 +16,24 @@
 
 --------------------------------------------------------------------------------------------------------------------------------
 
+# 29 de maio de 2026
+
+# Objetivo: Implementação do sistema de gestão de dados (Service) e construção visual e funcional do ecrã de Pesquisa.
+
+# Desenvolvido:
+
+- Criação de um ficheiro `livros.json` com dados iniciais para simular uma base de dados local.
+- Criação do LivroService para gerir a lógica de negócio e o estado da aplicação.
+- Desenvolvimento da página de Pesquisa, incluindo uma barra de filtragem em tempo real e a funcionalidade de adicionar um livro à "Lista de Desejos" (Tarefa 1).
+
+# Problemas: 
+- A lista de pesquisa aparecia inicialmente vazia devido ao tempo de resposta assíncrono da leitura do ficheiro JSON.
+- Algumas imagens das capas dos livros falhavam o carregamento devido a links inválidos
+
+# Solução: 
+- Implementação de um método assíncrono e utilização de `await` na página de pesquisa para obrigar a interface a aguardar o carregamento dos dados.
+- Substituição e correção dos URLs das imagens no ficheiro JSON por links funcionais
+
+# Micael Martins
+
+
