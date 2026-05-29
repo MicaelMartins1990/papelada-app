@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "titulo": "O Nome da Rosa",
+    "autor": "Umberto Eco",
+    "capa": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1607188293i/55890231.jpg",
+    "status": "quero_ler",
+    "avaliacao": 0,
+    "comentario": "",
+    "prestadoA": "",
+    "dataDevolucao": ""
+  },
+  {
+    "id": "2",
+    "titulo": "Duna",
+    "autor": "Frank Herbert",
+    "capa": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1608807396i/56397650.jpg",
+    "status": "lido",
+    "avaliacao": 5,
+    "comentario": "Obra-prima intemporal!",
+    "prestadoA": "",
+    "dataDevolucao": ""
+  },
+  {
+    "id": "3",
+    "titulo": "1984",
+    "autor": "George Orwell",
+    "capa": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1327144697i/3744438.jpg",
+    "status": "disponivel",
+    "avaliacao": 0,
+    "comentario": "",
+    "prestadoA": "",
+    "dataDevolucao": ""
+  },
+  {
+    "id": "4",
+    "titulo": "O Senhor dos Anéis: A Sociedade do Anel",
+    "autor": "J.R.R. Tolkien",
+    "capa": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1575295813i/49069024.jpg",
+    "status": "disponivel",
+    "avaliacao": 0,
+    "comentario": "",
+    "prestadoA": "",
+    "dataDevolucao": ""
+  },
+  {
+    "id": "5",
+    "titulo": "O Código Da Vinci",
+    "autor": "Dan Brown",
+    "capa": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1597798677i/55019161.jpg",
+    "status": "lido",
+    "avaliacao": 4,
+    "comentario": "Muito viciante e rápido de ler.",
+    "prestadoA": "",
+    "dataDevolucao": ""
+  }
+]
