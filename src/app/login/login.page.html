@@ -1,0 +1,21 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar color="primary">
+        <ion-title>
+            Efetuar Login
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <div class="input-group">
+        <ion-label>Username</ion-label>
+        <ion-input [(ngModel)]="username" class="text-input" type="username" fill="outline" placeholder="Insira seu username"></ion-input>
+    </div>
+    <div class="input-group">
+        <ion-label>Password</ion-label>
+        <ion-input [(ngModel)]="password" class="text-input" type="password" fill="outline" placeholder="Insira sua password"></ion-input>
+    </div>
+
+    <ion-button expand="block" class="ion-margin-top" color="secondary" (click)="login()">Login</ion-button>
+    <ion-button expand="block" fill="clear" routerLink="/criar-conta">Criar nova conta</ion-button>
+</ion-content>

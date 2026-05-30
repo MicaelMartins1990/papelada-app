@@ -34,21 +34,53 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+// @import "@ionic/angular/css/palettes/dark.system.css";
 
 
 /* Cores do Protótipo Papelada */
+
 ion-content {
-  --background: #f4f1ea; /* Fundo bege */
+    --background: var(--bg-color);
+    /* Fundo bege */
 }
 
 ion-toolbar {
-  --background: #8c5a47; /* Castanho dos cabeçalhos */
-  --color: white; /* Texto branco nos cabeçalhos */
+    
+    /* Castanho dos cabeçalhos */
+    --color: white;
+    /* Texto branco nos cabeçalhos */
 }
 
-/* Cor dos botões e barras de pesquisa*/
+/* Texto */
+
+ion-title {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Icones */
+
+ion-title ion-icon {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Input */
+
+.input-group ion-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.text-input {
+    background: none !important;
+    --background: #ffffff;
+    --border-radius: 12px !important;
+    margin-bottom: 15px;
+    --icon-color: var(--cor-secundaria);
+}
+
 .botao-roxo {
-  --background: #805d68;
-  --border-radius: 12px;
+    --background: var(--ion-color-secondary);
+    --border-radius: 12px;
 }

@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-title style="font-weight: bold; font-size: 24px;">
-      <ion-icon name="compass" style="vertical-align: middle; margin-right: 8px;"></ion-icon>
+  <ion-toolbar color="primary">
+    <ion-title>
+      <ion-icon name="compass"></ion-icon>
       Descobrir
     </ion-title>
   </ion-toolbar>
@@ -11,8 +11,7 @@
 
   <ion-searchbar 
     placeholder="Pesquisar por título ou autor..." 
-    (ionInput)="filtrarLivros($event)"
-    style="--background: #ffffff; --border-radius: 12px; margin-bottom: 15px; --icon-color: #805d68;">
+    (ionInput)="filtrarLivros($event)" class="text-input">
   </ion-searchbar>
 
   @if (livrosFiltrados.length === 0) {

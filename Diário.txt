@@ -36,4 +36,20 @@
 
 # Micael Martins
 
+--------------------------------------------------------------------------------------------------------------------------------
 
+# 30 de maio de 2026
+
+# Objetivo: Adicionar sistema de criação de contas e login
+
+# Desenvolvido:
+
+- Importação do Ionic Storage para simular uma base de dados localmente
+- Criação do AuthService para gerir a autenticação do utilizador
+- Criação do enum Resultado para facilitar a verificação do êxito de processos e exibir uma mensagem correspondente ao utilizador
+- Criação das páginas Criar Conta e Login
+- Alteração de global.scss e variables.scss para faciliar a estilização de múltiplas páginas
+- Criação de um Guard para previnir acesso a determinadas páginas antes de efetuar login
+- Adicionado um botão de logout temporário na página de perfil
+
+# Lucas Israel
