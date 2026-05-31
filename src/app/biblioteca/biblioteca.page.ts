@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LivroService } from '../services/livro';
 
 @Component({
   selector: 'app-biblioteca',
@@ -7,10 +8,24 @@ import { Component, OnInit } from '@angular/core';
   standalone: false
 })
 export class BibliotecaPage implements OnInit {
+  public livros: any[] = []; 
+  public filtroAtual: string = 'quero_ler'; // A página arranca na aba "Desejos"
 
-  constructor() { }
+  constructor(private livroService: LivroService) {}
 
-  ngOnInit() {
+  
+  async ngOnInit() {
+    await this.livroService.init();
+    this.livros = this.livroService.getLivros();
   }
 
+  // Filtra a lista dependendo da aba selecionada (Desejos vs Lidos)
+  get livrosFiltrados() {
+    return this.livros.filter(livro => livro.status === this.filtroAtual);
+  }
+
+  // Aciona quando o utilizador clica nas abas
+  alterarFiltro(event: any) {
+    this.filtroAtual = event.detail.value;
+  }
 }
