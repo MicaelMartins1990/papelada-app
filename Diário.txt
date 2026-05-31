@@ -53,3 +53,18 @@
 - Adicionado um botão de logout temporário na página de perfil
 
 # Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 31 de maio de 2026
+
+Objetivo: Finalização da página da Biblioteca, criação do ecrã de Detalhes com passagem de parâmetros e implementação da Tarefa 2 (Avaliar e Comentar). 
+
+# Desenvolvido:
+
+- Criação da página da Biblioteca (falta fazer melhorias no design)
+- Configuração do sistema de rotas dinâmicas e ligação dos itens da Biblioteca à página de Detalhe
+- Criação da página de Detalhe (acrescentar mais informação nesta página), com lógica da Tarefa 2 com avaliação de 5 estrelas e caixa de comentários.
+
+# Micael Martins
+
