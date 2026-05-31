@@ -1,0 +1,56 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar style="--background: transparent;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="Voltar" style="color: #8c5a47; display: block; font-weight: bold;"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="color: #8c5a47; font-weight: bold;">Detalhes do Livro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Só mostra a página se o livro tiver sido encontrado -->
+  @if (livro) {
+    <!-- Cabeçalho com a Capa e os Títulos -->
+    <div class="ion-text-center">
+      <img [src]="livro.capa" [alt]="livro.titulo" style="max-height: 250px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin-bottom: 20px;" />
+      <h1 style="font-weight: bold; margin-bottom: 5px; font-size: 22px; color: #333;">{{ livro.titulo }}</h1>
+      <h3 style="color: #666; margin-top: 0; font-size: 16px;">{{ livro.autor }}</h3>
+    </div>
+
+    <!-- Área de Avaliação (Tarefa 2) -->
+    <div style="margin-top: 30px;">
+      <h2 style="font-size: 18px; font-weight: bold; text-align: center;">A tua avaliação</h2>
+      
+      <!-- Sistema de Estrelas Interativo -->
+      <div style="font-size: 40px; margin-bottom: 20px; display: flex; justify-content: center; gap: 10px;">
+        <ion-icon name="star" [style.color]="avaliacaoAtual >= 1 ? '#ffc409' : '#e0e0e0'" (click)="setAvaliacao(1)"></ion-icon>
+        <ion-icon name="star" [style.color]="avaliacaoAtual >= 2 ? '#ffc409' : '#e0e0e0'" (click)="setAvaliacao(2)"></ion-icon>
+        <ion-icon name="star" [style.color]="avaliacaoAtual >= 3 ? '#ffc409' : '#e0e0e0'" (click)="setAvaliacao(3)"></ion-icon>
+        <ion-icon name="star" [style.color]="avaliacaoAtual >= 4 ? '#ffc409' : '#e0e0e0'" (click)="setAvaliacao(4)"></ion-icon>
+        <ion-icon name="star" [style.color]="avaliacaoAtual >= 5 ? '#ffc409' : '#e0e0e0'" (click)="setAvaliacao(5)"></ion-icon>
+      </div>
+
+      <!-- Caixa de Comentário -->
+      <ion-item style="--background: #ffffff; --border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+        <ion-label position="stacked" style="font-weight: bold;">O teu comentário</ion-label>
+        <ion-textarea 
+          [(ngModel)]="comentarioAtual" 
+          placeholder="O que achaste desta leitura?" 
+          rows="5">
+        </ion-textarea>
+      </ion-item>
+
+      <!-- Botão para Gravar -->
+      <ion-button expand="block" (click)="guardarAvaliacao()" style="--background: #8c5a47; --border-radius: 8px; height: 50px; font-weight: bold;">
+        <ion-icon slot="start" name="save-outline"></ion-icon>
+        Guardar Avaliação
+      </ion-button>
+    </div>
+  } @else {
+    <!-- Caso haja algum erro no URL -->
+    <div class="ion-text-center" style="margin-top: 50px;">
+      <ion-icon name="alert-circle-outline" style="font-size: 48px; color: #ff4961;"></ion-icon>
+      <p>Ocorreu um erro ao carregar o livro.</p>
+    </div>
+  }
+</ion-content>
