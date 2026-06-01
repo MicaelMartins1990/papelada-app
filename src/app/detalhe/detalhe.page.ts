@@ -1,60 +1,89 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { LivroService, Livro } from '../services/livro';
+import { LivroService } from '../services/livro';
+import { LivroPessoalService } from '../services/livro-pessoal';
+import { Livro } from '../models/livro';
+import { AuthService } from '../services/auth';
+import { LivroStatus } from '../enums/livro-status';
 
 @Component({
-  selector: 'app-detalhe',
-  templateUrl: './detalhe.page.html',
-  styleUrls: ['./detalhe.page.scss'],
-  standalone: false 
+    selector: 'app-detalhe',
+    templateUrl: './detalhe.page.html',
+    styleUrls: ['./detalhe.page.scss'],
+    standalone: false
 })
 export class DetalhePage implements OnInit {
-  public livro: any;
-  public avaliacaoAtual: number = 0;
-  public comentarioAtual: string = '';
+    public livro: Livro | null = null;
+    public avaliacaoAtual: number = 0;
+    public comentarioAtual: string = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private navCtrl: NavController,
-    private livroService: LivroService
-  ) {}
+    public idUtilizador!: number;
 
-  async ngOnInit() {
-    // 1. Garantir que a base de dados central já carregou
-    await this.livroService.init(); 
-    
-    // 2. Obter o ID passado pelo URL através do ActivatedRoute
-    const id = this.route.snapshot.paramMap.get('id');
-    
-    if (id) {
-      // 3. Procurar o livro exato na nossa lista
-      this.livro = this.livroService.getLivros().find(l => l.id === id);
-      
-      // 4. Preencher os campos com os dados existentes (se já tiver sido avaliado antes)
-      if (this.livro) {
-        this.avaliacaoAtual = this.livro.avaliacao;
-        this.comentarioAtual = this.livro.comentario;
-      }
+    constructor(
+        private route: ActivatedRoute,
+        private navCtrl: NavController,
+        private livroService: LivroService,
+        private livroPessoalService: LivroPessoalService,
+        private authService: AuthService,
+        private router: Router
+    ) {
     }
-  }
 
-  // Função chamada sempre que se clica numa estrela
-  setAvaliacao(nota: number) {
-    this.avaliacaoAtual = nota;
-  }
+    async ngOnInit() {
+        const idParam = this.route.snapshot.paramMap.get('id');
 
-  
-  // Função para gravar os dados e voltar para trás
-  guardarAvaliacao() {
-    if (this.livro) {
-      // Em vez de alterar o objeto diretamente, chamamos o Service
-      this.livroService.adicionarAvaliacao(this.livro.id, this.avaliacaoAtual, this.comentarioAtual);
-      
-      alert('Avaliação guardada com sucesso!');
-      
-      // O NavController regressa automaticamente à página de onde viemos
-      this.navCtrl.back(); 
+        if (idParam) {
+            const idLivro = Number(idParam);
+            
+            await this.carregarUtilizador();
+
+            const [livros, registosPessoais] = await Promise.all([
+                this.livroService.getLivros(),
+                this.livroPessoalService.getLivroPessoal(this.idUtilizador)
+            ]);
+            const livro = livros.find(l => l.id === idLivro);
+
+            if (livro) {
+                this.livro = livro;
+                const livroPessoal = registosPessoais.find(lp => lp.idLivro === idLivro);
+                if (livroPessoal) {
+                    this.avaliacaoAtual = livroPessoal.avaliacao ?? 0;
+                    this.comentarioAtual = livroPessoal.comentario ?? '';
+                }
+            }
+        }
     }
-  }
+
+    private async carregarUtilizador() {
+        await this.authService.esperarPronto();
+        const id = this.authService.getIdUtilizador();
+        if (id == null) {
+            this.router.navigateByUrl('/');
+            return;
+        }
+        this.idUtilizador = id;
+    }
+
+    setAvaliacao(nota: number) {
+        this.avaliacaoAtual = nota;
+    }
+
+    async guardarAvaliacao() {
+        if (this.livro) {
+            await this.livroPessoalService.adicionarAvaliacao(
+                this.idUtilizador,
+                this.livro.id,
+                this.avaliacaoAtual,
+                this.comentarioAtual
+            );
+            await this.livroPessoalService.atualizarStatus(
+                this.idUtilizador,
+                this.livro.id,
+                LivroStatus.LIDO
+            );
+            alert('Avaliação guardada com sucesso!');
+            this.navCtrl.back();
+        }
+    }
 }

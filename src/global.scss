@@ -34,21 +34,32 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-// @import "@ionic/angular/css/palettes/dark.system.css";
-
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
 
 /* Cores do Protótipo Papelada */
 
 ion-content {
-    --background: var(--bg-color);
     /* Fundo bege */
+    --background: var(--bg-color);
 }
 
 ion-toolbar {
-    
-    /* Castanho dos cabeçalhos */
-    --color: white;
     /* Texto branco nos cabeçalhos */
+    --color: white;
+}
+
+ion-header {
+    border-bottom: 1px solid #5E4235 !important;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4) !important;
+}
+
+ion-footer ion-toolbar {
+    --background: var(--bg-color);
+    border-top: 1px solid var(--ion-color-tertiary);
+}
+
+ion-tab-bar {
+    border-top: 1px solid #5E4235 !important;
 }
 
 /* Texto */
@@ -76,11 +87,50 @@ ion-title ion-icon {
     background: none !important;
     --background: #ffffff;
     --border-radius: 12px !important;
-    margin-bottom: 15px;
-    --icon-color: var(--cor-secundaria);
+    --icon-color: var(--ion-color-secondary);
 }
 
 .botao-roxo {
     --background: var(--ion-color-secondary);
     --border-radius: 12px;
+    margin: 0;
+}
+
+.secao-busca {
+    padding: 12px;
+    --background: var(--bg-color);
+
+    display: flex !important; 
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.barra-busca {
+    background: none !important;
+    padding: 0 !important;
+
+    --background: none;
+    --icon-color: var(--ion-color-primary);
+    --clear-button-color: var(--ion-color-primary);
+    --placeholder-color: var(--ion-color-primary);
+    --placeholder-opacity: 1;
+    --box-shadow: none;
+    
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 12px;
+    flex: 1;
+}
+
+.secao-busca ion-button {
+    width: 65px;
+}
+
+.secao-busca ion-button ion-icon {
+    font-size: 30px;
+}
+
+/* Utilidades */
+
+.section:not(:last-child) {
+    margin-bottom: 15px;
 }

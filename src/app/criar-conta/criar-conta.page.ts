@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from '../services/auth';
+import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Resultado } from '../enums/resultado';
@@ -15,7 +15,7 @@ export class CriarContaPage implements OnInit {
     username = '';
     password = '';
 
-    constructor(private authService: Auth, private router: Router, private toastController: ToastController) { }
+    constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
 
     ngOnInit() {
     }

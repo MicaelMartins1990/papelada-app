@@ -1,71 +1,52 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage-angular';
 import { HttpClient } from '@angular/common/http';
-
-// Definição da Interface do Objeto Livro
-export interface Livro {
-  id: string;
-  titulo: string;
-  autor: string;
-  capa: string;
-  status: string; // 'disponivel', 'quero_ler', 'lido', 'emprestado'
-  avaliacao: number;
-  comentario: string;
-  prestadoA: string;
-  dataDevolucao: string;
-}
+import { firstValueFrom } from 'rxjs';
+import { Livro } from '../models/livro';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LivroService {
-  private jsonUrl = 'assets/data/livros.json';
-  private livros: Livro[] = [];
+    private _storage: Storage | null = null;
 
-  constructor(private http: HttpClient) {
-  }
+    // Temporário
+    private capaUrl = 'assets/data/capa-teste.txt';
+    private capaTeste = '';
 
-  // (async/await)
-  async init() {
-    // Se a lista estiver vazia, esperamos que o HTTP leia o JSON antes de avançar
-    if (this.livros.length === 0) {
-      return new Promise<void>((resolve) => {
-        this.http.get<Livro[]>(this.jsonUrl).subscribe(dados => {
-          this.livros = dados;
-          resolve(); // Só dá sinal quando a lista estiver preenchida!
-        });
-      });
+    constructor(private http: HttpClient, private storage: Storage) {
+        this.init();
     }
-  }
 
-  getLivros(): Livro[] {
-    return this.livros;
-  }
-
-  // Altera o estado de um livro (Tarefa 1: Adicionar à Lista de Desejos / Quero Ler)
-  atualizarStatus(id: string, novoStatus: string) {
-    const index = this.livros.findIndex(l => l.id === id);
-    if (index >= 0) {
-      this.livros[index].status = novoStatus;
+    async init() {
+        if (!this._storage) {
+            this._storage = await this.storage.create();
+        }
+        // Temporário
+        this.capaTeste = await firstValueFrom(this.http.get(this.capaUrl, { responseType: 'text' })) || '';
     }
-  }
 
-  // Regista a opinião e nota do utilizador (Tarefa 2: Avaliar e Comentar)
-  adicionarAvaliacao(id: string, nota: number, texto: string) {
-    const index = this.livros.findIndex(l => l.id === id);
-    if (index >= 0) {
-      this.livros[index].status = 'lido';
-      this.livros[index].avaliacao = nota;
-      this.livros[index].comentario = texto;
+    public async getLivros(): Promise<Livro[]> {
+        await this.init();
+        const livros = await this._storage?.get('livros');
+        return livros || [];
     }
-  }
 
-  // Regista um empréstimo físico a um contacto (Tarefa 3)
-  registarEmprestimo(id: string, amigo: string, data: string) {
-    const index = this.livros.findIndex(l => l.id === id);
-    if (index >= 0) {
-      this.livros[index].status = 'emprestado';
-      this.livros[index].prestadoA = amigo;
-      this.livros[index].dataDevolucao = data;
+    public async registarLivro(titulo: string, autor: string, capa: string = this.capaTeste): Promise<Livro> {
+        const livros = await this.getLivros();
+        const novoLivro: Livro = {
+            id: this.getNovoId(livros),
+            titulo: titulo,
+            autor: autor,
+            capa: capa,
+        };
+        livros.push(novoLivro);
+        await this._storage?.set('livros', livros);
+        return novoLivro;
     }
-  }
+
+    private getNovoId(livros: Livro[]): number {
+        if (livros.length === 0) return 1;
+        return (livros[livros.length - 1].id || 0) + 1;
+    }
 }
