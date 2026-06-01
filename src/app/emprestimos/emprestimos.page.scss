@@ -1,0 +1,117 @@
+.painel-registo,
+.lista-emprestimos {
+  margin-bottom: 24px;
+}
+
+.painel-registo h2,
+.lista-emprestimos h2 {
+  color: #8c5a47;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.painel-registo {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 14px;
+}
+
+.campo-formulario {
+  --background: #fdfcf9;
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+  margin-bottom: 10px;
+}
+
+.campo-formulario ion-label {
+  color: #6a5a62;
+  font-weight: 700;
+}
+
+.botao-guardar {
+  --background: #8c5a47;
+  --border-radius: 8px;
+  font-weight: 700;
+  height: 48px;
+  margin: 14px 0 0;
+}
+
+.mensagem {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  gap: 6px;
+  margin: 8px 2px 0;
+}
+
+.mensagem-erro {
+  color: #b3261e;
+}
+
+.mensagem-sucesso {
+  color: #2f7d32;
+}
+
+.lista-emprestimos ion-list {
+  background: transparent;
+  padding: 0;
+}
+
+.item-emprestimo {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+}
+
+.item-emprestimo ion-thumbnail {
+  height: 90px;
+  width: 60px;
+}
+
+.item-emprestimo img {
+  border-radius: 4px;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.item-emprestimo h3 {
+  color: #000000;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  white-space: normal;
+}
+
+.item-emprestimo p {
+  align-items: center;
+  color: #666666;
+  display: flex;
+  font-size: 13px;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.item-emprestimo ion-icon {
+  color: #8c5a47;
+}
+
+.estado-vazio {
+  color: #6a5a62;
+  margin-top: 28px;
+  text-align: center;
+}
+
+.estado-vazio ion-icon {
+  font-size: 48px;
+  margin-bottom: 6px;
+}
+
+.estado-vazio p {
+  margin: 0;
+}
