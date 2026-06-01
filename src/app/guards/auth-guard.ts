@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Auth } from '../services/auth';
+import { AuthService } from '../services/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthServiceGuard implements CanActivate {
   
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   async canActivate(): Promise<boolean> {
         await this.auth.esperarPronto()

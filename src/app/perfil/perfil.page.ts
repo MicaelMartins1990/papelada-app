@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from '../services/auth';
+import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class PerfilPage implements OnInit {
 
-    constructor(private auth: Auth, private router: Router) { }
+    constructor(private auth: AuthService, private router: Router) { }
 
     ngOnInit() {
     }

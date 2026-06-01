@@ -1,31 +1,85 @@
 import { Component, OnInit } from '@angular/core';
 import { LivroService } from '../services/livro';
+import { LivroPessoalService } from '../services/livro-pessoal';
+import { LivroStatus } from '../enums/livro-status';
+import { LivroExibido } from '../models/livro-exibido';
+import { AuthService } from '../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-biblioteca',
-  templateUrl: './biblioteca.page.html',
-  styleUrls: ['./biblioteca.page.scss'],
-  standalone: false
+    selector: 'app-biblioteca',
+    templateUrl: './biblioteca.page.html',
+    styleUrls: ['./biblioteca.page.scss'],
+    standalone: false
 })
+
 export class BibliotecaPage implements OnInit {
-  public livros: any[] = []; 
-  public filtroAtual: string = 'quero_ler'; // A página arranca na aba "Desejos"
+    public livrosExibicao: LivroExibido[] = [];
+    public filtroAtual: LivroStatus = LivroStatus.DESEJADO;
+    public aCarregar: boolean = true;
 
-  constructor(private livroService: LivroService) {}
+    public idUtilizador!: number;
 
-  
-  async ngOnInit() {
-    await this.livroService.init();
-    this.livros = this.livroService.getLivros();
-  }
+    public LivroStatus = LivroStatus;
 
-  // Filtra a lista dependendo da aba selecionada (Desejos vs Lidos)
-  get livrosFiltrados() {
-    return this.livros.filter(livro => livro.status === this.filtroAtual);
-  }
+    constructor(
+        private livroService: LivroService,
+        private livroPessoalService: LivroPessoalService,
+        private authService: AuthService,
+        private router: Router
+    ) {
+    }
 
-  // Aciona quando o utilizador clica nas abas
-  alterarFiltro(event: any) {
-    this.filtroAtual = event.detail.value;
-  }
+    async ngOnInit() {
+        await this.carregarLivrosPessoais();
+        await this.carregarUtilizador();
+    }
+
+    async ionViewWillEnter() {
+        await this.carregarLivrosPessoais();
+        await this.carregarUtilizador();
+    }
+
+    private async carregarUtilizador() {
+        await this.authService.esperarPronto();
+        const id = this.authService.getIdUtilizador();
+        if (id == null) {
+            this.router.navigateByUrl('/');
+            return;
+        }
+        this.idUtilizador = id;
+    }
+
+    async carregarLivrosPessoais() {
+        this.aCarregar = true;
+
+        const [livros, registosPessoais] = await Promise.all([
+            this.livroService.getLivros(),
+            this.livroPessoalService.getLivroPessoal(this.idUtilizador)
+        ]);
+
+        this.livrosExibicao = registosPessoais.map(pessoal => {
+            const dadosLivro = livros.find(livro => livro.id === pessoal.idLivro);
+            if (!dadosLivro) return null;
+
+            return {
+                id: dadosLivro.id,
+                titulo: dadosLivro.titulo,
+                autor: dadosLivro.autor,
+                capa: dadosLivro.capa,
+                status: pessoal.status,
+                avaliacao: pessoal.avaliacao
+            };
+        }).filter(item => item !== null) as LivroExibido[];
+
+        this.aCarregar = false;
+    }
+
+    get livrosFiltrados() {
+        return this.livrosExibicao.filter(livro => livro.status === this.filtroAtual);
+    }
+
+    alterarFiltro(event: any) {
+        this.filtroAtual = Number(event.detail.value);
+    }
 }
