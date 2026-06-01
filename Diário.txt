@@ -89,3 +89,19 @@ Solução:
 
 # Flávio Fernandes
 
+--------------------------------------------------------------------------------------------------------------------------------
+
+# 1 de junho de 2026
+
+# Objetivo: Permitir o registo de novos livros no sistema e dividir estado de leitura para cada utilizador
+
+# Desenvolvido:
+
+- Criação do LivroPessoalService, que gere a relação muitos-a-muitos entre livros e utilizadores.
+- Removidos campos da interface Livro e métodos de LivroService relacionados ao estado de leitura e avaliação, migrados para LivroPessoal e LivroPessoalService, respetivamente .
+- Removido o acesso ao ficheiro livros.json, substituído pelo Ionic Storage com os livros criados dinamicamente.
+- Criação da funcionalidade de registar novos livros. Capas são salvas como Data URIs, mas a câmara ainda não é utilizada. Todos os livros utilizam a mesma capa predefinida.
+- Refatoração das páginas existentes para acomodar à separação dos services.
+- Alterações em global.css para tornar a aparência da aplicação mais próxima aos protótipos.
+
+# Lucas Israel
