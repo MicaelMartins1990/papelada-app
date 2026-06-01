@@ -9,7 +9,8 @@ export class AuthGuard implements CanActivate {
   
   constructor(private auth: Auth, private router: Router) {}
 
-  canActivate(): boolean {
+  async canActivate(): Promise<boolean> {
+        await this.auth.esperarPronto()
         if (!this.auth.estaLogado()) {
             this.router.navigateByUrl('');
             return false;

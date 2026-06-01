@@ -17,14 +17,15 @@ export interface Utilizador {
 export class Auth {
     private _storage: Storage | null = null;
     private utilizadorLogado: Utilizador | null = null;
+    private estaPronto: Promise<void>;
 
     constructor(private storage: Storage) {
-        this.init();
+        this.estaPronto = this.init();
     }
 
     async init() {
         this._storage = await this.storage.create();
-        this.checkLogin();
+        await this.checkLogin();
     }
 
     async checkLogin() {
@@ -64,6 +65,10 @@ export class Auth {
     async logout() {
         this.utilizadorLogado = null;
         await this._storage?.remove('utilizador_logado');
+    }
+
+    public async esperarPronto() {
+        await this.estaPronto;
     }
 
     public getUtilizador(): Utilizador | null {
