@@ -68,3 +68,24 @@ Objetivo: Finalização da página da Biblioteca, criação do ecrã de Detalhes
 
 # Micael Martins
 
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 1 de junho de 2026, 15:00H 
+
+Objetivo:
+Analisar o estado atual do projeto face ao enunciado da Etapa 3 e organizar uma lista de tarefas pendentes para apoiar a preparação da entrega e da avaliação heurística.
+
+Atividades realizadas:
+- Voltei a analisar melhor o enunciado e comparei os requisitos mínimos com o estado atual da aplicação;
+- Identifiquei funcionalidades já implementadas, parcialmente implementadas e em falta;
+- Criei uma checklist de preparação para a entrega, incluindo funcionalidades, documentação, APK/dispositivo físico e demonstração;
+- Registei os principais riscos do projeto antes da avaliação, para facilitar a divisão de trabalho no grupo e não nos esquecermos de nenhum requisito importante. 
+
+Problemas:
+- O código estava a ser alterado por outros elementos do grupo, por isso evitei mexer diretamente na implementação para não criar conflitos. 
+
+Solução:
+- De momento foquei-me em documentação de apoio permitindo organizar o trabalho futuro, e se o commit dos colegas ficar feito até ao final do dia ainda continuo com a implmentação de codigo.
+
+# Flávio Fernandes
+
