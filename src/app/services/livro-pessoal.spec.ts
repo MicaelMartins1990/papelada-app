@@ -1,16 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { LivroPessoalService } from './livro-pessoal';
 
-import { LivroPessoal, LivroPessoalService } from './livro-pessoal';
-
-describe('LivroPessoal', () => {
-  let service: LivroPessoalService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(LivroPessoalService);
-  });
-
+describe('LivroPessoalService', () => {
   it('should be created', () => {
+    const service = new LivroPessoalService(
+      { create: jasmine.createSpy('create').and.resolveTo({ get: async () => [], set: async () => undefined }) } as any
+    );
+
     expect(service).toBeTruthy();
   });
 });
