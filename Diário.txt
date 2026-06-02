@@ -105,3 +105,56 @@ Solução:
 - Alterações em global.css para tornar a aparência da aplicação mais próxima aos protótipos.
 
 # Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 1 de junho de 2026 
+
+# Objetivo:  
+Reverter commmit e merge da main devido a refatoracao que estava em curso por elementos do grupo 
+
+Problema:  
+Uma vez que uma refatoração do codigo e de grande logica do desenvolvimento do sistema estava em curso durante o desenvolvimento da funcionalidade de emprestimos. 
+
+Solução:  
+Optamos por reverter essas alteracoes guardando as numa branch local separada para no futuro ao implementar poder comparar a logica que ja estava implementada. 
+
+# Flávio Fernandes
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 2 de junho de 2026
+
+Objetivo:  
+Implementar funcionalidade de avaliação e comentario de livro
+
+Desenvolvido: 
+- Pagina de detalhe de livro bom botoes para marcar como lido etc mas ainda sem funcionar
+- Avaliação e media de avalição 
+- Navegar para pagina de comentarios do livrro comentario/:id 
+
+A melhorar:  
+- Heuristicas de nielson que mostram o estado real da app ao utilizador 
+- Pagina de comentario deve se transformar em um modal 
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 2 de Junho 
+
+Objetivo:  
+Terminar pagina de comentario de livro 
+
+Desenvolvido: 
+- Pagina de comentarios agora aparece o contexto do livro para ir de encontro às heuristicas 
+- Criada secção a tua avaliação que permite editar ou apagar
+- Nos comentarios o comentario do utilizador aparrece uma etiqueta com "tu" para se destacar de outros 
+- Esterlas ficam amarelas ao selecionar nelas para feedback visual 
+- Ordenação de comentarios por data de publicação
+
+Por desenvolver:  
+- Funcionalidaes de botoes de ações rapidas
+- Abertura de detalhes dos livros quando está fora da biblioteca 
+
+# Flávio Fernandes
+------------------------------------------------------------------------------------------------------------------------------------
+

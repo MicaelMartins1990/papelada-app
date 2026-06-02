@@ -1,0 +1,264 @@
+:host {
+  --papelada-brown: #925f48;
+  --papelada-purple: #815a70;
+  --papelada-grey: #a7a29e;
+  --papelada-bg: #f4f1ea;
+  --papelada-line: #b8b4ad;
+  --papelada-star: #ffd560;
+}
+
+.detalhe-header ion-toolbar {
+  --background: var(--papelada-brown);
+  --color: #ffffff;
+  min-height: 76px;
+  padding-top: 6px;
+}
+
+.detalhe-header ion-title {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.detalhe-header ion-back-button {
+  --color: #ffffff;
+  --icon-font-size: 34px;
+  margin-left: 8px;
+}
+
+.detalhe-content {
+  --background: var(--papelada-bg);
+  color: #000000;
+}
+
+.livro-hero {
+  padding: 0 24px 28px;
+}
+
+.livro-hero img {
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  display: block;
+  margin: 0 auto 24px;
+  max-height: 360px;
+  width: min(360px, 78%);
+  object-fit: cover;
+}
+
+.livro-hero h1 {
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.08;
+  margin: 0 0 12px;
+}
+
+.livro-hero p {
+  font-size: 26px;
+  margin: 0;
+}
+
+.secao {
+  border-top: 1px solid var(--papelada-line);
+  padding: 24px;
+}
+
+.secao h2 {
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0 0 24px;
+}
+
+.acoes-grid {
+  display: grid;
+  gap: 16px 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.botao-acao,
+.botao-comentarios {
+  --background: var(--papelada-purple);
+  --border-radius: 18px;
+  --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.28);
+  color: #fffdf0;
+  font-size: 19px;
+  font-weight: 800;
+  height: 84px;
+  line-height: 1.12;
+  text-transform: none;
+  white-space: normal;
+}
+
+.botao-acao::part(native) {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.botao-acao-secundario,
+.botao-avaliar {
+  --background: var(--papelada-grey);
+}
+
+.resumo-avaliacoes {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.estrelas {
+  color: var(--papelada-purple);
+  display: flex;
+}
+
+.estrelas ion-icon {
+  color: var(--papelada-purple);
+}
+
+.estrelas.grandes {
+  font-size: 40px;
+  gap: 4px;
+}
+
+.estrelas.pequenas {
+  font-size: 27px;
+  gap: 2px;
+}
+
+.estrelas.editaveis {
+  font-size: 44px;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.estrelas.pequenas ion-icon[name='star'],
+.estrelas.grandes ion-icon[name='star'],
+.estrelas.editaveis .estrela-ativa {
+  color: var(--papelada-star);
+}
+
+.resumo-global-estrelas ion-icon {
+  cursor: default;
+}
+
+.contagem-avaliacoes {
+  color: var(--papelada-purple);
+  font-size: 24px;
+  margin: 4px 0 0 8px;
+}
+
+.botao-avaliar {
+  --border-radius: 16px;
+  --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.28);
+  color: #fffdf0;
+  font-size: 20px;
+  font-weight: 800;
+  height: 64px;
+  min-width: 118px;
+  max-width: 126px;
+  text-transform: none;
+}
+
+.botao-avaliar::part(native) {
+  padding: 0 14px;
+}
+
+@media (max-width: 360px) {
+  .secao {
+    padding: 20px;
+  }
+
+  .secao h2 {
+    font-size: 34px;
+  }
+
+  .acoes-grid {
+    gap: 14px;
+  }
+
+  .botao-acao {
+    font-size: 17px;
+    height: 78px;
+  }
+
+  .estrelas.grandes {
+    font-size: 34px;
+  }
+
+  .botao-avaliar {
+    font-size: 18px;
+    height: 58px;
+    min-width: 104px;
+  }
+}
+
+.media-global {
+  margin: 18px 0 14px;
+}
+
+.media-global strong {
+  display: block;
+  font-size: 24px;
+}
+
+.media-global span {
+  color: var(--papelada-purple);
+  display: block;
+  font-size: 16px;
+  margin-top: 3px;
+}
+
+.distribuicao {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.linha-distribuicao {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 34px 1fr 28px;
+  font-size: 15px;
+}
+
+.barra-distribuicao {
+  background: #dedbd4;
+  border-radius: 999px;
+  height: 9px;
+  overflow: hidden;
+}
+
+.barra-distribuicao div {
+  background: var(--papelada-purple);
+  height: 100%;
+}
+
+.botao-comentarios {
+  font-size: 28px;
+  margin-top: 8px;
+  min-height: 88px;
+}
+
+.mensagem-erro {
+  align-items: center;
+  color: #b3261e;
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.estado-vazio {
+  color: var(--papelada-purple);
+  padding: 42px 24px;
+  text-align: center;
+}
+
+.estado-vazio ion-icon {
+  font-size: 44px;
+}

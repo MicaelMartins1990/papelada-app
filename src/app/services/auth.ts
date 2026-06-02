@@ -4,6 +4,11 @@ import * as bcrypt from 'bcryptjs';
 import { Resultado } from 'src/app/enums/resultado'
 import { Utilizador } from '../models/utilizador';
 
+export interface UtilizadorPublico {
+    id: number,
+    nome: string,
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -67,6 +72,16 @@ export class AuthService {
 
     public getIdUtilizador(): number | null {
         return this.utilizadorLogado;
+    }
+
+    public async getUtilizadoresPublicos(): Promise<UtilizadorPublico[]> {
+        await this.esperarPronto();
+        const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
+
+        return utilizadores.map(utilizador => ({
+            id: utilizador.id,
+            nome: utilizador.nome
+        }));
     }
 
     public estaLogado(): boolean {

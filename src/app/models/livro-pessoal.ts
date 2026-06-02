@@ -6,6 +6,7 @@ export interface LivroPessoal {
     status: LivroStatus,
     avaliacao: number | null,
     comentario: string | null,
+    dataAvaliacao: string | null,
     emprestimo: Emprestimo | null,
 }
 

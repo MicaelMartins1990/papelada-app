@@ -1,17 +1,29 @@
-import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { AuthServiceGuard } from './auth-guard';
 
-import { authGuard } from './auth-guard';
+describe('AuthServiceGuard', () => {
+  it('allows navigation when the user is logged in', async () => {
+    const guard = new AuthServiceGuard(
+      {
+        esperarPronto: jasmine.createSpy('esperarPronto').and.resolveTo(),
+        estaLogado: jasmine.createSpy('estaLogado').and.returnValue(true)
+      } as any,
+      { navigateByUrl: jasmine.createSpy('navigateByUrl') } as any
+    );
 
-describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+    await expectAsync(guard.canActivate()).toBeResolvedTo(true);
   });
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+  it('redirects when the user is not logged in', async () => {
+    const router = { navigateByUrl: jasmine.createSpy('navigateByUrl') };
+    const guard = new AuthServiceGuard(
+      {
+        esperarPronto: jasmine.createSpy('esperarPronto').and.resolveTo(),
+        estaLogado: jasmine.createSpy('estaLogado').and.returnValue(false)
+      } as any,
+      router as any
+    );
+
+    await expectAsync(guard.canActivate()).toBeResolvedTo(false);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('');
   });
 });

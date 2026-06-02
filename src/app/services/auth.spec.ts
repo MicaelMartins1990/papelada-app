@@ -1,16 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-
 import { AuthService } from './auth';
 
 describe('AuthService', () => {
-  let service: AuthService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthService);
-  });
-
   it('should be created', () => {
+    const service = new AuthService(
+      {
+        create: jasmine.createSpy('create').and.resolveTo({
+          get: async () => null,
+          set: async () => undefined,
+          remove: async () => undefined
+        })
+      } as any
+    );
+
     expect(service).toBeTruthy();
   });
 });
