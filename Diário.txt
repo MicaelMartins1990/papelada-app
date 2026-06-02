@@ -58,7 +58,7 @@
 
 # 31 de maio de 2026
 
-Objetivo: Finalização da página da Biblioteca, criação do ecrã de Detalhes com passagem de parâmetros e implementação da Tarefa 2 (Avaliar e Comentar). 
+# Objetivo: Finalização da página da Biblioteca, criação do ecrã de Detalhes com passagem de parâmetros e implementação da Tarefa 2 (Avaliar e Comentar). 
 
 # Desenvolvido:
 
@@ -157,4 +157,15 @@ Por desenvolver:
 
 # Flávio Fernandes
 ------------------------------------------------------------------------------------------------------------------------------------
+# 3 de junho
 
+# Objetivo: 
+Estruturar a página de Perfil e integrá-la com a nova reestruturação de Autenticação e gestão de estado de livros desenvolvida pela equipa.
+
+# Desenvolvido:
+- Integração com o `AuthService` para identificar dinamicamente o utilizador logado e apresentar o seu nome na interface.
+- Implementação da funcionalidade de "Terminar Sessão" (Logout), encaminhando o utilizador para a raiz/login e limpando o histórico de navegação.
+- Ligação ao `LivroPessoalService` e utilização do enum `LivroStatus` para calcular e apresentar as estatísticas reais do utilizador (Total de Livros Lidos e Total de Livros Desejados).
+
+# Problemas: 
+- Devido à natureza das Tabs no Ionic, a utilização do `ngOnInit` faz com que as estatísticas do perfil não atualizem dinamicamente ao navegar entre ecrãs, exigindo um recarregamento da página. Planear a refatoração para resolver este problema visual.
