@@ -3,4 +3,5 @@ export enum Resultado {
     ERRO,
     NAO_ENCONTRADO,
     JA_EXISTE,
+    MESMO_UTILIZADOR,
 }
