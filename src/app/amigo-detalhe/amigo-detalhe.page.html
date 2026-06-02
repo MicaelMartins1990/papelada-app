@@ -1,0 +1,66 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar color="primary">
+        <ion-title>
+            <div>
+                <ion-back-button defaultHref="/tabs/amigos"></ion-back-button>
+                @if (amigo) { {{ amigo.nome }} }
+                @else { Erro }
+            </div>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    @if (amigo) {
+    <div class="ion-text-center ion-margin-bottom">
+        <div class="amigo-avatar">{{ amigo.nome.charAt(0) }}</div>
+        <h2>{{ amigo.nome }}</h2>
+        <h3 class="username">{{ amigo.username }}</h3>
+    </div>
+
+    @if (dadosLeitura) {
+    <ion-grid class="dados-leitura">
+        <ion-row>
+            <ion-col text-center>
+                <ion-icon name="library"></ion-icon>
+                <div> {{ dadosLeitura.livrosPossuidos }} livro(s) possuídos </div>
+            </ion-col>
+            <ion-col text-center>
+                <ion-icon name="receipt"></ion-icon>
+                <div> {{ dadosLeitura.livrosEmprestados }} livro(s) emprestados </div>
+            </ion-col>
+            <ion-col text-center>
+                <ion-icon name="heart"></ion-icon>
+                <div> {{ dadosLeitura.livrosDesejados }} na lista de desejos </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    } @else {
+    <div class="dados-leitura">
+        <p>Erro ao carregar dados de leitura.</p>
+    </div>
+    }
+
+    <ion-grid class="botao-grelha">
+        <ion-row>
+            <ion-col text-center>
+                <ion-button class="botao-roxo botao-texto ion-margin-top" expand="block">
+                    Emprestar Livro
+                </ion-button>
+            </ion-col>
+            <ion-col text-center>
+                <ion-button class="botao-vermelho botao-texto ion-margin-top" expand="block" (click)="removerAmigo()">
+                    Remover Amigo
+                </ion-button>                
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    } @else {
+    <!-- Caso haja algum erro no URL -->
+    <div class="ion-text-center" style="margin-top: 50px;">
+        <ion-icon name="alert-circle-outline" style="font-size: 48px; color: #ff4961;"></ion-icon>
+        <p>Ocorreu um erro ao carregar o utilizador.</p>
+    </div>
+    }
+</ion-content>

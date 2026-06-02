@@ -94,12 +94,30 @@ ion-title ion-icon {
     --background: var(--ion-color-secondary);
     --border-radius: 12px;
     margin: 0;
+    text-transform: none;
+    font-weight: bold;
+    height: 100%;
 }
 
 .botao-vermelho {
     --background: #E66756;
     --border-radius: 12px;
     margin: 0;
+    text-transform: none;
+    font-weight: bold;
+    height: 100%;
+}
+
+.botao-texto {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+}
+
+.botao-grelha {
+    padding: 0;
+    margin-top: 10px;
 }
 
 .secao-busca {
@@ -133,6 +151,24 @@ ion-title ion-icon {
 
 .secao-busca ion-button ion-icon {
     font-size: 30px;
+}
+
+/* Utilizadores */
+
+.amigo-avatar {
+    width: 50px;
+    height: 50px;
+    background: #AE2A2A;
+    border-radius: 50%;
+    margin-right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 /* Utilidades */

@@ -1,0 +1,46 @@
+ion-title > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+ion-back-button {
+    --padding-start: 0 !important;
+    --padding-end: 0;
+    --icon-font-size: 30px;
+}
+
+.amigo-avatar {
+    margin: 10px auto;
+    width: 75px;
+    height: 75px;
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 28px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.username {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+
+    &::before {
+        content: '@'
+    }
+}
+
+.dados-leitura {
+    border-block: 1px solid var(--ion-color-tertiary);
+    padding-block: 10px;
+    text-align: center;
+    display: flex;
+    color: var(--ion-color-secondary);
+}
+
+.dados-leitura ion-icon {
+    font-size: 24px;
+}

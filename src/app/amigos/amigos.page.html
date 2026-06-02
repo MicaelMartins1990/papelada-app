@@ -26,7 +26,7 @@
     @if (!aCarregar) {
     <ion-list class="ion-no-padding">
         @for (amigo of amigosFiltrados; track amigo.id) {
-        <ion-item size="6" class="ion-padding-tiny">
+        <ion-item size="6" class="ion-padding-tiny" [routerLink]="['/tabs/amigos/detalhe', amigo.id]">
             <div class="amigo-avatar" aria-hidden="true" slot="start">
                 {{ amigo.nome.charAt(0) }}
             </div>
@@ -63,13 +63,20 @@
                     <ion-input [(ngModel)]="usernameInput" class="text-input" type="username" fill="outline" placeholder="Digita o @username"></ion-input>
                 </div>
 
-                <ion-button class="botao-roxo ion-margin-top" [disabled]="!usernameInput" (click)="adicionarAmigo()">
-                    Registar
-                </ion-button>
-
-                <ion-button class="botao-vermelho ion-margin-top" (click)="fecharModal()">
-                    Cancelar
-                </ion-button>
+                <ion-grid class="botao-grelha">
+                <ion-row>
+                    <ion-col text-center>
+                        <ion-button class="botao-roxo botao-texto ion-margin-top" expand="block" [disabled]="!usernameInput" (click)="adicionarAmigo()">
+                            Adicionar
+                        </ion-button>
+                    </ion-col>
+                    <ion-col text-center>
+                        <ion-button class="botao-vermelho botao-texto ion-margin-top" expand="block" (click)="fecharModal()">
+                            Cancelar
+                        </ion-button>                
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
             </div>
         </ion-content>
     </ng-template>
