@@ -117,53 +117,9 @@
 
 <ion-modal trigger="abrir-registo-livro" class="modal-adicionar" #modalRegisto>
     <ng-template>
-        <ion-content class="ion-padding">
-            <ion-title class="ion-margin-bottom">Registar Livro</ion-title>
-
-            <div class="ion-text-center ion-margin-bottom">
-                <div
-                    style="width: 120px; height: 160px; margin: 0 auto 12px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    @if (imagemCapa) {
-                    <img [src]="imagemCapa" style="width: 100%; height: 100%; object-fit: cover;" />
-                    } @else {
-                    <ion-icon name="image-outline" style="font-size: 40px; color: #999;"></ion-icon>
-                    }
-                </div>
-                <ion-button class="botao-roxo" (click)="tirarFoto()">
-                    <ion-icon slot="start" name="camera"></ion-icon>
-                    Fotografar Capa
-                </ion-button>
-            </div>
-
-            <div class="input-group">
-                <ion-label>Título</ion-label>
-                <ion-input class="text-input" [(ngModel)]="tituloInput" type="text" fill="outline" placeholder="Título do livro"></ion-input>
-            </div>
-            <div class="input-group ion-margin-top">
-                <ion-label>Autor</ion-label>
-                <ion-input class="text-input" [(ngModel)]="autorInput" type="text" fill="outline" placeholder="Autor do livro"></ion-input>
-            </div>
-            <div class="input-group ion-margin-top">
-                <ion-label>Géneros Literários</ion-label>
-                <ion-select class="text-input" [(ngModel)]="generosInput" multiple="true" fill="outline" placeholder="Selecione os Géneros" cancelText="Cancelar" okText="Confirmar" interface="popover">
-                    @for (genero of generos; track genero) {
-                        <ion-select-option [value]="genero">{{ genero }}</ion-select-option>
-                    }
-                </ion-select>
-            </div>
-            <ion-row class="ion-margin-top">
-                <ion-col>
-                    <ion-button class="botao-roxo" expand="block"
-                        [disabled]="!tituloInput || !autorInput || !imagemCapa" (click)="registarLivro()">
-                        Registar
-                    </ion-button>
-                </ion-col>
-                <ion-col>
-                    <ion-button class="botao-vermelho" expand="block" (click)="fecharModal()">
-                        Cancelar
-                    </ion-button>
-                </ion-col>
-            </ion-row>
+        <ion-content>
+            <app-registar-livro [idUtilizador]="idUtilizador" [generos]="generos"
+                (registado)="livroRegistado()" (cancelado)="fecharModalRegisto()"></app-registar-livro>
         </ion-content>
     </ng-template>
 </ion-modal>

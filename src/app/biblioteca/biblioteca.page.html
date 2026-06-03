@@ -75,6 +75,12 @@
         }
     </ion-list>
     }
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="botao-adicionar">
+        <ion-fab-button id="abrir-adicionar-livro" class="botao-roxo" aria-label="Adicionar livro">
+            <ion-icon class="icone-grande" name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
 
 <ion-footer>
@@ -103,3 +109,36 @@
         </div>
     </ion-toolbar>
 </ion-footer>
+
+<ion-modal trigger="abrir-adicionar-livro" class="modal-adicionar-livro" #modalAdicionarLivro>
+    <ng-template>
+        <ion-content class="ion-padding">
+            <ion-title class="titulo-modal-adicionar">Adicionar Livro</ion-title>
+
+            <div class="acoes-adicionar">
+                <ion-button expand="block" class="botao-roxo botao-texto" (click)="procurarLivros()">
+                    <ion-icon slot="start" name="search-outline"></ion-icon>
+                    Procurar Livros
+                </ion-button>
+
+                <ion-button expand="block" class="botao-roxo botao-texto" (click)="abrirRegistoLivro()">
+                    <ion-icon slot="start" name="create-outline"></ion-icon>
+                    Registar Livro
+                </ion-button>
+
+                <ion-button expand="block" class="botao-vermelho botao-texto" (click)="fecharModalAdicionarLivro()">
+                    Cancelar
+                </ion-button>
+            </div>
+        </ion-content>
+    </ng-template>
+</ion-modal>
+
+<ion-modal class="modal-adicionar" #modalRegistoLivro>
+    <ng-template>
+        <ion-content>
+            <app-registar-livro [idUtilizador]="idUtilizador" [generos]="generos"
+                (registado)="livroRegistado()" (cancelado)="fecharModalRegistoLivro()"></app-registar-livro>
+        </ion-content>
+    </ng-template>
+</ion-modal>

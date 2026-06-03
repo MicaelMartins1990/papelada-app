@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { BibliotecaPageRoutingModule } from './biblioteca-routing.module';
 
 import { BibliotecaPage } from './biblioteca.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    BibliotecaPageRoutingModule
+    BibliotecaPageRoutingModule,
+    SharedModule
   ],
   declarations: [BibliotecaPage]
 })

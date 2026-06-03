@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -10,15 +10,12 @@ import { Resultado } from '../enums/resultado';
     styleUrls: ['./criar-conta.page.scss'],
     standalone: false
 })
-export class CriarContaPage implements OnInit {
+export class CriarContaPage {
     nome = '';
     username = '';
     password = '';
 
     constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
-
-    ngOnInit() {
-    }
 
     async criarConta() {
         if (!this.nome || !this.username || !this.password) {
