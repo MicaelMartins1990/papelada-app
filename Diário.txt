@@ -303,3 +303,19 @@ Adicionar forma de adicionar livros diretamente a partir da página da Estante, 
 # Flávio Fernandes
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de junho de 2026
+
+# Objetivo: Permitir o compartilhamento de livros por e-mail e redes sociais
+
+# Desenvolvido:
+
+- Instalação da API Share
+- Configuração do app para responder a URLs com o protocolo papelada://
+- Implementação de uma função para compartilhar um livro por e-mail ou redes sociais
+- Configuração do app.component.ts para navegar à página desejada quando o app é aberto por links, para possibilitar o acesso direto aos livros
+- Integração das páginas de detalhes e comentários de um livro ao layout de tabs
+
+# Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------
