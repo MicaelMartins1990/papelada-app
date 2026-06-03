@@ -1,0 +1,19 @@
+.titulo-modal-adicionar {
+    display: block;
+    padding: 0;
+    margin-bottom: 24px;
+    color: var(--ion-text-color);
+    font-size: 28px;
+    font-weight: 800;
+    text-align: left;
+}
+
+.acoes-adicionar {
+    display: grid;
+    gap: 18px;
+
+    ion-button {
+        min-height: 60px;
+        --border-radius: 16px;
+    }
+}

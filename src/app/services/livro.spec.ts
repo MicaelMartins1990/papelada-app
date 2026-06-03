@@ -46,7 +46,9 @@ describe('LivroService', () => {
         id: 1,
         titulo: 'O Nome da Rosa',
         autor: 'Umberto Eco',
-        capa: 'capa.png'
+        capa: 'capa.png',
+        inicial: true,
+        generos: []
       }
     ]);
     expect(storageSet).toHaveBeenCalledWith('livros', livros);

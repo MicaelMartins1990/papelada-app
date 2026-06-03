@@ -6,8 +6,6 @@ import { AuthService } from '../services/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Livro } from '../models/livro';
 import { Posse } from '../enums/posse';
-import { Camera, CameraResultType } from '@capacitor/camera';
-import { Resultado } from '../enums/resultado';
 
 type FiltroDescobrir = 'todos' | 'desejos';
 
@@ -34,11 +32,6 @@ export class PesquisaPage implements OnInit {
     
     public livrosPosse: Map<number, Posse> = new Map();
     public Posse = Posse;
-
-    public tituloInput: string = '';
-    public autorInput: string = '';
-    public imagemCapa: string = '';
-    public generosInput: string[] = [];
 
     constructor(
         private livroService: LivroService,
@@ -127,93 +120,13 @@ export class PesquisaPage implements OnInit {
         this.router.navigate(['/detalhe', livroId]);
     }
 
-    public async tirarFoto() {
-        const res = await this.carregarCapa();
-        if (res !== Resultado.EXITO) {
-            const toast = await this.toastController.create({
-                message: 'Não foi possível capturar a foto.',
-                duration: 2000,
-                color: 'danger'
-            });
-            toast.present();
-        }
+    public async livroRegistado() {
+        await this.carregarDados();
+        this.fecharModalRegisto();
     }
 
-    public async registarLivro() {
-        if (!this.tituloInput || !this.autorInput || !this.imagemCapa) return;
-
-        const exito = await this.livroService.registarLivro(
-            this.tituloInput.trim(), 
-            this.autorInput.trim(), 
-            this.imagemCapa,
-            this.generosInput
-        );
-
-        if (exito) {
-            await this.carregarDados();
-            await this.mostrarToast('Livro registado com sucesso!');
-            this.fecharModal();
-        } else {
-            const toast = await this.toastController.create({
-                message: 'Erro ao registar o livro.',
-                duration: 2000,
-                color: 'danger'
-            });
-            toast.present();
-        }
-    }
-
-    public fecharModal() {
-        this.tituloInput = '';
-        this.autorInput = '';
-        this.imagemCapa = '';
-        this.generosInput = [];
+    public fecharModalRegisto() {
         this.modal.dismiss();
-    }
-
-    public async carregarCapa(): Promise<Resultado> {
-        try {
-            const image = await Camera.getPhoto({
-                quality: 60,
-                allowEditing: false,
-                resultType: CameraResultType.Uri
-            });
-
-            if (!image.webPath) return Resultado.NAO_ENCONTRADO;
-
-            const img = new Image();
-            img.src = image.webPath;
-            await img.decode();
-            
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const tamanhoDesejado = 300;
-            let larguraDesejada = img.width;
-            let alturaDesejada = img.height;
-
-            if (img.width < img.height) {
-                if (img.width > tamanhoDesejado) {
-                    larguraDesejada = tamanhoDesejado;
-                    alturaDesejada = (img.height / img.width) * tamanhoDesejado;
-                }
-            } else {
-                if (img.height > tamanhoDesejado) {
-                    alturaDesejada = tamanhoDesejado;
-                    larguraDesejada = (img.width / img.height) * tamanhoDesejado;
-                }
-            }
-            canvas.width = larguraDesejada;
-            canvas.height = alturaDesejada;
-
-            if (ctx) {
-                ctx.drawImage(img, 0, 0, larguraDesejada, alturaDesejada);
-                this.imagemCapa = canvas.toDataURL('image/jpeg', 0.85);
-                return Resultado.EXITO;
-            }
-            return Resultado.ERRO;
-        } catch {
-            return Resultado.ERRO;
-        }
     }
 
     private async mostrarToast(mensagem: string) {

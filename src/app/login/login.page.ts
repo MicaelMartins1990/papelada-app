@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -10,15 +10,12 @@ import { Resultado } from '../enums/resultado';
   styleUrls: ['./login.page.scss'],
   standalone: false
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
     username = '';
     password = '';
 
     constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
-
-    ngOnInit() {
-    }
 
     async login() {
         if (!this.username || !this.password) {

@@ -279,3 +279,27 @@ Melhorar a UI e a coerência visual de algumas páginas e corrigir o "Editar Per
 # Lucas Israel
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de Junho
+
+# Objetivo:
+Adicionar forma de adicionar livros diretamente a partir da página da Estante, seguindo o protótipo mobile.
+
+# Desenvolvido:
+- Adicionei o botão "+" no rodapé da Estante, mantendo a barra de pesquisa e o botão de filtro por género.
+- Ao clicar no "+", abre um modal "Adicionar Livro" com as opções Procurar Livros, Registar Livro e Cancelar.
+- A opção Procurar Livros leva o utilizador para a página Descobrir/Pesquisa.
+- A opção Registar Livro abre o mesmo formulário de registo que já existia na Pesquisa.
+- O formulário de registo foi movido para um componente partilhado para não haver código repetido.
+- Ajustei o modal para ficar melhor em ecrã mobile e mais parecido com o protótipo.
+- Confirmei que o botão de filtro por género continua a funcionar.
+
+# Problemas:
+- Ao mover o formulário para um componente partilhado, o modal primeiro ficou com problemas de altura no mobile.
+
+# Solução:
+- Corrigi a estrutura do modal e ajustei a altura para o formulário aparecer completo e sem cortar os botões.
+
+# Flávio Fernandes
+
+------------------------------------------------------------------------------------------------------------------------------------

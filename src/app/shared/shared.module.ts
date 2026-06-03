@@ -4,14 +4,21 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { FormEmprestimoComponent } from './form-emprestimo/form-emprestimo.component';
+import { RegistarLivroComponent } from './registar-livro/registar-livro.component';
 
 @NgModule({
-    declarations: [FormEmprestimoComponent],
+    declarations: [
+        FormEmprestimoComponent,
+        RegistarLivroComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,
         IonicModule
     ],
-    exports: [FormEmprestimoComponent]
+    exports: [
+        FormEmprestimoComponent,
+        RegistarLivroComponent
+    ]
 })
 export class SharedModule { }

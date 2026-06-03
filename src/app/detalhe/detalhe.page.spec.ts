@@ -22,7 +22,9 @@ describe('DetalhePage', () => {
       id: 7,
       titulo: 'O Nome da Rosa',
       autor: 'Umberto Eco',
-      capa: 'capa.png'
+      capa: 'capa.png',
+      inicial: true,
+      generos: []
     };
 
     page.abrirAvaliacao();
@@ -37,7 +39,9 @@ describe('DetalhePage', () => {
       id: 7,
       titulo: 'O Nome da Rosa',
       autor: 'Umberto Eco',
-      capa: 'capa.png'
+      capa: 'capa.png',
+      inicial: true,
+      generos: []
     };
 
     page.abrirComentarios();

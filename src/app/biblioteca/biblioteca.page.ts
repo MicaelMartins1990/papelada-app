@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonModal } from '@ionic/angular';
 import { LivroService } from '../services/livro';
 import { LivroPessoalService } from '../services/livro-pessoal';
 import { Posse } from '../enums/posse';
@@ -16,6 +17,9 @@ type FiltroEstante = 'todos' | 'porLer' | 'lidos' | 'emprestados';
 })
 
 export class BibliotecaPage implements OnInit {
+    @ViewChild('modalAdicionarLivro') modalAdicionarLivro!: IonModal;
+    @ViewChild('modalRegistoLivro') modalRegistoLivro!: IonModal;
+
     public livrosExibicao: LivroExibido[] = [];
     public generos: string[] = [];
 
@@ -126,6 +130,29 @@ export class BibliotecaPage implements OnInit {
 
     filtrarLivros(event: any) {
         this.termoPesquisa = event?.target?.value ?? event?.detail?.value ?? '';
+    }
+
+    public async fecharModalAdicionarLivro() {
+        await this.modalAdicionarLivro.dismiss();
+    }
+
+    public async procurarLivros() {
+        await this.fecharModalAdicionarLivro();
+        await this.router.navigateByUrl('/tabs/pesquisa');
+    }
+
+    public async abrirRegistoLivro() {
+        await this.fecharModalAdicionarLivro();
+        await this.modalRegistoLivro.present();
+    }
+
+    public async fecharModalRegistoLivro() {
+        await this.modalRegistoLivro.dismiss();
+    }
+
+    public async livroRegistado() {
+        await this.carregarLivrosPessoais();
+        await this.fecharModalRegistoLivro();
     }
 
     get mensagemVazio(): string {
