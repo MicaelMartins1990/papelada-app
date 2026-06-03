@@ -14,7 +14,6 @@ export class LivroService {
     // Temporário
     private capaUrl = 'assets/data/capa-teste.txt';
     private livrosUrl = 'assets/data/livros.json';
-    private capaTeste = '';
 
     constructor(private http: HttpClient, private storage: Storage) {
         this.init();
@@ -24,8 +23,6 @@ export class LivroService {
         if (!this._storage) {
             this._storage = await this.storage.create();
         }
-        // Temporário
-        this.capaTeste = await firstValueFrom(this.http.get(this.capaUrl, { responseType: 'text' })) || '';
     }
 
     public async getLivros(): Promise<Livro[]> {
@@ -52,7 +49,7 @@ export class LivroService {
         return livrosGuardados;
     }
 
-    public async registarLivro(titulo: string, autor: string, capa: string = this.capaTeste): Promise<Livro> {
+    public async registarLivro(titulo: string, autor: string, capa: string): Promise<Livro> {
         const livros = await this.getLivros();
         const novoLivro: Livro = {
             id: this.getNovoId(livros),
