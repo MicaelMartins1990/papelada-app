@@ -59,11 +59,11 @@
 
         <!-- Desejos -->
         @if (estaNosDesejos) {
-        <ion-button class="botao-acao botao-acao-secundario" (click)="removerDaListaDeDesejos()">
+        <ion-button class="botao-acao" (click)="removerDaListaDeDesejos()">
           Remover dos<br />Desejos
         </ion-button>
         } @else {
-        <ion-button class="botao-acao botao-acao-secundario" [disabled]="estaNaBiblioteca" (click)="adicionarAListaDeDesejos()">
+        <ion-button class="botao-acao" [disabled]="estaNaBiblioteca" (click)="adicionarAListaDeDesejos()">
           Adicionar aos<br />Desejos
         </ion-button>
         }
@@ -92,7 +92,7 @@
           </p>
         </div>
 
-        <ion-button class="botao-avaliar" (click)="abrirAvaliacao()">
+        <ion-button class="botao-avaliar" [disabled]="!lido" (click)="abrirAvaliacao()">
           Avaliar
         </ion-button>
       </div>

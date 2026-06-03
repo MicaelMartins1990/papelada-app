@@ -306,6 +306,21 @@ Adicionar forma de adicionar livros diretamente a partir da página da Estante, 
 
 # 4 de junho de 2026
 
+# Objetivo:
+Corrigir a convenção de cores dos botões na página de detalhes de livro e bloquear a avaliação até o livro estar marcado como lido.
+
+# Desenvolvido:
+- Reduzido o número de cores dos botões a duas: roxo para botões disponíveis e um único cinza exclusivamente para o estado desativado.
+- Removido o estilo cinza "secundário" dos botões Desejos e Avaliar, que passam a roxo quando clicáveis.
+- Botão "Avaliar" bloqueado (cinza) enquanto o livro não está marcado como lido, com dica explicativa permanente.
+- Guarda defensiva em `abrirAvaliacao()` para impedir navegação quando `lido=false`.
+- Avaliações já existentes preservadas ao marcar um livro como "Não Lido".
+
+# Flávio Fernandes
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de junho de 2026
 # Objetivo: Permitir o compartilhamento de livros por e-mail e redes sociais
 
 # Desenvolvido:

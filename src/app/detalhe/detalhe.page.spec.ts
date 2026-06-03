@@ -17,7 +17,7 @@ describe('DetalhePage', () => {
     );
   });
 
-  it('navigates to comments with modal flag when evaluating', () => {
+  it('navigates to comments with modal flag when evaluating a read book', () => {
     page.livro = {
       id: 7,
       titulo: 'O Nome da Rosa',
@@ -26,12 +26,30 @@ describe('DetalhePage', () => {
       inicial: true,
       generos: []
     };
+    page.lido = true;
 
     page.abrirAvaliacao();
 
     expect(router.navigate).toHaveBeenCalledWith(['/tabs/livro/comentarios', 7], {
       queryParams: { abrirModal: '1' }
     });
+  });
+
+  it('blocks evaluation and shows a hint when the book is not read', () => {
+    page.livro = {
+      id: 7,
+      titulo: 'O Nome da Rosa',
+      autor: 'Umberto Eco',
+      capa: 'capa.png',
+      inicial: true,
+      generos: []
+    };
+    page.lido = false;
+
+    page.abrirAvaliacao();
+
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(page.mensagemErroAvaliacao).toBeTruthy();
   });
 
   it('navigates to comments without modal flag when viewing comments', () => {

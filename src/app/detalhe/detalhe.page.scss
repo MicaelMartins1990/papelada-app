@@ -99,16 +99,12 @@
   text-align: center;
 }
 
-.botao-acao[disabled] {
-  --background: #c9c4bd;
+.botao-acao[disabled],
+.botao-avaliar[disabled] {
+  --background: var(--papelada-grey);
   --box-shadow: none;
   color: #6a5a62;
   opacity: 1;
-}
-
-.botao-acao-secundario,
-.botao-avaliar {
-  --background: var(--papelada-grey);
 }
 
 .resumo-avaliacoes {
@@ -160,6 +156,7 @@
 }
 
 .botao-avaliar {
+  --background: var(--papelada-purple);
   --border-radius: 16px;
   --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.28);
   color: #fffdf0;
