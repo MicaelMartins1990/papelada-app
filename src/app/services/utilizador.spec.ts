@@ -19,7 +19,10 @@ describe('Utilizador', () => {
   let service: UtilizadorService;
 
   beforeEach(() => {
-    service = new UtilizadorService(criarStorageFalso());
+    service = new UtilizadorService(
+      criarStorageFalso(),
+      { getLivros: jasmine.createSpy('getLivros').and.resolveTo([]) } as any
+    );
   });
 
   it('should be created', () => {
