@@ -3,7 +3,7 @@ import { AlertController, ToastController, IonModal } from '@ionic/angular';
 import { LivroService } from '../services/livro';
 import { LivroPessoalService } from '../services/livro-pessoal';
 import { AuthService } from '../services/auth';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Livro } from '../models/livro';
 import { Posse } from '../enums/posse';
 import { Camera } from '@capacitor/camera';
@@ -38,16 +38,19 @@ export class PesquisaPage implements OnInit {
         private livroPessoalService: LivroPessoalService,
         private authService: AuthService,
         private router: Router,
+        private route: ActivatedRoute,
         private alertController: AlertController,
         private toastController: ToastController
     ) {}
 
     async ngOnInit() {
+        this.aplicarFiltroDaRota();
         await this.carregarUtilizador();
         await this.carregarDados();
     }
 
     async ionViewWillEnter() {
+        this.aplicarFiltroDaRota();
         await this.carregarUtilizador();
         await this.carregarDados();
     }
@@ -98,6 +101,11 @@ export class PesquisaPage implements OnInit {
 
     public alterarFiltro(event: any) {
         this.filtroAtual = event.detail.value as FiltroDescobrir;
+    }
+
+    private aplicarFiltroDaRota() {
+        const filtro = this.route.snapshot.queryParamMap.get('filtro');
+        this.filtroAtual = filtro === 'desejos' ? 'desejos' : this.filtroAtual;
     }
 
     public obterPosse(livroId: number): Posse {

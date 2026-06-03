@@ -65,11 +65,13 @@ export class AmigosPage implements OnInit {
 
     public filtrarAmigos(event: any) {
         const texto = event.target.value ? event.target.value.toLowerCase().trim() : '';
+        const usernamePesquisa = texto.startsWith('@') ? texto.substring(1) : texto;
         if (texto === '') {
             this.amigosFiltrados = this.amigos;
         } else {
             this.amigosFiltrados = this.amigos.filter(amigo =>
-                amigo.nome.toLowerCase().includes(texto)
+                amigo.nome.toLowerCase().includes(texto) ||
+                amigo.username.toLowerCase().includes(usernamePesquisa)
             );
         }
     }
