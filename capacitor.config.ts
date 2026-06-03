@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'papelada-app',
+  appId: 'io.papelada.app',
+  appName: 'Papelada',
   webDir: 'www'
 };
 

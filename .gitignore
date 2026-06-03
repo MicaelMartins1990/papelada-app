@@ -71,3 +71,9 @@ Thumbs.db
 
 # Ficheiros de Flavio para "testes"
 docs_flavio/
+
+# Android build
+android/.gradle/
+android/build/
+android/app/build/
+android/app/src/main/assets/public/
