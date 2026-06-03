@@ -52,7 +52,7 @@
         @if (livrosDesejados.length > 0) {
         <div class="capas-desejos" role="list">
             @for (livro of livrosDesejados; track livro.id) {
-            <button class="capa-desejo" type="button" [routerLink]="['/detalhe', livro.id]" role="listitem">
+            <button class="capa-desejo" type="button" [routerLink]="['/tabs/livro/detalhe', livro.id]" role="listitem">
                 <img [src]="livro.capa" [alt]="livro.titulo" />
             </button>
             }

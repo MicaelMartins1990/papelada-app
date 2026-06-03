@@ -117,7 +117,7 @@ export class PesquisaPage implements OnInit {
     }
 
     public abrirDetalhe(livroId: number) {
-        this.router.navigate(['/detalhe', livroId]);
+        this.router.navigate(['/tabs/livro/detalhe', livroId]);
     }
 
     public async livroRegistado() {

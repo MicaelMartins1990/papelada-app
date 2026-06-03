@@ -67,7 +67,7 @@ export class ComentariosPage implements OnInit {
   }
 
   public voltarDetalhe() {
-    this.router.navigateByUrl(`/detalhe/${this.idLivro}`);
+    this.router.navigateByUrl(`/tabs/livro/detalhe/${this.idLivro}`);
   }
 
   public setAvaliacao(nota: number) {

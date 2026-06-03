@@ -16,16 +16,6 @@ const routes: Routes = [
         loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
         canActivate: [AuthServiceGuard]
     },
-  {
-    path: 'detalhe/:id',
-    loadChildren: () => import('./detalhe/detalhe.module').then( m => m.DetalhePageModule)
-  },
-  {
-    path: 'comentarios/:id',
-    loadChildren: () => import('./comentarios/comentarios.module').then(m => m.ComentariosPageModule)
-  },
-
-
 ];
 @NgModule({
     imports: [

@@ -44,7 +44,7 @@
     <ion-list style="background: transparent;">
         @for (livro of livrosFiltrados; track livro.id) {
 
-        <ion-item [routerLink]="['/detalhe', livro.id]" detail="true"
+        <ion-item [routerLink]="['/tabs/livro/detalhe', livro.id]" detail="true"
             style="--background: #ffffff; --border-radius: 12px; margin-bottom: 10px; --padding-start: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); --detail-icon-color: #8c5a47;">
 
             <ion-thumbnail slot="start" style="width: 60px; height: 90px;">
