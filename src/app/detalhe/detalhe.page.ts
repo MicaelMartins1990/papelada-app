@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth';
 import { Posse } from '../enums/posse';
 import { LivroPessoal } from '../models/livro-pessoal';
 import { LivroDisponivel } from '../shared/form-emprestimo/form-emprestimo.component';
+import { Share } from '@capacitor/share';
 
 @Component({
     selector: 'app-detalhe',
@@ -236,14 +237,14 @@ export class DetalhePage implements OnInit {
             return;
         }
 
-        this.router.navigate(['/comentarios', this.livro.id], {
+        this.router.navigate(['/tabs/livro/comentarios', this.livro.id], {
             queryParams: { abrirModal: '1' }
         });
     }
 
     public abrirComentarios() {
         if (this.livro) {
-            this.router.navigate(['/comentarios', this.livro.id]);
+            this.router.navigate(['/tabs/livro/comentarios', this.livro.id]);
         }
     }
 
@@ -294,5 +295,16 @@ export class DetalhePage implements OnInit {
         await alerta.present();
         const resultado = await alerta.onDidDismiss();
         return resultado.role === 'destructive';
+    }
+
+    // --- Compartilhamento por e-mail ---
+
+    public async compartilharEmail() {
+        if (!this.livro) return;
+        await Share.share({
+            title: this.livro.titulo,
+            text: `Confira este livro na Papelada!\nAbra no app: papelada://tabs/livro/detalhe/${this.livro.id}`,
+            dialogTitle: 'Compartilhar',
+        });
     }
 }

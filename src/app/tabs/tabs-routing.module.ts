@@ -12,6 +12,19 @@ const routes: Routes = [
                 loadChildren: () => import('../pesquisa/pesquisa.module').then(m => m.PesquisaPageModule)
             },
             {
+                path: 'livro',
+                children: [
+                    {
+                        path: 'detalhe/:id',
+                        loadChildren: () => import('../detalhe/detalhe.module').then( m => m.DetalhePageModule)
+                    },
+                    {
+                        path: 'comentarios/:id',
+                        loadChildren: () => import('../comentarios/comentarios.module').then( m => m.ComentariosPageModule)
+                    },
+                ]
+            },
+            {
                 path: 'amigos',
                 children: [
                     {

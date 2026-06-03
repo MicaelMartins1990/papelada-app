@@ -27,7 +27,7 @@ describe('DetalhePage', () => {
 
     page.abrirAvaliacao();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/comentarios', 7], {
+    expect(router.navigate).toHaveBeenCalledWith(['/tabs/livro/comentarios', 7], {
       queryParams: { abrirModal: '1' }
     });
   });
@@ -42,7 +42,7 @@ describe('DetalhePage', () => {
 
     page.abrirComentarios();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/comentarios', 7]);
+    expect(router.navigate).toHaveBeenCalledWith(['/tabs/livro/comentarios', 7]);
   });
 
   it('rounds the global average for the visual star row', () => {
