@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { DadosLeitura } from '../models/dados-leitura';
 import { UtilizadorService } from '../services/utilizador';
 import { AlertController } from '@ionic/angular'; 
+import { Livro } from '../models/livro';
+import { AVATAR_PADRAO } from '../services/auth';
 
 @Component({
     selector: 'app-perfil',
@@ -13,14 +15,18 @@ import { AlertController } from '@ionic/angular';
 })
 export class PerfilPage {
     public nomeUtilizador: string = '';
+    public usernameUtilizador: string = '';
     public inicial: string = ''; 
     public dadosLeitura: DadosLeitura | null = null;
+    public livrosDesejados: Livro[] = [];
 
     public isModalOpen: boolean = false;
     public novoNome: string = '';
     
     public avataresDisponiveis: string[] = ['#8c5a47', '#2b8b3b', '#3b5998', '#e91e63', '#ff9800'];
-    public avatarAtual: string = '#8c5a47'; 
+    public avatarAtual: string = AVATAR_PADRAO;
+    public avatarEmEdicao: string = AVATAR_PADRAO;
+    private idUtilizador: number | null = null;
 
     constructor(
         private authService: AuthService, 
@@ -34,18 +40,26 @@ export class PerfilPage {
         const idAtual = this.authService.getIdUtilizador();
     
         if (idAtual !== null) {
-            const listaUsers = await this.authService.getUtilizadoresPublicos();
-            const user = listaUsers.find(u => u.id === idAtual);
+            this.idUtilizador = idAtual;
+            const user = await this.utilizadorService.getUtilizador(idAtual);
             if (user) {
                 this.nomeUtilizador = user.nome;
+                this.usernameUtilizador = user.username;
+                this.avatarAtual = user.avatar || AVATAR_PADRAO;
                 this.inicial = this.nomeUtilizador.charAt(0).toUpperCase();
             }
-            this.dadosLeitura = await this.utilizadorService.getDadosLeitura(idAtual);
+            const [dadosLeitura, livrosDesejados] = await Promise.all([
+                this.utilizadorService.getDadosLeitura(idAtual),
+                this.utilizadorService.getLivrosDesejadosComCapa(idAtual)
+            ]);
+            this.dadosLeitura = dadosLeitura;
+            this.livrosDesejados = livrosDesejados;
         }
     }
 
     abrirModal() {
         this.novoNome = this.nomeUtilizador;
+        this.avatarEmEdicao = this.avatarAtual;
         this.isModalOpen = true;
     }
 
@@ -54,13 +68,30 @@ export class PerfilPage {
     }
 
     selecionarAvatar(cor: string) {
-        this.avatarAtual = cor;
+        this.avatarEmEdicao = cor;
     }
 
-    guardarPerfil() {
-        this.nomeUtilizador = this.novoNome;
-        this.inicial = this.nomeUtilizador.charAt(0).toUpperCase();
+    async guardarPerfil() {
+        if (this.idUtilizador === null) return;
+
+        const nomeAtualizado = this.novoNome.trim() || this.nomeUtilizador;
+        const utilizadorAtualizado = await this.utilizadorService.atualizarPerfil(
+            this.idUtilizador,
+            nomeAtualizado,
+            this.avatarEmEdicao
+        );
+
+        if (utilizadorAtualizado) {
+            this.nomeUtilizador = utilizadorAtualizado.nome;
+            this.usernameUtilizador = utilizadorAtualizado.username;
+            this.avatarAtual = utilizadorAtualizado.avatar;
+            this.inicial = this.nomeUtilizador.charAt(0).toUpperCase();
+        }
         this.fecharModal();
+    }
+
+    abrirListaDesejos() {
+        this.router.navigate(['/tabs/pesquisa'], { queryParams: { filtro: 'desejos' } });
     }
 
     // A função de logout agora abre primeiro um alerta

@@ -3,4 +3,5 @@ export interface Utilizador {
     nome: string,
     username: string,
     passwordHash: string,
+    avatar: string,
 }

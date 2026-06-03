@@ -29,7 +29,7 @@
     @if (!aCarregar && livrosFiltrados.length === 0) {
     <div class="ion-text-center" style="margin-top: 40px; color: #6a5a62;">
         @if (filtroAtual === 'desejos') {
-        <ion-icon name="bookmark-outline" style="font-size: 48px;"></ion-icon>
+        <ion-icon name="heart-outline" style="font-size: 48px;"></ion-icon>
         <p>Ainda não tens livros na tua lista de desejos.</p>
         } @else {
         <ion-icon name="search-outline" style="font-size: 48px;"></ion-icon>
@@ -65,7 +65,7 @@
                             @if (obterPosse(livro.id) !== Posse.NA_BIBLIOTECA) {
                             <ion-button fill="clear" size="small" [attr.aria-label]="labelMarcador(livro.id)"
                                 style="margin: 0; padding: 0; --color: #805d68;" (click)="alternarListaDeDesejos($event, livro.id)">
-                                <ion-icon slot="icon-only" [name]="obterPosse(livro.id) === Posse.DESEJADO ? 'bookmark' : 'bookmark-outline'" style="font-size: 22px;"></ion-icon>
+                                <ion-icon slot="icon-only" [name]="obterPosse(livro.id) === Posse.DESEJADO ? 'heart' : 'heart-outline'" style="font-size: 22px;"></ion-icon>
                             </ion-button>
                             }
                         </div>
@@ -82,7 +82,7 @@
 <ion-footer>
     <ion-toolbar>
         <div class="secao-busca">
-            <ion-searchbar placeholder="Buscar Livros" (ionInput)="filtrarLivros($event)"
+            <ion-searchbar placeholder="Procurar Livros" (ionInput)="filtrarLivros($event)"
                 class="barra-busca"></ion-searchbar>
             <ion-button class="botao-roxo" (click)="registarLivro()">
                 <ion-icon name="add"></ion-icon>

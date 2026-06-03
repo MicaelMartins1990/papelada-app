@@ -1,18 +1,165 @@
-.amigo-avatar {
-    margin: 10px auto;
-    width: 75px;
-    height: 75px;
-    font-size: 32px;
+.perfil-identidade {
+    text-align: center;
+    margin: 18px 0 24px;
+
+    h2 {
+        margin: 12px 0 2px;
+        color: #2f2928;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    p {
+        margin: 0;
+        color: #756867;
+        font-size: 15px;
+    }
+}
+
+.avatar-principal {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
 }
 
 .dados-leitura {
-    border-block: 1px solid var(--ion-color-tertiary);
-    padding-block: 10px;
-    text-align: center;
-    display: flex;
-    color: var(--ion-color-secondary);
+    border-block: 1px solid #d7cbc3;
+    margin-bottom: 26px;
+    padding: 12px 0;
+    color: #735b6a;
+
+    ion-icon {
+        font-size: 24px;
+    }
+
+    div {
+        margin-top: 6px;
+        color: #5e5554;
+        font-size: 13px;
+        line-height: 1.25;
+    }
 }
 
-.dados-leitura ion-icon {
-    font-size: 24px;
+.dados-carregar {
+    margin-bottom: 26px;
+    color: #5e5554;
+}
+
+.lista-desejos {
+    margin-bottom: 24px;
+}
+
+.secao-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    h3 {
+        margin: 0;
+        color: #2f2928;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    ion-button {
+        --color: #735b6a;
+        min-width: 44px;
+        height: 40px;
+    }
+}
+
+.capas-desejos {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+}
+
+.capa-desejo {
+    flex: 0 0 72px;
+    width: 72px;
+    height: 108px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #e8e1dc;
+    box-shadow: 0 2px 8px rgba(47, 41, 40, 0.12);
+    scroll-snap-align: start;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+.lista-vazia {
+    margin: 0;
+    color: #756867;
+    font-size: 14px;
+}
+
+.acoes-perfil {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    ion-button {
+        --border-radius: 8px;
+        min-height: 45px;
+        font-weight: 700;
+    }
+}
+
+.modal-perfil {
+    h3 {
+        color: #8c5a47;
+        font-size: 18px;
+        font-weight: 700;
+    }
+}
+
+.campo-nome {
+    --border-radius: 8px;
+    margin-bottom: 22px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.opcoes-avatar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.opcao-avatar {
+    width: 50px;
+    height: 50px;
+    border: 3px solid transparent;
+    border-radius: 50%;
+}
+
+.opcao-avatar.selecionado {
+    border-color: #2f2928;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #2f2928;
+}
+
+.botao-guardar {
+    --background: #2b8b3b;
+    --border-radius: 8px;
+    min-height: 50px;
+    font-weight: 700;
 }

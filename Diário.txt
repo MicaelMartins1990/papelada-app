@@ -223,3 +223,22 @@ Voltar a implementar a funcionalidade de emprestimos de livro mas desta vez com 
 #Flávio Fernandes
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 3 de Junho 
+# Objetivo:  
+Melhorar a UI e a coerência visual de algumas páginas e corrigir o "Editar Perfil" que afinal não guardava nada.  
+
+# Desenvolvido:
+- Barra de pesquisa na página da Estante (igual à da Descobrir), para procurar os livros por título ou autor combinado com os filtros que já lá estavam.
+- Troquei o ícone de marcador que adicionava aos desejos por um coração, faz mais sentido visualmente e fica igual ao coração que já usamos no perfil.
+- Página "O Meu Perfil" mais parecida com o protótipo: agora mostra o @username por baixo do nome e tem um carrossel com as capas da lista de desejos com uma seta que leva à aba dos desejos. Adicionei também o botão "Configurações" (só visual por agora) e mantive o Logout.
+- Corrigi um bug que descobri: o "Editar Perfil" só mudava o nome no ecrã mas não guardava nada, e a cor do avatar nem sequer era guardada. Agora grava mesmo o nome e a cor do avatar e volta a aparecer certo quando saímos e voltamos. Para isso acrescentei um campo "avatar" ao utilizador.
+- A pesquisa de amigos agora também procura por @username e não só pelo nome.
+- Uniformizei os textos de "Buscar" para "Procurar" para ficar tudo em português de Portugal.  
+
+# Problemas:
+- O Ionicons não tinha um ícone de aperto de mão à mão
+
+# Por fazer:  
+- Atualizar icon para aperto de mão
+------------------------------------------------------------------------------------------------------------------------------------

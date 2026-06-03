@@ -33,7 +33,7 @@
 
             <ion-label>
                 <h3>{{ amigo.nome }}</h3>
-                <p>{{ amigo.username }}</p>
+                <p>@{{ amigo.username }}</p>
             </ion-label>
         </ion-item>
         }
@@ -44,7 +44,7 @@
 <ion-footer>
     <ion-toolbar>
         <div class="secao-busca">
-            <ion-searchbar placeholder="Buscar Amigos" (ionInput)="filtrarAmigos($event)"
+            <ion-searchbar placeholder="Procurar Amigos" (ionInput)="filtrarAmigos($event)"
                 class="barra-busca"></ion-searchbar>
             <ion-button id="adicionar-amigo" class="botao-roxo">
                 <ion-icon name="add"></ion-icon>

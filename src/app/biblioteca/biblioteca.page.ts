@@ -18,6 +18,7 @@ type FiltroEstante = 'todos' | 'porLer' | 'lidos' | 'emprestados';
 export class BibliotecaPage implements OnInit {
     public livrosExibicao: LivroExibido[] = [];
     public filtroAtual: FiltroEstante = 'todos';
+    public termoPesquisa: string = '';
     public aCarregar: boolean = true;
 
     public idUtilizador!: number;
@@ -82,23 +83,43 @@ export class BibliotecaPage implements OnInit {
     }
 
     get livrosFiltrados(): LivroExibido[] {
+        let livrosPorFiltro: LivroExibido[];
         switch (this.filtroAtual) {
             case 'porLer':
-                return this.livrosExibicao.filter(livro => !livro.lido);
+                livrosPorFiltro = this.livrosExibicao.filter(livro => !livro.lido);
+                break;
             case 'lidos':
-                return this.livrosExibicao.filter(livro => livro.lido);
+                livrosPorFiltro = this.livrosExibicao.filter(livro => livro.lido);
+                break;
             case 'emprestados':
-                return this.livrosExibicao.filter(livro => livro.emprestado);
+                livrosPorFiltro = this.livrosExibicao.filter(livro => livro.emprestado);
+                break;
             default:
-                return this.livrosExibicao;
+                livrosPorFiltro = this.livrosExibicao;
         }
+
+        const termo = this.termoPesquisa.toLowerCase().trim();
+        if (termo === '') return livrosPorFiltro;
+
+        return livrosPorFiltro.filter(livro =>
+            livro.titulo.toLowerCase().includes(termo) ||
+            livro.autor.toLowerCase().includes(termo)
+        );
     }
 
     alterarFiltro(event: any) {
         this.filtroAtual = event.detail.value as FiltroEstante;
     }
 
+    filtrarLivros(event: any) {
+        this.termoPesquisa = event?.target?.value ?? event?.detail?.value ?? '';
+    }
+
     get mensagemVazio(): string {
+        if (this.termoPesquisa.trim() !== '') {
+            return 'Nenhum livro corresponde à pesquisa.';
+        }
+
         switch (this.filtroAtual) {
             case 'porLer':
                 return 'Não tens livros por ler na tua estante.';

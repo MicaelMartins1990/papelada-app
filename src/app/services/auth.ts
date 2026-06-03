@@ -7,7 +7,11 @@ import { Utilizador } from '../models/utilizador';
 export interface UtilizadorPublico {
     id: number,
     nome: string,
+    username: string,
+    avatar: string,
 }
+
+export const AVATAR_PADRAO = '#8c5a47';
 
 @Injectable({
     providedIn: 'root',
@@ -43,7 +47,7 @@ export class AuthService {
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const utilizador: Utilizador = {id, nome, username, passwordHash}
+        const utilizador: Utilizador = {id, nome, username, passwordHash, avatar: AVATAR_PADRAO}
         utilizadores.push(utilizador);
         await this._storage?.set('utilizadores', utilizadores);
         return Resultado.EXITO;
@@ -55,8 +59,10 @@ export class AuthService {
         if (!utilizador) return Resultado.NAO_ENCONTRADO;
         if (!await bcrypt.compare(password, utilizador.passwordHash)) return Resultado.NAO_ENCONTRADO;
 
-        this.utilizadorLogado = utilizador.id;
-        await this._storage?.set('utilizador_logado', utilizador);
+        const utilizadorNormalizado = this.normalizarUtilizador(utilizador);
+        this.utilizadorLogado = utilizadorNormalizado.id;
+        await this._storage?.set('utilizadores', utilizadores.map(u => u.id === utilizadorNormalizado.id ? utilizadorNormalizado : u));
+        await this._storage?.set('utilizador_logado', utilizadorNormalizado);
 
         return Resultado.EXITO;
     }
@@ -80,7 +86,9 @@ export class AuthService {
 
         return utilizadores.map(utilizador => ({
             id: utilizador.id,
-            nome: utilizador.nome
+            nome: utilizador.nome,
+            username: utilizador.username,
+            avatar: utilizador.avatar || AVATAR_PADRAO
         }));
     }
 
@@ -90,5 +98,12 @@ export class AuthService {
 
     private getNovoId(utilizadores: Utilizador[]): number {
         return (utilizadores[utilizadores.length - 1]?.id || 0) + 1
+    }
+
+    private normalizarUtilizador(utilizador: Utilizador): Utilizador {
+        return {
+            ...utilizador,
+            avatar: utilizador.avatar || AVATAR_PADRAO
+        };
     }
 }

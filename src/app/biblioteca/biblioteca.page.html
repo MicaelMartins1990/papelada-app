@@ -1,25 +1,24 @@
 <ion-header class="ion-no-border">
-    <ion-toolbar style="--background: transparent;">
-        <ion-title style="font-weight: bold; font-size: 20px; color: #8c5a47;">
-            <ion-icon name="book" style="vertical-align: middle; margin-right: 8px;"></ion-icon>
+    <ion-toolbar color="primary">
+        <ion-title>
+            <ion-icon name="book"></ion-icon>
             A Minha Estante
         </ion-title>
     </ion-toolbar>
 
-    <ion-toolbar style="--background: transparent; padding-bottom: 10px;">
-        <ion-segment [value]="filtroAtual" (ionChange)="alterarFiltro($event)" scrollable
-            style="background: #ffffff; border-radius: 8px; margin: 0 10px; width: calc(100% - 20px);">
-            <ion-segment-button value="todos" style="color: #8c5a47;">
-                <ion-label style="font-weight: bold;">Todos</ion-label>
+    <ion-toolbar color="primary">
+        <ion-segment [value]="filtroAtual" (ionChange)="alterarFiltro($event)" scrollable>
+            <ion-segment-button value="todos">
+                <ion-label>Todos</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="porLer" style="color: #8c5a47;">
-                <ion-label style="font-weight: bold;">Por ler</ion-label>
+            <ion-segment-button value="porLer">
+                <ion-label>Por ler</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="lidos" style="color: #8c5a47;">
-                <ion-label style="font-weight: bold;">Lidos</ion-label>
+            <ion-segment-button value="lidos">
+                <ion-label>Lidos</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="emprestados" style="color: #8c5a47;">
-                <ion-label style="font-weight: bold;">Emprestados</ion-label>
+            <ion-segment-button value="emprestados">
+                <ion-label>Emprestados</ion-label>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
@@ -77,3 +76,12 @@
     </ion-list>
     }
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <div class="secao-busca">
+            <ion-searchbar placeholder="Procurar Livros" (ionInput)="filtrarLivros($event)"
+                class="barra-busca"></ion-searchbar>
+        </div>
+    </ion-toolbar>
+</ion-footer>
