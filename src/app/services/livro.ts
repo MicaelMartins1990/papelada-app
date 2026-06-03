@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage-angular';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Livro } from '../models/livro';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
     providedIn: 'root'
@@ -58,10 +59,16 @@ export class LivroService {
             titulo: titulo,
             autor: autor,
             capa: capa,
+            inicial: false
         };
         livros.push(novoLivro);
         await this._storage?.set('livros', livros);
         return novoLivro;
+    }
+
+    public async carregarCapa(livro: Livro) {
+        if (livro.inicial) return livro.capa;
+        return Capacitor.convertFileSrc(livro.capa)
     }
 
     private getNovoId(livros: Livro[]): number {
@@ -71,7 +78,9 @@ export class LivroService {
 
     private async carregarLivrosIniciais(): Promise<Livro[]> {
         const livros = await firstValueFrom(this.http.get<any[]>(this.livrosUrl));
-        return (livros || []).map(livro => this.normalizarLivro(livro));
+        const livrosNormalizados = (livros || []).map(livro => this.normalizarLivro(livro));
+        livrosNormalizados.forEach(livro => livro.inicial = true);
+        return livrosNormalizados;
     }
 
     private normalizarLivro(livro: any): Livro {
@@ -79,7 +88,8 @@ export class LivroService {
             id: Number(livro.id),
             titulo: livro.titulo,
             autor: livro.autor,
-            capa: livro.capa
+            capa: livro.capa,
+            inicial: livro.inicial || false
         };
     }
 }

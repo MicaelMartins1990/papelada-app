@@ -1,3 +1,11 @@
 .ion-padding-tiny {
-  padding: 2px;
+    padding: 2px;
+}
+
+ion-list {
+    background: transparent !important;
+}
+
+ion-item, ion-input {
+    --background: transparent;
 }

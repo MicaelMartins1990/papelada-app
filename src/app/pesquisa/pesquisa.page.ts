@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController, ToastController, IonModal } from '@ionic/angular';
 import { LivroService } from '../services/livro';
 import { LivroPessoalService } from '../services/livro-pessoal';
 import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
 import { Livro } from '../models/livro';
 import { Posse } from '../enums/posse';
+import { Camera } from '@capacitor/camera';
+import { Resultado } from '../enums/resultado';
 
 type FiltroDescobrir = 'todos' | 'desejos';
 
@@ -15,17 +17,21 @@ type FiltroDescobrir = 'todos' | 'desejos';
     styleUrls: ['./pesquisa.page.scss'],
     standalone: false
 })
-
 export class PesquisaPage implements OnInit {
+    @ViewChild('modalRegisto') modal!: IonModal;
+
     public livros: Livro[] = [];
     public aCarregar: boolean = true;
     public termoPesquisa: string = '';
     public filtroAtual: FiltroDescobrir = 'todos';
 
     public idUtilizador!: number;
-
     public livrosPosse: Map<number, Posse> = new Map();
     public Posse = Posse;
+
+    public tituloInput: string = '';
+    public autorInput: string = '';
+    public imagemCapa: string = '';
 
     constructor(
         private livroService: LivroService,
@@ -34,8 +40,7 @@ export class PesquisaPage implements OnInit {
         private router: Router,
         private alertController: AlertController,
         private toastController: ToastController
-    ) {
-    }
+    ) {}
 
     async ngOnInit() {
         await this.carregarUtilizador();
@@ -59,24 +64,19 @@ export class PesquisaPage implements OnInit {
 
     private async carregarDados() {
         this.aCarregar = true;
-
         if (this.idUtilizador == null) {
             this.router.navigateByUrl('/');
             return;
         }
-
         const [livros, livrosPessoais] = await Promise.all([
             this.livroService.getLivros(),
             this.livroPessoalService.getLivroPessoal(this.idUtilizador)
         ]);
-
         this.livros = livros;
-
         this.livrosPosse.clear();
         for (const registo of livrosPessoais) {
             this.livrosPosse.set(registo.idLivro, registo.posse);
         }
-
         this.aCarregar = false;
     }
 
@@ -108,55 +108,92 @@ export class PesquisaPage implements OnInit {
         this.router.navigate(['/detalhe', livroId]);
     }
 
-    public async alternarListaDeDesejos(event: Event, livroId: number) {
-        event.stopPropagation();
-        const posseAtual = this.obterPosse(livroId);
-        const novaPosse = posseAtual === Posse.DESEJADO ? Posse.NENHUMA : Posse.DESEJADO;
-
-        if (posseAtual === Posse.DESEJADO) {
-            const confirmado = await this.confirmarRemoverDosDesejos();
-            if (!confirmado) {
-                return;
-            }
+    public async tirarFoto() {
+        const res = await this.carregarCapa();
+        if (res !== Resultado.EXITO) {
+            const toast = await this.toastController.create({
+                message: 'Não foi possível capturar a foto.',
+                duration: 2000,
+                color: 'danger'
+            });
+            toast.present();
         }
+    }
 
-        await this.livroPessoalService.definirPosse(this.idUtilizador, livroId, novaPosse);
-        await this.carregarDados();
-        await this.mostrarToast(
-            novaPosse === Posse.DESEJADO
-                ? 'Livro adicionado aos desejos.'
-                : 'Livro removido dos desejos.'
+    public async confirmarRegisto() {
+        if (!this.tituloInput || !this.autorInput || !this.imagemCapa) return;
+
+        const exito = await this.livroService.registarLivro(
+            this.tituloInput.trim(), 
+            this.autorInput.trim(), 
+            this.imagemCapa
         );
+
+        if (exito) {
+            await this.carregarDados();
+            await this.mostrarToast('Livro registado com sucesso!');
+            this.fecharModal();
+        } else {
+            const toast = await this.toastController.create({
+                message: 'Erro ao registar o livro.',
+                duration: 2000,
+                color: 'danger'
+            });
+            toast.present();
+        }
     }
 
-    public labelMarcador(livroId: number): string {
-        return this.obterPosse(livroId) === Posse.DESEJADO
-            ? 'Remover dos desejos'
-            : 'Adicionar aos desejos';
+    public fecharModal() {
+        this.tituloInput = '';
+        this.autorInput = '';
+        this.imagemCapa = '';
+        this.modal.dismiss();
     }
 
-    public async registarLivro() {
-        const alertPrompt = await this.alertController.create({
-            header: 'Registar Novo Livro',
-            inputs: [
-                { name: 'titulo', type: 'text', placeholder: 'Título do Livro' },
-                { name: 'autor', type: 'text', placeholder: 'Autor' }
-            ],
-            buttons: [
-                { text: 'Cancelar', role: 'cancel' },
-                {
-                    text: 'Registar',
-                    handler: async (dados) => {
-                        if (dados.titulo && dados.autor) {
-                            await this.livroService.registarLivro(dados.titulo, dados.autor);
-                            await this.carregarDados();
-                        }
-                    }
+    // FUNÇÕES AUXILIARES (Lógica de câmera mantida, mas imagemCapa agora é usada no modal)
+
+    public async carregarCapa(): Promise<Resultado> {
+        try {
+            const image = await Camera.takePhoto({
+                quality: 60,
+                includeMetadata: false,
+            });
+
+            if (!image.webPath) return Resultado.NAO_ENCONTRADO;
+
+            const img = new Image();
+            img.src = image.webPath;
+            await img.decode();
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const tamanhoDesejado = 400; // Aumentado um pouco para melhor qualidade
+            let larguraDesejada = img.width;
+            let alturaDesejada = img.height;
+
+            if (img.width < img.height) {
+                if (img.width > tamanhoDesejado) {
+                    larguraDesejada = tamanhoDesejado;
+                    alturaDesejada = (img.height / img.width) * tamanhoDesejado;
                 }
-            ]
-        });
+            } else {
+                if (img.height > tamanhoDesejado) {
+                    alturaDesejada = tamanhoDesejado;
+                    larguraDesejada = (img.width / img.height) * tamanhoDesejado;
+                }
+            }
+            canvas.width = larguraDesejada;
+            canvas.height = alturaDesejada;
 
-        await alertPrompt.present();
+            if (ctx) {
+                ctx.drawImage(img, 0, 0, larguraDesejada, alturaDesejada);
+                this.imagemCapa = canvas.toDataURL('image/jpeg', 0.85);
+                return Resultado.EXITO;
+            }
+            return Resultado.ERRO;
+        } catch {
+            return Resultado.ERRO;
+        }
     }
 
     private async mostrarToast(mensagem: string) {
@@ -167,6 +204,25 @@ export class PesquisaPage implements OnInit {
             icon: 'checkmark-circle-outline'
         });
         await toast.present();
+    }
+
+    public async alternarListaDeDesejos(event: Event, livroId: number) {
+        event.stopPropagation();
+        const posseAtual = this.obterPosse(livroId);
+        const novaPosse = posseAtual === Posse.DESEJADO ? Posse.NENHUMA : Posse.DESEJADO;
+
+        if (posseAtual === Posse.DESEJADO) {
+            const confirmado = await this.confirmarRemoverDosDesejos();
+            if (!confirmado) return;
+        }
+
+        await this.livroPessoalService.definirPosse(this.idUtilizador, livroId, novaPosse);
+        await this.carregarDados();
+        await this.mostrarToast(novaPosse === Posse.DESEJADO ? 'Livro adicionado aos desejos.' : 'Livro removido dos desejos.');
+    }
+
+    public labelMarcador(livroId: number): string {
+        return this.obterPosse(livroId) === Posse.DESEJADO ? 'Remover dos desejos' : 'Adicionar aos desejos';
     }
 
     private async confirmarRemoverDosDesejos(): Promise<boolean> {
