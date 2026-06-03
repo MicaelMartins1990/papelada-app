@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { LivroService } from '../services/livro';
 import { LivroPessoalService } from '../services/livro-pessoal';
-import { LivroStatus } from '../enums/livro-status';
+import { Posse } from '../enums/posse';
 import { LivroExibido } from '../models/livro-exibido';
 import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
+
+type FiltroEstante = 'todos' | 'porLer' | 'lidos' | 'emprestados';
 
 @Component({
     selector: 'app-biblioteca',
@@ -15,12 +17,10 @@ import { Router } from '@angular/router';
 
 export class BibliotecaPage implements OnInit {
     public livrosExibicao: LivroExibido[] = [];
-    public filtroAtual: LivroStatus = LivroStatus.DESEJADO;
+    public filtroAtual: FiltroEstante = 'todos';
     public aCarregar: boolean = true;
 
     public idUtilizador!: number;
-
-    public LivroStatus = LivroStatus;
 
     constructor(
         private livroService: LivroService,
@@ -31,13 +31,13 @@ export class BibliotecaPage implements OnInit {
     }
 
     async ngOnInit() {
-        await this.carregarLivrosPessoais();
         await this.carregarUtilizador();
+        await this.carregarLivrosPessoais();
     }
 
     async ionViewWillEnter() {
-        await this.carregarLivrosPessoais();
         await this.carregarUtilizador();
+        await this.carregarLivrosPessoais();
     }
 
     private async carregarUtilizador() {
@@ -58,28 +58,56 @@ export class BibliotecaPage implements OnInit {
             this.livroPessoalService.getLivroPessoal(this.idUtilizador)
         ]);
 
-        this.livrosExibicao = registosPessoais.map(pessoal => {
-            const dadosLivro = livros.find(livro => livro.id === pessoal.idLivro);
-            if (!dadosLivro) return null;
+        // A Estante mostra apenas livros possuídos (na biblioteca).
+        this.livrosExibicao = registosPessoais
+            .filter(pessoal => pessoal.posse === Posse.NA_BIBLIOTECA)
+            .map(pessoal => {
+                const dadosLivro = livros.find(livro => livro.id === pessoal.idLivro);
+                if (!dadosLivro) return null;
 
-            return {
-                id: dadosLivro.id,
-                titulo: dadosLivro.titulo,
-                autor: dadosLivro.autor,
-                capa: dadosLivro.capa,
-                status: pessoal.status,
-                avaliacao: pessoal.avaliacao
-            };
-        }).filter(item => item !== null) as LivroExibido[];
+                return {
+                    id: dadosLivro.id,
+                    titulo: dadosLivro.titulo,
+                    autor: dadosLivro.autor,
+                    capa: dadosLivro.capa,
+                    posse: pessoal.posse,
+                    lido: pessoal.lido,
+                    emprestado: pessoal.emprestimo !== null,
+                    avaliacao: pessoal.avaliacao
+                };
+            })
+            .filter(item => item !== null) as LivroExibido[];
 
         this.aCarregar = false;
     }
 
-    get livrosFiltrados() {
-        return this.livrosExibicao.filter(livro => livro.status === this.filtroAtual);
+    get livrosFiltrados(): LivroExibido[] {
+        switch (this.filtroAtual) {
+            case 'porLer':
+                return this.livrosExibicao.filter(livro => !livro.lido);
+            case 'lidos':
+                return this.livrosExibicao.filter(livro => livro.lido);
+            case 'emprestados':
+                return this.livrosExibicao.filter(livro => livro.emprestado);
+            default:
+                return this.livrosExibicao;
+        }
     }
 
     alterarFiltro(event: any) {
-        this.filtroAtual = Number(event.detail.value);
+        this.filtroAtual = event.detail.value as FiltroEstante;
+    }
+
+    get mensagemVazio(): string {
+        switch (this.filtroAtual) {
+            case 'porLer':
+                return 'Não tens livros por ler na tua estante.';
+            case 'lidos':
+                return 'Ainda não marcaste livros da estante como lidos.';
+            case 'emprestados':
+                return 'Não tens livros emprestados neste momento.';
+            default:
+                return 'Ainda não tens livros na tua estante.';
+        }
     }
 }

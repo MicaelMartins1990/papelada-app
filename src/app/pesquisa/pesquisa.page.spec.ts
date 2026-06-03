@@ -7,6 +7,7 @@ describe('PesquisaPage', () => {
       {} as any,
       {} as any,
       { navigateByUrl: jasmine.createSpy('navigateByUrl') } as any,
+      {} as any,
       {} as any
     );
 

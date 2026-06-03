@@ -42,7 +42,7 @@ describe('ComentariosPage', () => {
         }
       ]),
       adicionarAvaliacao: jasmine.createSpy('adicionarAvaliacao').and.resolveTo(),
-      atualizarStatus: jasmine.createSpy('atualizarStatus').and.resolveTo(),
+      definirLido: jasmine.createSpy('definirLido').and.resolveTo(),
       apagarAvaliacao: jasmine.createSpy('apagarAvaliacao').and.resolveTo()
     };
 

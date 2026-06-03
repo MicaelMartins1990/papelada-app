@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth';
 import { Router } from '@angular/router';
-import { LivroPessoalService } from '../services/livro-pessoal';
-import { LivroStatus } from '../enums/livro-status'; // Verifica se o caminho da pasta enums está correto
+import { UtilizadorService } from '../services/utilizador';
 
 @Component({
     selector: 'app-perfil',
@@ -12,13 +11,14 @@ import { LivroStatus } from '../enums/livro-status'; // Verifica se o caminho da
 })
 export class PerfilPage implements OnInit {
     public nomeUtilizador: string = '';
-    public totalLidos: number = 0;
+    public totalPossuidos: number = 0;
+    public totalEmprestados: number = 0;
     public totalDesejos: number = 0;
 
     constructor(
         private auth: AuthService, 
         private router: Router,
-        private livroPessoalService: LivroPessoalService
+        private utilizadorService: UtilizadorService
     ) { }
 
     async ngOnInit() {
@@ -36,14 +36,10 @@ export class PerfilPage implements OnInit {
                 this.nomeUtilizador = user.nome;
             }
 
-           // 4. Vai buscar os livros para as estatísticas
-            const meusLivros = await this.livroPessoalService.getLivroPessoal(idAtual);
-            
-            if (meusLivros) {
-                // Agora usamos os nomes exatos do Enum do teu colega!
-                this.totalLidos = meusLivros.filter(l => l.status === LivroStatus.LIDO).length;
-                this.totalDesejos = meusLivros.filter(l => l.status === LivroStatus.DESEJADO).length;
-            }
+            const dadosLeitura = await this.utilizadorService.getDadosLeitura(idAtual);
+            this.totalPossuidos = dadosLeitura.livrosPossuidos;
+            this.totalEmprestados = dadosLeitura.livrosEmprestados;
+            this.totalDesejos = dadosLeitura.livrosDesejados;
         }
     }
 

@@ -1,9 +1,10 @@
-import { LivroStatus } from "../enums/livro-status";
+import { Posse } from "../enums/posse";
 
 export interface LivroPessoal {
     idLivro: number,
     idUtilizador: number,
-    status: LivroStatus,
+    posse: Posse,
+    lido: boolean,
     avaliacao: number | null,
     comentario: string | null,
     dataAvaliacao: string | null,

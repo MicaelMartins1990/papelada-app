@@ -1,0 +1,146 @@
+<!-- Estado: a carregar -->
+@if (aCarregar) {
+<div class="estado-info">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>A carregar...</p>
+</div>
+}
+
+@if (!aCarregar) {
+
+<!-- Pré-condição: sem livros disponíveis (apenas no modo de escolha livre) -->
+@if (semLivrosDisponiveis) {
+<div class="estado-info">
+    <ion-icon name="library-outline"></ion-icon>
+    <p>Não tens livros disponíveis para emprestar.</p>
+    <p class="estado-ajuda">Adiciona livros à tua biblioteca para os poderes emprestar.</p>
+</div>
+}
+
+<!-- Pré-condição: sem amigos -->
+@if (!semLivrosDisponiveis && amigos.length === 0) {
+<div class="estado-info">
+    <ion-icon name="people-outline"></ion-icon>
+    <p>Ainda não tens amigos.</p>
+    <p class="estado-ajuda">Adiciona um amigo no separador Amigos para lhe emprestares um livro.</p>
+</div>
+}
+
+<!-- Formulário -->
+@if (podeMostrarFormulario) {
+<form (ngSubmit)="registar()">
+
+    <!-- Livro -->
+    <div class="campo">
+        <label class="rotulo">Livro</label>
+        @if (livroSelecionado) {
+        <ion-item lines="none" class="cartao-selecao" [button]="!temLivroFixo"
+            (click)="abrirPickerLivro()">
+            <ion-thumbnail slot="start" class="capa">
+                @if (livroSelecionado.capa) {
+                <img [src]="livroSelecionado.capa" [alt]="livroSelecionado.titulo" />
+                } @else {
+                <div class="capa-vazia" aria-hidden="true"><ion-icon name="book"></ion-icon></div>
+                }
+            </ion-thumbnail>
+            <ion-label class="ion-text-wrap">
+                <h2>{{ livroSelecionado.titulo }}</h2>
+                <p>{{ livroSelecionado.autor }}</p>
+            </ion-label>
+            @if (!temLivroFixo) {
+            <ion-icon slot="end" name="swap-horizontal-outline" color="medium"></ion-icon>
+            }
+        </ion-item>
+        } @else {
+        <ion-button expand="block" fill="outline" class="botao-escolher" (click)="abrirPickerLivro()">
+            <ion-icon slot="start" name="book-outline"></ion-icon>
+            Escolher livro
+        </ion-button>
+        }
+        @if (erroLivro) { <p class="erro">{{ erroLivro }}</p> }
+    </div>
+
+    <!-- Destinatário -->
+    <div class="campo">
+        <label class="rotulo">Destinatário</label>
+        <ion-item lines="none" class="cartao-selecao">
+            <ion-select [(ngModel)]="idAmigoSelecionado" name="amigo" interface="action-sheet"
+                placeholder="Escolher amigo" cancelText="Cancelar" (ionChange)="erroAmigo = ''">
+                @for (amigo of amigos; track amigo.id) {
+                <ion-select-option [value]="amigo.id">
+                    {{ amigo.nome }} (&#64;{{ amigo.username }})
+                </ion-select-option>
+                }
+            </ion-select>
+        </ion-item>
+        @if (erroAmigo) { <p class="erro">{{ erroAmigo }}</p> }
+    </div>
+
+    <!-- Data de devolução -->
+    <div class="campo">
+        <label class="rotulo">Data de devolução</label>
+        <div class="cartao-data">
+            <ion-datetime presentation="date" [min]="hojeIso" locale="pt-PT" name="data"
+                [(ngModel)]="dataDevolucaoSelecionada" (ionChange)="erroData = ''"
+                [firstDayOfWeek]="1"></ion-datetime>
+        </div>
+        @if (erroData) { <p class="erro">{{ erroData }}</p> }
+    </div>
+
+    <ion-button expand="block" type="submit" class="botao-roxo botao-texto botao-submeter"
+        [disabled]="!formularioCompleto">
+        Registar empréstimo
+    </ion-button>
+</form>
+}
+
+}
+
+<!-- Modal: escolher livro (apenas no modo de escolha livre) -->
+@if (!temLivroFixo) {
+<ion-modal [isOpen]="modalLivroAberto" (didDismiss)="modalLivroAberto = false">
+    <ng-template>
+        <ion-header class="ion-no-border">
+            <ion-toolbar color="primary">
+                <ion-title>Escolher livro</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="fecharPickerLivro()" aria-label="Fechar">
+                        <ion-icon slot="icon-only" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+            <ion-toolbar color="primary">
+                <ion-searchbar placeholder="Procurar por título ou autor" (ionInput)="pesquisarLivro($event)"
+                    color="light"></ion-searchbar>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-no-padding">
+            @if (livrosDisponiveisFiltrados.length === 0) {
+            <div class="estado-info">
+                <ion-icon name="search-outline"></ion-icon>
+                <p>Nenhum livro disponível corresponde à pesquisa.</p>
+            </div>
+            } @else {
+            <ion-list class="lista-emprestimos">
+                @for (livro of livrosDisponiveisFiltrados; track livro.id) {
+                <ion-item button detail="false" class="item-emprestimo" (click)="selecionarLivro(livro)">
+                    <ion-thumbnail slot="start" class="capa">
+                        @if (livro.capa) {
+                        <img [src]="livro.capa" [alt]="livro.titulo" />
+                        } @else {
+                        <div class="capa-vazia" aria-hidden="true"><ion-icon name="book"></ion-icon></div>
+                        }
+                    </ion-thumbnail>
+                    <ion-label class="ion-text-wrap">
+                        <h2>{{ livro.titulo }}</h2>
+                        <p>{{ livro.autor }}</p>
+                    </ion-label>
+                </ion-item>
+                }
+            </ion-list>
+            }
+        </ion-content>
+    </ng-template>
+</ion-modal>
+}

@@ -23,18 +23,51 @@
     <section class="secao">
       <h2>Ações Rápidas</h2>
       <div class="acoes-grid">
-        <ion-button class="botao-acao" (click)="marcarComoLido()">
-          Marcar<br />como Lido
-        </ion-button>
-        <ion-button class="botao-acao" (click)="irParaEmprestimos()">
-          Emprestar
-        </ion-button>
+
+        <!-- Biblioteca (toggle de posse) -->
+        @if (estaNaBiblioteca) {
         <ion-button class="botao-acao" (click)="removerDaBiblioteca()">
           Remover da<br />Biblioteca
         </ion-button>
-        <ion-button class="botao-acao botao-acao-secundario" (click)="adicionarAListaDeDesejos()">
-          Adicionar à<br />Lista de Desejos
+        } @else {
+        <ion-button class="botao-acao" (click)="adicionarABiblioteca()">
+          Adicionar à<br />Biblioteca
         </ion-button>
+        }
+
+        <!-- Leitura (toggle independente) -->
+        @if (lido) {
+        <ion-button class="botao-acao" (click)="marcarComoNaoLido()">
+          Marcar como<br />Não Lido
+        </ion-button>
+        } @else {
+        <ion-button class="botao-acao" (click)="marcarComoLido()">
+          Marcar<br />como Lido
+        </ion-button>
+        }
+
+        <!-- Empréstimo -->
+        @if (temEmprestimo) {
+        <ion-button class="botao-acao" (click)="verEmprestimo()">
+          Ver<br />Empréstimo
+        </ion-button>
+        } @else {
+        <ion-button class="botao-acao" [disabled]="!estaNaBiblioteca" (click)="abrirEmprestimo()">
+          Emprestar
+        </ion-button>
+        }
+
+        <!-- Desejos -->
+        @if (estaNosDesejos) {
+        <ion-button class="botao-acao botao-acao-secundario" (click)="removerDaListaDeDesejos()">
+          Remover dos<br />Desejos
+        </ion-button>
+        } @else {
+        <ion-button class="botao-acao botao-acao-secundario" [disabled]="estaNaBiblioteca" (click)="adicionarAListaDeDesejos()">
+          Adicionar aos<br />Desejos
+        </ion-button>
+        }
+
       </div>
     </section>
 
@@ -100,3 +133,25 @@
     </div>
   }
 </ion-content>
+
+<!-- Modal: emprestar este livro (livro pré-fixado) -->
+<ion-modal [isOpen]="modalEmprestimoAberto" (didDismiss)="fecharEmprestimo()">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar color="primary">
+        <ion-title>Emprestar</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="fecharEmprestimo()" aria-label="Fechar">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      @if (modalEmprestimoAberto) {
+      <app-form-emprestimo [idUtilizador]="idUtilizador" [livroFixo]="livroFixoEmprestimo"
+        (registado)="onEmprestimoRegistado()" (cancelado)="fecharEmprestimo()"></app-form-emprestimo>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>

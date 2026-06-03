@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { EmprestimosPageRoutingModule } from './emprestimos-routing.module';
 
 import { EmprestimosPage } from './emprestimos.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EmprestimosPageRoutingModule
+    EmprestimosPageRoutingModule,
+    SharedModule
   ],
   declarations: [EmprestimosPage]
 })

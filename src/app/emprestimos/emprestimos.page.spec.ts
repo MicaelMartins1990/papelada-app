@@ -6,7 +6,6 @@ describe('EmprestimosPage', () => {
   beforeEach(() => {
     component = new EmprestimosPage(
       {} as any, // Router
-      {} as any, // ToastController
       {} as any, // AuthService
       {} as any, // LivroPessoalService
       {} as any, // LivroService
@@ -28,29 +27,13 @@ describe('EmprestimosPage', () => {
     expect(component.textoUrgencia('aTempo')).toBe('Ativo');
   });
 
-  it('só considera o formulário completo com livro, amigo e data', () => {
-    expect(component.formularioCompleto).toBeFalse();
+  it('abre e fecha o modal de registo partilhado', () => {
+    expect(component.modalRegistoAberto).toBeFalse();
 
-    component.livroSelecionado = { id: 1, titulo: 'A', autor: 'B', capa: '' };
-    component.idAmigoSelecionado = 2;
-    component.dataDevolucaoSelecionada = '2099-01-01';
+    component.abrirRegisto();
+    expect(component.modalRegistoAberto).toBeTrue();
 
-    expect(component.formularioCompleto).toBeTrue();
-  });
-
-  it('filtra os livros disponíveis por título ou autor', () => {
-    component.livrosDisponiveis = [
-      { id: 1, titulo: 'Duna', autor: 'Frank Herbert', capa: '' },
-      { id: 2, titulo: 'O Nome da Rosa', autor: 'Umberto Eco', capa: '' }
-    ];
-
-    component.termoPesquisaLivro = 'duna';
-    expect(component.livrosDisponiveisFiltrados.length).toBe(1);
-
-    component.termoPesquisaLivro = 'eco';
-    expect(component.livrosDisponiveisFiltrados.length).toBe(1);
-
-    component.termoPesquisaLivro = '';
-    expect(component.livrosDisponiveisFiltrados.length).toBe(2);
+    component.fecharRegisto();
+    expect(component.modalRegistoAberto).toBeFalse();
   });
 });

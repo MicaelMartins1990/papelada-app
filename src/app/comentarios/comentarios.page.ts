@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { LivroStatus } from '../enums/livro-status';
 import { Livro } from '../models/livro';
 import { LivroPessoal } from '../models/livro-pessoal';
 import { AuthService } from '../services/auth';
@@ -100,7 +99,7 @@ export class ComentariosPage implements OnInit {
       this.avaliacaoAtual,
       this.comentarioAtual
     );
-    await this.livroPessoalService.atualizarStatus(this.idUtilizador, this.idLivro, LivroStatus.LIDO);
+    await this.livroPessoalService.definirLido(this.idUtilizador, this.idLivro, true);
     await this.carregarPagina();
     this.modalAberto = false;
     await this.mostrarToast('Avaliação guardada.');
