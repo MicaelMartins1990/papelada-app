@@ -192,3 +192,20 @@ Voltar a implementar a funcionalidade de emprestimos de livro mas desta vez com 
 
 #Flávio Fernandes
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 3 de Junho 
+
+# Objetivo: Permitir que um livro possa estar na estante mas nem está lido nem está desejado
+
+# Desenvolvido:  
+- Quando clicamos no botão de ação rapida de emprestar livro na pagina de detalhes de um livro este abre o modal de emprestimo mas já com o livro selecionado para poupar cliques e tempo para uma boa UX. 
+- As ações rapidas agora tem o contexto do estado do livro por exemplo, se não tiver um livro adicionado na estante então nao consigo emprestar. 
+- Ou seja agora um livro podemos pensar em 4 partes independetes apenas a de emprestar que envolver ter: 1- Se o tenho, 2-Se o li, 3-se o tenho emprestado, 4-se o "desejo
+- Confirmações antes de remover livros de onde quer que seja para o utilizador nao clicar sem querer.
+
+# A fazer num proximo commit: 
+- Melhorar UI de pagiana de detalhes livro e badges que aparecem no card livro individual. 
+
+#Flávio Fernandes
+
+------------------------------------------------------------------------------------------------------------------------------------

@@ -4,7 +4,8 @@ import { Utilizador } from '../models/utilizador';
 import { Resultado } from '../enums/resultado';
 import { DadosLeitura } from '../models/dados-leitura';
 import { LivroPessoal } from '../models/livro-pessoal';
-import { LivroStatus } from '../enums/livro-status';
+import { Posse } from '../enums/posse';
+import { migrarRegistoLivroPessoal } from './livro-pessoal';
 
 @Injectable({
     providedIn: 'root',
@@ -78,13 +79,17 @@ export class UtilizadorService {
             livrosDesejados: 0,
             livrosEmprestados: 0
         }
-        const livrosPessoais: LivroPessoal[] = await this._storage?.get(`livroutil_${idUtilizador}`) || [];
+        const registosBrutos: any[] = await this._storage?.get(`livroutil_${idUtilizador}`) || [];
+        const livrosPessoais: LivroPessoal[] = registosBrutos.map(registo => migrarRegistoLivroPessoal(registo));
         if (livrosPessoais.length > 0) {
-            dadosLeitura.livrosPossuidos = livrosPessoais.filter(registo => 
-                registo.status !== LivroStatus.NAO_POSSUIDO && registo.status !== LivroStatus.DESEJADO
+            dadosLeitura.livrosPossuidos = livrosPessoais.filter(registo =>
+                registo.posse === Posse.NA_BIBLIOTECA
             ).length;
-            dadosLeitura.livrosDesejados = livrosPessoais.filter(registo => 
-                registo.status === LivroStatus.DESEJADO
+            dadosLeitura.livrosDesejados = livrosPessoais.filter(registo =>
+                registo.posse === Posse.DESEJADO
+            ).length;
+            dadosLeitura.livrosEmprestados = livrosPessoais.filter(registo =>
+                registo.emprestimo !== null
             ).length;
         }
         return dadosLeitura;

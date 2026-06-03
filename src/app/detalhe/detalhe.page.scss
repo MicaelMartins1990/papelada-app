@@ -99,6 +99,13 @@
   text-align: center;
 }
 
+.botao-acao[disabled] {
+  --background: #c9c4bd;
+  --box-shadow: none;
+  color: #6a5a62;
+  opacity: 1;
+}
+
 .botao-acao-secundario,
 .botao-avaliar {
   --background: var(--papelada-grey);

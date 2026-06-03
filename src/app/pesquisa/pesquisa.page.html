@@ -5,6 +5,16 @@
             Descobrir
         </ion-title>
     </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-segment [value]="filtroAtual" (ionChange)="alterarFiltro($event)">
+            <ion-segment-button value="todos">
+                <ion-label>Todos</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="desejos">
+                <ion-label>Os meus desejos</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
@@ -18,8 +28,13 @@
 
     @if (!aCarregar && livrosFiltrados.length === 0) {
     <div class="ion-text-center" style="margin-top: 40px; color: #6a5a62;">
+        @if (filtroAtual === 'desejos') {
+        <ion-icon name="bookmark-outline" style="font-size: 48px;"></ion-icon>
+        <p>Ainda não tens livros na tua lista de desejos.</p>
+        } @else {
         <ion-icon name="search-outline" style="font-size: 48px;"></ion-icon>
-        <p>Nenhum foi encontrado.</p>
+        <p>Nenhum livro foi encontrado.</p>
+        }
     </div>
     }
 
@@ -29,7 +44,8 @@
             @for (livro of livrosFiltrados; track livro.id) {
             <ion-col size="6" class="ion-padding-tiny">
 
-                <ion-card style="margin: 5px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative;">
+                <ion-card button (click)="abrirDetalhe(livro.id)"
+                    style="margin: 5px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative;">
 
                     <div style="width: 100%; height: 210px; overflow: hidden; background-color: #e0e0e0;">
                         <img [src]="livro.capa" [alt]="livro.titulo" style="width: 100%; height: 100%; object-fit: cover;" />
@@ -46,12 +62,11 @@
                         </div>
 
                         <div style="display: flex; justify-content: flex-end; align-items: center; width: 100%;">
-                            @if (obterStatus(livro.id) === LivroStatus.NAO_POSSUIDO) {
-                            <ion-button fill="clear" size="small" style="margin: 0; padding: 0; --color: #805d68;" (click)="adicionarAListaDeDesejos(livro.id)">
-                                <ion-icon slot="icon-only" name="bookmark-outline" style="font-size: 22px;"></ion-icon>
+                            @if (obterPosse(livro.id) !== Posse.NA_BIBLIOTECA) {
+                            <ion-button fill="clear" size="small" [attr.aria-label]="labelMarcador(livro.id)"
+                                style="margin: 0; padding: 0; --color: #805d68;" (click)="alternarListaDeDesejos($event, livro.id)">
+                                <ion-icon slot="icon-only" [name]="obterPosse(livro.id) === Posse.DESEJADO ? 'bookmark' : 'bookmark-outline'" style="font-size: 22px;"></ion-icon>
                             </ion-button>
-                            } @else if (obterStatus(livro.id) === LivroStatus.DESEJADO) {
-                            <ion-icon name="bookmark" style="color: #805d68; font-size: 22px; padding-right: 5px;"></ion-icon>
                             }
                         </div>
                     </ion-card-content>

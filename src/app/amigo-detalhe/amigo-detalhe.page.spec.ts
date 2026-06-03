@@ -10,7 +10,8 @@ describe('AmigoDetalhePage', () => {
       {} as any, // NavController
       {} as any, // AuthService
       {} as any, // UtilizadorService
-      {} as any  // ToastController
+      {} as any, // ToastController
+      {} as any  // AlertController
     );
   });
 

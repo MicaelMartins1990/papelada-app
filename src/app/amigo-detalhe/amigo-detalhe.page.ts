@@ -5,7 +5,7 @@ import { Utilizador } from '../models/utilizador';
 import { DadosLeitura } from '../models/dados-leitura';
 import { AuthService } from '../services/auth';
 import { Resultado } from '../enums/resultado';
-import { NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 
 @Component({
     selector: 'app-amigo-detalhe',
@@ -25,7 +25,8 @@ export class AmigoDetalhePage implements OnInit {
         private navController: NavController,
         private authService: AuthService,
         private utilizadorService: UtilizadorService,
-        private toastController: ToastController
+        private toastController: ToastController,
+        private alertController: AlertController
     ) { 
     }
 
@@ -54,6 +55,9 @@ export class AmigoDetalhePage implements OnInit {
 
     public async removerAmigo() {
         if (!this.amigo) return;
+        const confirmado = await this.confirmarRemoverAmigo();
+        if (!confirmado) return;
+
         const resultado = await this.utilizadorService.removerAmigo(this.idUtilizador, this.amigo.id);
 
         if (resultado === Resultado.EXITO) {
@@ -72,5 +76,19 @@ export class AmigoDetalhePage implements OnInit {
     async showToast(message: string) {
         const toast = await this.toastController.create({ message: message, duration: 2000 });
         toast.present();
+    }
+
+    private async confirmarRemoverAmigo(): Promise<boolean> {
+        const alerta = await this.alertController.create({
+            header: 'Remover amigo?',
+            message: 'Este utilizador deixa de aparecer na tua lista de amigos.',
+            buttons: [
+                { text: 'Cancelar', role: 'cancel' },
+                { text: 'Remover', role: 'destructive' }
+            ]
+        });
+        await alerta.present();
+        const resultado = await alerta.onDidDismiss();
+        return resultado.role === 'destructive';
     }
 }
