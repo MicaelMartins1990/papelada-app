@@ -10,38 +10,80 @@
 <ion-content class="ion-padding">
   
   <div class="ion-text-center" style="margin-top: 20px; margin-bottom: 30px;">
-    <ion-icon name="person-circle-outline" style="font-size: 100px; color: #8c5a47;"></ion-icon>
+    <div [style.background]="avatarAtual" style="width: 100px; height: 100px; border-radius: 50%; color: white; font-size: 48px; margin: 0 auto; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+      {{ inicial }}
+    </div>
     <h2 style="font-weight: bold; color: #333; margin-bottom: 0;">{{ nomeUtilizador || 'A carregar...' }}</h2>
   </div>
 
   @if (dadosLeitura) {
-    <ion-grid class="dados-leitura">
+    <ion-grid class="dados-leitura" style="border-top: 1px solid #d3c9c1; border-bottom: 1px solid #d3c9c1; margin-bottom: 30px; padding: 15px 0;">
         <ion-row>
-            <ion-col text-center>
-                <ion-icon name="library"></ion-icon>
-                <div> {{ dadosLeitura.livrosPossuidos }} livro(s) possuídos </div>
+            <ion-col class="ion-text-center">
+                <ion-icon name="library" style="font-size: 24px; color: #735b6a;"></ion-icon>
+                <div style="font-size: 13px; color: #666; margin-top: 5px;"> {{ dadosLeitura.livrosPossuidos }} livro(s)<br>possuídos </div>
             </ion-col>
-            <ion-col text-center>
-                <ion-icon name="receipt"></ion-icon>
-                <div> {{ dadosLeitura.livrosEmprestados }} livro(s) emprestados </div>
+            <ion-col class="ion-text-center">
+                <ion-icon name="receipt" style="font-size: 24px; color: #735b6a;"></ion-icon>
+                <div style="font-size: 13px; color: #666; margin-top: 5px;"> {{ dadosLeitura.livrosEmprestados }} livro(s)<br>emprestados </div>
             </ion-col>
-            <ion-col text-center>
-                <ion-icon name="heart"></ion-icon>
-                <div> {{ dadosLeitura.livrosDesejados }} na lista de desejos </div>
+            <ion-col class="ion-text-center">
+                <ion-icon name="heart" style="font-size: 24px; color: #735b6a;"></ion-icon>
+                <div style="font-size: 13px; color: #666; margin-top: 5px;"> {{ dadosLeitura.livrosDesejados }} na lista<br>de desejos </div>
             </ion-col>
         </ion-row>
     </ion-grid>
     } @else {
-    <div class="dados-leitura">
-        <p>Erro ao carregar dados de leitura.</p>
+    <div class="dados-leitura ion-text-center" style="margin-bottom: 30px;">
+        <p>A carregar dados...</p>
     </div>
     }
 
-  <div style="margin-top: 50px;">
-    <ion-button expand="block" class="botao-vermelho" (click)="logout()">
+  <div style="display: flex; flex-direction: column; gap: 15px;">
+    <ion-button expand="block" (click)="abrirModal()" style="--background: #735b6a; --border-radius: 8px; font-weight: bold; height: 45px;">
+      <ion-icon slot="start" name="create-outline"></ion-icon>
+      Editar Perfil
+    </ion-button>
+
+    <ion-button expand="block" class="botao-vermelho" (click)="logout()" style="--border-radius: 8px; font-weight: bold; height: 45px;">
       <ion-icon slot="start" name="log-out-outline"></ion-icon>
       Logout
     </ion-button>
   </div>
+
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="fecharModal()">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar color="primary">
+          <ion-title>Editar Perfil</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharModal()">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content class="ion-padding">
+        <h3 style="color: #8c5a47; font-weight: bold;">Nome de Exibição</h3>
+        <ion-item style="--border-radius: 8px; margin-bottom: 20px; border: 1px solid #ccc;">
+          <ion-input type="text" [(ngModel)]="novoNome"></ion-input>
+        </ion-item>
+
+        <h3 style="color: #8c5a47; font-weight: bold;">Escolher Cor (Avatar)</h3>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px;">
+          @for (cor of avataresDisponiveis; track cor) {
+            <div (click)="selecionarAvatar(cor)" 
+                 [style.background]="cor" 
+                 [style.border]="avatarAtual === cor ? '4px solid #333' : 'none'"
+                 style="width: 50px; height: 50px; border-radius: 50%; cursor: pointer;">
+            </div>
+          }
+        </div>
+
+        <ion-button expand="block" (click)="guardarPerfil()" style="--background: #2b8b3b; --border-radius: 8px; font-weight: bold; height: 50px;">
+          Guardar Alterações
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>
