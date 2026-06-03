@@ -9,4 +9,5 @@ export interface LivroExibido {
     lido: boolean;
     emprestado: boolean;
     avaliacao: number | null;
+    generos: string[];
 }

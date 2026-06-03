@@ -71,17 +71,21 @@
     </ion-list>
     }
 
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="botao-adicionar">
+        <ion-fab-button id="abrir-adicionar-amigo" class="botao-roxo">
+            <ion-icon class="icone-grande" name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
 
 <!-- Rodapé: pesquisa + adicionar -->
 <ion-footer>
     <ion-toolbar>
-        <div class="secao-busca">
-            <ion-searchbar placeholder="Procurar Empréstimos" (ionInput)="pesquisar($event)"
-                class="barra-busca"></ion-searchbar>
-            <ion-button class="botao-roxo" aria-label="Registar empréstimo" (click)="abrirRegisto()">
-                <ion-icon name="add"></ion-icon>
-            </ion-button>
+        <div class="secao-filtros">
+            <div class="secao-busca">
+                <ion-searchbar placeholder="Procurar Empréstimos" (ionInput)="pesquisar($event)"
+                    class="barra-busca"></ion-searchbar>
+            </div>
         </div>
     </ion-toolbar>
 </ion-footer>

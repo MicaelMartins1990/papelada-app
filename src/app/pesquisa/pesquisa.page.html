@@ -80,6 +80,12 @@
     </ion-grid>
     }
 
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="botao-adicionar">
+        <ion-fab-button id="abrir-registo-livro" class="botao-roxo">
+            <ion-icon class="icone-grande" name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
     <ion-modal trigger="abrir-registo-livro" #modalRegisto>
         <ng-template>
             <ion-content class="ion-padding">
@@ -108,22 +114,27 @@
                     <ion-label>Autor</ion-label>
                     <ion-input class="text-input" [(ngModel)]="autorInput" type="text" fill="outline" placeholder="Autor do livro"></ion-input>
                 </div>
-
-                <ion-grid class="ion-margin-top">
-                    <ion-row>
-                        <ion-col>
-                            <ion-button class="botao-roxo" expand="block"
-                                [disabled]="!tituloInput || !autorInput || !imagemCapa" (click)="confirmarRegisto()">
-                                Registar
-                            </ion-button>
-                        </ion-col>
-                        <ion-col>
-                            <ion-button class="botao-vermelho" expand="block" (click)="fecharModal()">
-                                Cancelar
-                            </ion-button>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
+                <div class="input-group ion-margin-top">
+                    <ion-label>Géneros Literários</ion-label>
+                    <ion-select class="text-input" [(ngModel)]="generosInput" multiple="true" fill="outline" placeholder="Selecione os Géneros" cancelText="Cancelar" okText="Confirmar" interface="popover">
+                        @for (genero of generos; track genero) {
+                            <ion-select-option [value]="genero">{{ genero }}</ion-select-option>
+                        }
+                    </ion-select>
+                </div>
+                <ion-row class="ion-margin-top">
+                    <ion-col>
+                        <ion-button class="botao-roxo" expand="block"
+                            [disabled]="!tituloInput || !autorInput || !imagemCapa" (click)="registarLivro()">
+                            Registar
+                        </ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button class="botao-vermelho" expand="block" (click)="fecharModal()">
+                            Cancelar
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
             </ion-content>
         </ng-template>
     </ion-modal>
@@ -131,12 +142,28 @@
 
 <ion-footer>
     <ion-toolbar>
-        <div class="secao-busca">
-            <ion-searchbar placeholder="Procurar Livros" (ionInput)="filtrarLivros($event)"
-                class="barra-busca"></ion-searchbar>
-            <ion-button id="abrir-registo-livro" class="botao-roxo">
-                <ion-icon name="add"></ion-icon>
-            </ion-button>
+        <div class="secao-filtros">
+            
+            <div class="secao-busca">
+                <ion-searchbar placeholder="Procurar Livros" (ionInput)="filtrarLivros($event)"
+                    class="barra-busca"></ion-searchbar>
+                
+                <ion-button class="botao-contorno" (click)="exibirFiltroGenero = !exibirFiltroGenero">
+                    <ion-icon slot="icon-only" [name]="exibirFiltroGenero ? 'funnel' : 'funnel-outline'"></ion-icon>
+                </ion-button>
+            </div>
+
+            @if (exibirFiltroGenero) {
+                <div style="animation: slideDown 0.2s ease-out; margin-top: 8px">
+                    <ion-select placeholder="Filtrar por Género" [(ngModel)]="generoFiltro" interface="popover" toggle-icon="chevron-down-outline" 
+                        class="barra-busca">
+                        <ion-select-option value="">Todos os géneros</ion-select-option>
+                        @for (genero of generos; track genero) {
+                            <ion-select-option [value]="genero">{{ genero }}</ion-select-option>
+                        }
+                    </ion-select>
+                </div>
+            }
         </div>
     </ion-toolbar>
 </ion-footer>

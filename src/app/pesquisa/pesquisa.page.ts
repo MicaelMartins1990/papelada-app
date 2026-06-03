@@ -21,17 +21,24 @@ export class PesquisaPage implements OnInit {
     @ViewChild('modalRegisto') modal!: IonModal;
 
     public livros: Livro[] = [];
+    public generos: string[] = [];
+
     public aCarregar: boolean = true;
+
     public termoPesquisa: string = '';
     public filtroAtual: FiltroDescobrir = 'todos';
+    public generoFiltro: string = '';
+    public exibirFiltroGenero: boolean = false;
 
     public idUtilizador!: number;
+    
     public livrosPosse: Map<number, Posse> = new Map();
     public Posse = Posse;
 
     public tituloInput: string = '';
     public autorInput: string = '';
     public imagemCapa: string = '';
+    public generosInput: string[] = [];
 
     constructor(
         private livroService: LivroService,
@@ -71,11 +78,13 @@ export class PesquisaPage implements OnInit {
             this.router.navigateByUrl('/');
             return;
         }
-        const [livros, livrosPessoais] = await Promise.all([
+        const [livros, livrosPessoais, generos] = await Promise.all([
             this.livroService.getLivros(),
-            this.livroPessoalService.getLivroPessoal(this.idUtilizador)
+            this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+            this.livroService.getGeneros()
         ]);
         this.livros = livros;
+        this.generos = generos;
         this.livrosPosse.clear();
         for (const registo of livrosPessoais) {
             this.livrosPosse.set(registo.idLivro, registo.posse);
@@ -91,7 +100,9 @@ export class PesquisaPage implements OnInit {
                 livro.autor.toLowerCase().includes(texto);
             const correspondeFiltro = this.filtroAtual === 'todos' ||
                 this.obterPosse(livro.id) === Posse.DESEJADO;
-            return correspondeTexto && correspondeFiltro;
+            const correspondeGenero = this.generoFiltro === '' || 
+                (livro.generos && livro.generos.includes(this.generoFiltro));
+            return correspondeTexto && correspondeFiltro && correspondeGenero;
         });
     }
 
@@ -128,13 +139,14 @@ export class PesquisaPage implements OnInit {
         }
     }
 
-    public async confirmarRegisto() {
+    public async registarLivro() {
         if (!this.tituloInput || !this.autorInput || !this.imagemCapa) return;
 
         const exito = await this.livroService.registarLivro(
             this.tituloInput.trim(), 
             this.autorInput.trim(), 
-            this.imagemCapa
+            this.imagemCapa,
+            this.generosInput
         );
 
         if (exito) {
@@ -155,10 +167,9 @@ export class PesquisaPage implements OnInit {
         this.tituloInput = '';
         this.autorInput = '';
         this.imagemCapa = '';
+        this.generosInput = [];
         this.modal.dismiss();
     }
-
-    // FUNÇÕES AUXILIARES (Lógica de câmera mantida, mas imagemCapa agora é usada no modal)
 
     public async carregarCapa(): Promise<Resultado> {
         try {
@@ -176,7 +187,7 @@ export class PesquisaPage implements OnInit {
             
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            const tamanhoDesejado = 400; // Aumentado um pouco para melhor qualidade
+            const tamanhoDesejado = 300;
             let larguraDesejada = img.width;
             let alturaDesejada = img.height;
 

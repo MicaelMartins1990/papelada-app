@@ -3,30 +3,35 @@
         "id": "1",
         "titulo": "O Nome da Rosa",
         "autor": "Umberto Eco",
-        "capa": "assets/capas/o-nome-da-rosa.jpg"
+        "capa": "assets/capas/o-nome-da-rosa.jpg",
+        "generos": ["Mistério", "História", "Romance"]
     },
     {
         "id": "2",
         "titulo": "Duna",
         "autor": "Frank Herbert",
-        "capa": "assets/capas/duna.jpg"
+        "capa": "assets/capas/duna.jpg",
+        "generos": ["Ficção Científica", "Fantasia"]
     },
     {
         "id": "3",
         "titulo": "1984",
         "autor": "George Orwell",
-        "capa": "assets/capas/1984.jpg"
+        "capa": "assets/capas/1984.jpg",
+        "generos": ["Ficção Política"]
     },
     {
         "id": "4",
         "titulo": "O Senhor dos Anéis: A Sociedade do Anel",
         "autor": "J.R.R. Tolkien",
-        "capa": "assets/capas/a-sociedade-do-anel.jpg"
+        "capa": "assets/capas/a-sociedade-do-anel.jpg",
+        "generos": ["Fantasia"]
     },
     {
         "id": "5",
         "titulo": "O Código Da Vinci",
         "autor": "Dan Brown",
-        "capa": "assets/capas/o-codigo-da-vinci.jpg"
+        "capa": "assets/capas/o-codigo-da-vinci.jpg",
+        "generos": ["Mistério", "Romance"]
     }
 ]

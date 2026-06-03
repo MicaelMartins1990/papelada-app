@@ -17,8 +17,13 @@ type FiltroEstante = 'todos' | 'porLer' | 'lidos' | 'emprestados';
 
 export class BibliotecaPage implements OnInit {
     public livrosExibicao: LivroExibido[] = [];
+    public generos: string[] = [];
+
     public filtroAtual: FiltroEstante = 'todos';
     public termoPesquisa: string = '';
+    public generoFiltro: string = '';
+    public exibirFiltroGenero: boolean = false;
+
     public aCarregar: boolean = true;
 
     public idUtilizador!: number;
@@ -54,9 +59,10 @@ export class BibliotecaPage implements OnInit {
     async carregarLivrosPessoais() {
         this.aCarregar = true;
 
-        const [livros, registosPessoais] = await Promise.all([
+        const [livros, registosPessoais, generos] = await Promise.all([
             this.livroService.getLivros(),
-            this.livroPessoalService.getLivroPessoal(this.idUtilizador)
+            this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+            this.livroService.getGeneros()
         ]);
 
         // A Estante mostra apenas livros possuídos (na biblioteca).
@@ -74,11 +80,12 @@ export class BibliotecaPage implements OnInit {
                     posse: pessoal.posse,
                     lido: pessoal.lido,
                     emprestado: pessoal.emprestimo !== null,
-                    avaliacao: pessoal.avaliacao
+                    avaliacao: pessoal.avaliacao,
+                    generos: dadosLivro.generos
                 };
             })
             .filter(item => item !== null) as LivroExibido[];
-
+        this.generos = generos;
         this.aCarregar = false;
     }
 
@@ -99,11 +106,17 @@ export class BibliotecaPage implements OnInit {
         }
 
         const termo = this.termoPesquisa.toLowerCase().trim();
-        if (termo === '') return livrosPorFiltro;
 
         return livrosPorFiltro.filter(livro =>
-            livro.titulo.toLowerCase().includes(termo) ||
-            livro.autor.toLowerCase().includes(termo)
+            (
+                termo === '' ||
+                livro.titulo.toLowerCase().includes(termo) ||
+                livro.autor.toLowerCase().includes(termo)
+            ) &&
+            (
+                this.generoFiltro === '' || 
+                (livro.generos && livro.generos.includes(this.generoFiltro))
+            )
         );
     }
 

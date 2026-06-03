@@ -33,22 +33,27 @@
 
             <ion-label>
                 <h3>{{ amigo.nome }}</h3>
-                <p>@{{ amigo.username }}</p>
+                <p>{{ amigo.username }}</p>
             </ion-label>
         </ion-item>
         }
     </ion-list>
     }
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="botao-adicionar">
+        <ion-fab-button id="abrir-adicionar-amigo" class="botao-roxo">
+            <ion-icon class="icone-grande" name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
 
 <ion-footer>
     <ion-toolbar>
-        <div class="secao-busca">
-            <ion-searchbar placeholder="Procurar Amigos" (ionInput)="filtrarAmigos($event)"
-                class="barra-busca"></ion-searchbar>
-            <ion-button id="adicionar-amigo" class="botao-roxo">
-                <ion-icon name="add"></ion-icon>
-            </ion-button>
+        <div class="secao-filtros">
+            <div class="secao-busca">
+                <ion-searchbar placeholder="Procurar Amigos" (ionInput)="filtrarAmigos($event)"
+                    class="barra-busca"></ion-searchbar>
+            </div>
         </div>
     </ion-toolbar>
 </ion-footer>

@@ -108,6 +108,19 @@ ion-title ion-icon {
     height: 100%;
 }
 
+.botao-contorno {
+    --background: var(--bg-color);
+    --border-radius: 12px;
+    --border-width: 1px;
+    --border-style: solid;
+    --border-color: var(--ion-color-secondary);
+    --box-shadow: none;
+    --color: var(--ion-color-primary);
+    margin: 0;
+    text-transform: none;
+    font-weight: bold;
+}
+
 .botao-texto {
     --padding-start: 12px;
     --padding-end: 12px;
@@ -120,12 +133,24 @@ ion-title ion-icon {
     margin-top: 10px;
 }
 
-.secao-busca {
-    padding: 12px;
-    --background: var(--bg-color);
+.botao-adicionar {
+    height: 50px;
+    margin-right: 5px;
+}
 
+ion-fab-button.botao-roxo {
+    width: 60px;
+}
+
+.secao-filtros {
+    --background: var(--bg-color);
+    padding: 12px;
+}
+
+.secao-busca {
     display: flex !important; 
     justify-content: space-between;
+    align-items: stretch;
     gap: 8px;
 }
 
@@ -143,6 +168,16 @@ ion-title ion-icon {
     border: 1px solid var(--ion-color-primary);
     border-radius: 12px;
     flex: 1;
+}
+
+ion-select.barra-busca {
+    --padding-start: 8px;
+}
+
+ion-select.barra-busca {
+    &::part(text), ::part(icon) {
+        color: var(--ion-color-primary);
+    }
 }
 
 .secao-busca ion-button {
@@ -172,6 +207,10 @@ ion-title ion-icon {
 }
 
 /* Utilidades */
+
+.icone-grande {
+    font-size: 30px;
+}
 
 .section:not(:last-child) {
     margin-bottom: 15px;

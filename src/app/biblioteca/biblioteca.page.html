@@ -79,9 +79,27 @@
 
 <ion-footer>
     <ion-toolbar>
-        <div class="secao-busca">
-            <ion-searchbar placeholder="Procurar Livros" (ionInput)="filtrarLivros($event)"
-                class="barra-busca"></ion-searchbar>
+        <div class="secao-filtros">
+            
+            <div class="secao-busca">
+                <ion-searchbar placeholder="Procurar Livros" (ionInput)="filtrarLivros($event)"
+                    class="barra-busca"></ion-searchbar>
+                
+                <ion-button class="botao-contorno" (click)="exibirFiltroGenero = !exibirFiltroGenero">
+                    <ion-icon slot="icon-only" [name]="exibirFiltroGenero ? 'funnel' : 'funnel-outline'"></ion-icon>
+                </ion-button>
+            </div>
+
+            @if (exibirFiltroGenero) {
+                <div style="animation: slideDown 0.2s ease-out; margin-top: 8px">
+                    <ion-select placeholder="Filtrar por Género" [(ngModel)]="generoFiltro" interface="popover" toggle-icon="chevron-down-outline" class="barra-busca">
+                        <ion-select-option value="">Todos os géneros</ion-select-option>
+                        @for (genero of generos; track genero) {
+                            <ion-select-option [value]="genero">{{ genero }}</ion-select-option>
+                        }
+                    </ion-select>
+                </div>
+            }
         </div>
     </ion-toolbar>
 </ion-footer>

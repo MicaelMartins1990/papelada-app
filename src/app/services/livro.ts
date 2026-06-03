@@ -11,9 +11,8 @@ import { Capacitor } from '@capacitor/core';
 export class LivroService {
     private _storage: Storage | null = null;
 
-    // Temporário
-    private capaUrl = 'assets/data/capa-teste.txt';
     private livrosUrl = 'assets/data/livros.json';
+    private generosUrl = 'assets/data/generos.json';
 
     constructor(private http: HttpClient, private storage: Storage) {
         this.init();
@@ -49,14 +48,15 @@ export class LivroService {
         return livrosGuardados;
     }
 
-    public async registarLivro(titulo: string, autor: string, capa: string): Promise<Livro> {
+    public async registarLivro(titulo: string, autor: string, capa: string, generos: string[] = []): Promise<Livro> {
         const livros = await this.getLivros();
         const novoLivro: Livro = {
             id: this.getNovoId(livros),
             titulo: titulo,
             autor: autor,
             capa: capa,
-            inicial: false
+            inicial: false,
+            generos: generos
         };
         livros.push(novoLivro);
         await this._storage?.set('livros', livros);
@@ -75,18 +75,22 @@ export class LivroService {
 
     private async carregarLivrosIniciais(): Promise<Livro[]> {
         const livros = await firstValueFrom(this.http.get<any[]>(this.livrosUrl));
-        const livrosNormalizados = (livros || []).map(livro => this.normalizarLivro(livro));
-        livrosNormalizados.forEach(livro => livro.inicial = true);
+        const livrosNormalizados = (livros || []).map(livro => this.normalizarLivro(livro, true));
         return livrosNormalizados;
     }
 
-    private normalizarLivro(livro: any): Livro {
+    private normalizarLivro(livro: any, inicial: boolean = false): Livro {
         return {
             id: Number(livro.id),
             titulo: livro.titulo,
             autor: livro.autor,
             capa: livro.capa,
-            inicial: livro.inicial || false
+            inicial: inicial,
+            generos: livro.generos || []
         };
+    }
+
+    public async getGeneros(): Promise<string[]> {
+        return await firstValueFrom(this.http.get<string[]>(this.generosUrl));
     }
 }
