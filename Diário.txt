@@ -241,4 +241,6 @@ Melhorar a UI e a coerência visual de algumas páginas e corrigir o "Editar Per
 
 # Por fazer:  
 - Atualizar icon para aperto de mão
+
+#Flávio fernandes
 ------------------------------------------------------------------------------------------------------------------------------------
