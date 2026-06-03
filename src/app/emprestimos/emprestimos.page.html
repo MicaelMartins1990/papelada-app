@@ -72,7 +72,7 @@
     }
 
     <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="botao-adicionar">
-        <ion-fab-button id="abrir-adicionar-amigo" class="botao-roxo">
+        <ion-fab-button class="botao-roxo" (click)="abrirRegisto()">
             <ion-icon class="icone-grande" name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
@@ -91,7 +91,7 @@
 </ion-footer>
 
 <!-- Modal: registar empréstimo -->
-<ion-modal [isOpen]="modalRegistoAberto" (didDismiss)="fecharRegisto()">
+<ion-modal [isOpen]="modalRegistoAberto" (didDismiss)="fecharRegisto()" class="modal-adicionar">
     <ng-template>
         <ion-header class="ion-no-border">
             <ion-toolbar color="primary">

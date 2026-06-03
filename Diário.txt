@@ -261,3 +261,21 @@ Melhorar a UI e a coerência visual de algumas páginas e corrigir o "Editar Per
 # Lucas Israel
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 3 de junho de 2026
+
+# Objetivo: Adicionar a funcionalidade de associar livros a géneros literários
+
+# Desenvolvido:
+
+- Criado o ficheiro generos.json, com uma lista de géneros literários disponibilizados pela aplicação.
+- Alterados os models Livro e LivroExibido para incluir um campo "generos", um array de strings 
+- Adicionada filtragem de livros por género, acessível por um botão de filtros onde o botão de registar livros encontrava-se anteriormente
+- Transformados os botões de registar livros, adicionar amigos e criar empréstimos em botões flutuantes sobre o conteúdo, para dar espaço ao botão de filtros
+- Adicionada a seleção de géneros ao registar um livro
+- Adicionados géneros aos livros iniciais em livros.json
+- Estilização dos modals para melhor corresponder aos protótipos
+
+# Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------
