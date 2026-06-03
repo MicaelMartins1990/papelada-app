@@ -96,6 +96,11 @@ export class AuthService {
         return this.utilizadorLogado !== null;
     }
 
+    // Temporário, somente para desenvolvimento
+    public async clearData() {
+        await this._storage?.clear()
+    }
+
     private getNovoId(utilizadores: Utilizador[]): number {
         return (utilizadores[utilizadores.length - 1]?.id || 0) + 1
     }

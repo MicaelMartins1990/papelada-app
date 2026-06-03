@@ -87,29 +87,27 @@
 
                 <div class="ion-text-center ion-margin-bottom">
                     <div
-                        style="width: 120px; height: 160px; margin: 0 auto; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        style="width: 120px; height: 160px; margin: 0 auto 12px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
                         @if (imagemCapa) {
                         <img [src]="imagemCapa" style="width: 100%; height: 100%; object-fit: cover;" />
                         } @else {
                         <ion-icon name="image-outline" style="font-size: 40px; color: #999;"></ion-icon>
                         }
                     </div>
-                    <ion-button fill="clear" (click)="tirarFoto()">
+                    <ion-button class="botao-roxo" (click)="tirarFoto()">
                         <ion-icon slot="start" name="camera"></ion-icon>
                         Fotografar Capa
                     </ion-button>
                 </div>
 
-                <ion-list lines="none">
-                    <ion-item class="input-group">
-                        <ion-input class="text-input" [(ngModel)]="tituloInput" label="Título" type="text"
-                            fill="outline" placeholder="Título do livro"></ion-input>
-                    </ion-item>
-                    <ion-item class="input-group ion-margin-top">
-                        <ion-input class="text-input" [(ngModel)]="autorInput" label="Autor" type="text" fill="outline"
-                            placeholder="Autor do livro"></ion-input>
-                    </ion-item>
-                </ion-list>
+                <div class="input-group">
+                    <ion-label>Título</ion-label>
+                    <ion-input class="text-input" [(ngModel)]="tituloInput" type="text" fill="outline" placeholder="Título do livro"></ion-input>
+                </div>
+                <div class="input-group ion-margin-top">
+                    <ion-label>Autor</ion-label>
+                    <ion-input class="text-input" [(ngModel)]="autorInput" type="text" fill="outline" placeholder="Autor do livro"></ion-input>
+                </div>
 
                 <ion-grid class="ion-margin-top">
                     <ion-row>

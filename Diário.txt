@@ -244,3 +244,20 @@ Melhorar a UI e a coerência visual de algumas páginas e corrigir o "Editar Per
 
 #Flávio fernandes
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 3 de junho de 2026
+
+# Objetivo: Adicionar a funcionalidade de fotografas capas de livros com a câmera
+
+# Desenvolvido:
+
+- Capas dos livros iniciais agora são salvas localmente (anteriormente eram links para sites de livros)
+- Adicionado o campo "inicial" à interface Livro, para distinguir os livros iniciais dos livros fotografados
+- Importação de Capacitor para aceder a funcionalidades do dispositivo. Com destaque, a câmera e o sistema de ficheiros
+- Criadas funções para fotografar, comprimir e redimensionar fotos
+- Conversão do menu de registo de livro para um Modal, com um novo botão para fotografar a capa
+- Configuração da aplicação para ser executável em dispositivos Android (levou bastante tempo)
+
+# Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------

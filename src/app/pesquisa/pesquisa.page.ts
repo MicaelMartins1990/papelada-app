@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Livro } from '../models/livro';
 import { Posse } from '../enums/posse';
-import { Camera } from '@capacitor/camera';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { Resultado } from '../enums/resultado';
 
 type FiltroDescobrir = 'todos' | 'desejos';
@@ -162,9 +162,10 @@ export class PesquisaPage implements OnInit {
 
     public async carregarCapa(): Promise<Resultado> {
         try {
-            const image = await Camera.takePhoto({
+            const image = await Camera.getPhoto({
                 quality: 60,
-                includeMetadata: false,
+                allowEditing: false,
+                resultType: CameraResultType.Uri
             });
 
             if (!image.webPath) return Resultado.NAO_ENCONTRADO;
