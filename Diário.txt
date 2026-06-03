@@ -169,3 +169,26 @@ Estruturar a página de Perfil e integrá-la com a nova reestruturação de Aute
 
 # Problemas: 
 - Devido à natureza das Tabs no Ionic, a utilização do `ngOnInit` faz com que as estatísticas do perfil não atualizem dinamicamente ao navegar entre ecrãs, exigindo um recarregamento da página. Planear a refatoração para resolver este problema visual.
+
+#Micael Martins
+------------------------------------------------------------------------------------------------------------------------------------
+# 3 de Junho
+
+# Objetivo:  
+Voltar a implementar a funcionalidade de emprestimos de livro mas desta vez com as novas estruturas de dados que foram feitas no refactor do codigo como por exemplo estrutura LivroPessoal.  
+
+# Desenvolvido:  
+- Página de emprestimos mostra agora uma lista de emprestimos com data e estado e nome con link para o perfil do amigo. 
+- Ao carregar no bota "+" abre modal para adcionbar emprestimo. 
+- Pagina de detalhe de emprestimo com ações para concluir emprestimo e alterar data
+- uso de ionic storage para guardar emprestimos 
+- aquela label que aparece "ativo" tem diferentes cores pror ugencia, se a data for hoje fica amarelo e se ja estiver ultrapassado fica vermelho
+
+# Problemas  
+- O Ionic Storage serializa as datas para texto, foi preciso voltar a convertê-las para Date na leitura, senão os estados de urgência (atrasado/hoje) falhavam.
+
+# Por desenvolver:  
+- De momento registar emprestimos nao tem a sua estrutura de dados para guardar historico de emprestimos, é uma possívl funcionalidade futura. 
+
+#Flávio Fernandes
+------------------------------------------------------------------------------------------------------------------------------------

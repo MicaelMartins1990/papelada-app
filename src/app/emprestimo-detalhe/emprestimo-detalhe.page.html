@@ -1,0 +1,121 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/tabs/emprestimos" text=""></ion-back-button>
+        </ion-buttons>
+        <ion-title>Empréstimo</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+    <!-- Estado: a carregar -->
+    @if (aCarregar) {
+    <div class="estado-info">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <p>A carregar empréstimo...</p>
+    </div>
+    }
+
+    <!-- Estado: empréstimo não encontrado -->
+    @if (!aCarregar && !emprestimoEncontrado) {
+    <div class="estado-info">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>Este empréstimo já não está ativo.</p>
+        <ion-button fill="clear" (click)="voltar()">Voltar aos empréstimos</ion-button>
+    </div>
+    }
+
+    <!-- Detalhe do empréstimo -->
+    @if (!aCarregar && emprestimoEncontrado) {
+
+    <!-- Livro -->
+    <section class="seccao">
+        <h2 class="titulo-seccao">Livro</h2>
+        <div class="cartao">
+            <div class="capa">
+                @if (livro?.capa) {
+                <img [src]="livro?.capa" [alt]="livro?.titulo" />
+                } @else {
+                <div class="capa-vazia" aria-hidden="true"><ion-icon name="book"></ion-icon></div>
+                }
+            </div>
+            <div class="info">
+                <h3>{{ livro?.titulo }}</h3>
+                <p>{{ livro?.autor }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinatário -->
+    <section class="seccao">
+        <h2 class="titulo-seccao">Destinatário</h2>
+        <div class="cartao">
+            @if (recipiente) {
+            <div class="amigo-avatar" aria-hidden="true">{{ recipiente.nome.charAt(0) }}</div>
+            <div class="info">
+                <h3>{{ recipiente.nome }}</h3>
+                <p class="username">{{ recipiente.username }}</p>
+            </div>
+            } @else {
+            <div class="amigo-avatar amigo-avatar-vazio" aria-hidden="true">?</div>
+            <div class="info">
+                <h3>Amigo removido</h3>
+                <p class="username-vazio">Já não está na tua lista de amigos</p>
+            </div>
+            }
+        </div>
+    </section>
+
+    <!-- Data de Devolução -->
+    <section class="seccao">
+        <h2 class="titulo-seccao">Data de Devolução</h2>
+        <div class="cartao cartao-data">
+            <ion-icon name="calendar-outline" color="primary"></ion-icon>
+            <span>{{ formatarDataLonga(dataDevolucao) }}</span>
+        </div>
+    </section>
+
+    <!-- Ações Rápidas -->
+    <section class="seccao">
+        <h2 class="titulo-seccao">Ações Rápidas</h2>
+        <div class="acoes">
+            <ion-button class="botao-roxo botao-texto" expand="block" (click)="concluir()">
+                Concluir Empréstimo
+            </ion-button>
+            <ion-button class="botao-roxo botao-texto" expand="block" (click)="abrirAlterarData()">
+                Alterar Data de Devolução
+            </ion-button>
+        </div>
+    </section>
+    }
+
+</ion-content>
+
+<!-- Modal: alterar data de devolução -->
+<ion-modal [isOpen]="modalDataAberto" (didDismiss)="fecharAlterarData()">
+    <ng-template>
+        <ion-header class="ion-no-border">
+            <ion-toolbar color="primary">
+                <ion-title>Alterar Data de Devolução</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="fecharAlterarData()" aria-label="Fechar">
+                        <ion-icon slot="icon-only" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding">
+            <div class="cartao-data-picker">
+                <ion-datetime presentation="date" [min]="hojeIso" locale="pt-PT"
+                    [(ngModel)]="novaData" (ionChange)="erroData = ''" [firstDayOfWeek]="1"></ion-datetime>
+            </div>
+            @if (erroData) { <p class="erro">{{ erroData }}</p> }
+
+            <ion-button expand="block" class="botao-roxo botao-texto botao-submeter" (click)="confirmarAlterarData()">
+                Guardar nova data
+            </ion-button>
+        </ion-content>
+    </ng-template>
+</ion-modal>

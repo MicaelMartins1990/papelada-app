@@ -12,5 +12,6 @@ export interface LivroPessoal {
 
 export interface Emprestimo {
     idRecipiente: number,
+    dataEmprestimo: Date,
     dataDevolucao: Date
 }
