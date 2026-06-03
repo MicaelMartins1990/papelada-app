@@ -98,6 +98,8 @@ export class DetalhePage implements OnInit {
         this.posse = registo?.posse ?? Posse.NENHUMA;
         this.lido = registo?.lido ?? false;
         this.temEmprestimo = !!registo?.emprestimo;
+        // Dica permanente enquanto o livro não está lido: avaliar fica bloqueado.
+        this.mensagemErroAvaliacao = this.lido ? '' : 'Marca o livro como lido para o avaliares.';
     }
 
     // --- Estado derivado para o template ---
@@ -234,6 +236,12 @@ export class DetalhePage implements OnInit {
 
     public abrirAvaliacao() {
         if (!this.livro) {
+            return;
+        }
+
+        // Avaliar só é possível depois de o livro estar marcado como lido.
+        if (!this.lido) {
+            this.mensagemErroAvaliacao = 'Marca o livro como lido para o avaliares.';
             return;
         }
 
