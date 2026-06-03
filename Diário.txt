@@ -124,17 +124,31 @@ Optamos por reverter essas alteracoes guardando as numa branch local separada pa
 
 # 2 de junho de 2026
 
+# Objetivo: Permitir que o utilizador adicione amigos e consultar o perfil de seus amigos
+
+# Desenvolvido:
+
+- Criação do UtilizadorService, que gere informações de utilizadores separadamente à autenticação.
+- Implementação da página amigos, com uma lista de amigos, a funcionalidade de adicionar um amigo por username, e a consulta do perfil de uma amigo.
+- Criação da página de detalhes de um amigo, que exibe seu nome, dados de leitura (nº de livros possuídos, emprestados e desejados), e botões para emprestar um livro ou remover o amigo.
+- Estilização adicional para tornar a interface mais parecida com os protótipo.
+
+# Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------
+# 2 de junho de 2026
+
 Objetivo:  
-Implementar funcionalidade de avaliação e comentario de livro
+Implementar funcionalidade de avaliação e comentário de livro
 
 Desenvolvido: 
 - Pagina de detalhe de livro bom botoes para marcar como lido etc mas ainda sem funcionar
 - Avaliação e media de avalição 
-- Navegar para pagina de comentarios do livrro comentario/:id 
+- Navegar para pagina de comentários do livrro comentário/:id 
 
 A melhorar:  
 - Heuristicas de nielson que mostram o estado real da app ao utilizador 
-- Pagina de comentario deve se transformar em um modal 
+- Pagina de comentário deve se transformar em um modal 
 
 
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -142,14 +156,14 @@ A melhorar:
 # 2 de Junho 
 
 Objetivo:  
-Terminar pagina de comentario de livro 
+Terminar pagina de comentário de livro 
 
 Desenvolvido: 
-- Pagina de comentarios agora aparece o contexto do livro para ir de encontro às heuristicas 
+- Pagina de comentários agora aparece o contexto do livro para ir de encontro às heuristicas 
 - Criada secção a tua avaliação que permite editar ou apagar
-- Nos comentarios o comentario do utilizador aparrece uma etiqueta com "tu" para se destacar de outros 
+- Nos comentários o comentário do utilizador aparrece uma etiqueta com "tu" para se destacar de outros 
 - Esterlas ficam amarelas ao selecionar nelas para feedback visual 
-- Ordenação de comentarios por data de publicação
+- Ordenação de comentários por data de publicação
 
 Por desenvolver:  
 - Funcionalidaes de botoes de ações rapidas
@@ -204,7 +218,7 @@ Voltar a implementar a funcionalidade de emprestimos de livro mas desta vez com 
 - Confirmações antes de remover livros de onde quer que seja para o utilizador nao clicar sem querer.
 
 # A fazer num proximo commit: 
-- Melhorar UI de pagiana de detalhes livro e badges que aparecem no card livro individual. 
+- Melhorar UI de pagina de detalhes livro e badges que aparecem no card livro individual. 
 
 #Flávio Fernandes
 

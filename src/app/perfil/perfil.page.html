@@ -1,10 +1,10 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar style="--background: transparent;">
-    <ion-title style="font-weight: bold; font-size: 20px; color: #8c5a47;">
-      <ion-icon name="person-circle" style="margin-right: 5px;"></ion-icon>
-      O Meu Perfil
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-title>
+            <ion-icon name="person-circle"></ion-icon>
+            O Meu Perfil
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
@@ -14,47 +14,31 @@
     <h2 style="font-weight: bold; color: #333; margin-bottom: 0;">{{ nomeUtilizador || 'A carregar...' }}</h2>
   </div>
 
-  <h3 style="font-weight: bold; color: #8c5a47; font-size: 18px; margin-bottom: 15px;">A Minha Atividade</h3>
-  <ion-row>
-    <ion-col size="4">
-      <ion-card style="margin: 0; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-        <ion-card-header>
-          <ion-icon name="library" style="font-size: 30px; color: #8c5a47;"></ion-icon>
-        </ion-card-header>
-        <ion-card-content style="padding-top: 0;">
-          <h1 style="font-weight: bold; font-size: 24px; color: #333; margin: 0;">{{ totalPossuidos }}</h1>
-          <p style="font-size: 12px; color: #666;">Possuídos</p>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-
-    <ion-col size="4">
-      <ion-card style="margin: 0; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-        <ion-card-header>
-          <ion-icon name="swap-horizontal" style="font-size: 30px; color: #2dd36f;"></ion-icon>
-        </ion-card-header>
-        <ion-card-content style="padding-top: 0;">
-          <h1 style="font-weight: bold; font-size: 24px; color: #333; margin: 0;">{{ totalEmprestados }}</h1>
-          <p style="font-size: 12px; color: #666;">Emprestados</p>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-    
-    <ion-col size="4">
-      <ion-card style="margin: 0; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-        <ion-card-header>
-          <ion-icon name="bookmark" style="font-size: 30px; color: #ffc409;"></ion-icon>
-        </ion-card-header>
-        <ion-card-content style="padding-top: 0;">
-          <h1 style="font-weight: bold; font-size: 24px; color: #333; margin: 0;">{{ totalDesejos }}</h1>
-          <p style="font-size: 12px; color: #666;">Desejos</p>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-  </ion-row>
+  @if (dadosLeitura) {
+    <ion-grid class="dados-leitura">
+        <ion-row>
+            <ion-col text-center>
+                <ion-icon name="library"></ion-icon>
+                <div> {{ dadosLeitura.livrosPossuidos }} livro(s) possuídos </div>
+            </ion-col>
+            <ion-col text-center>
+                <ion-icon name="receipt"></ion-icon>
+                <div> {{ dadosLeitura.livrosEmprestados }} livro(s) emprestados </div>
+            </ion-col>
+            <ion-col text-center>
+                <ion-icon name="heart"></ion-icon>
+                <div> {{ dadosLeitura.livrosDesejados }} na lista de desejos </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    } @else {
+    <div class="dados-leitura">
+        <p>Erro ao carregar dados de leitura.</p>
+    </div>
+    }
 
   <div style="margin-top: 50px;">
-    <ion-button expand="block" color="danger" (click)="logout()" style="--border-radius: 8px; height: 50px; font-weight: bold;">
+    <ion-button expand="block" class="botao-vermelho" (click)="logout()">
       <ion-icon slot="start" name="log-out-outline"></ion-icon>
       Logout
     </ion-button>
