@@ -25,8 +25,24 @@ export class LivroPessoalService {
 
     public async getLivroPessoal(idUtilizador: number): Promise<LivroPessoal[]> {
         await this.init();
-        const livroPesosal = await this._storage?.get(this.getChaveUtilizador(idUtilizador));
-        return livroPesosal || [];
+        const livroPesosal: LivroPessoal[] = await this._storage?.get(this.getChaveUtilizador(idUtilizador)) || [];
+        return livroPesosal.map(registo => this.normalizarEmprestimo(registo));
+    }
+
+    /**
+     * O Ionic Storage serializa as datas para string. Ao ler, voltamos a
+     * convertê-las para `Date` para os cálculos de urgência funcionarem.
+     * Empréstimos antigos sem `dataEmprestimo` usam a data de devolução como recurso.
+     */
+    private normalizarEmprestimo(registo: LivroPessoal): LivroPessoal {
+        if (registo.emprestimo) {
+            const emprestimo = registo.emprestimo;
+            emprestimo.dataDevolucao = new Date(emprestimo.dataDevolucao);
+            emprestimo.dataEmprestimo = emprestimo.dataEmprestimo
+                ? new Date(emprestimo.dataEmprestimo)
+                : new Date(emprestimo.dataDevolucao);
+        }
+        return registo;
     }
 
     private async saveLivrosPessoais(idUtilizador: number, livroPesosal: LivroPessoal[]): Promise<void> {
@@ -100,10 +116,36 @@ export class LivroPessoalService {
         
         const novoEmprestimo: Emprestimo = {
             idRecipiente: idRecipiente,
+            dataEmprestimo: new Date(),
             dataDevolucao: dataDevolucao
         };
         livroPessoal.emprestimo = novoEmprestimo;
-        
+
+        await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
+    }
+
+    /**
+     * Conclui um empréstimo ativo: o livro volta a ficar disponível para emprestar.
+     * O estado de leitura do livro mantém-se inalterado.
+     */
+    public async concluirEmprestimo(idUtilizador: number, idLivro: number): Promise<void> {
+        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livroPessoal = livrosPessoais.find(l => l.idLivro === idLivro);
+        if (!livroPessoal) return;
+
+        livroPessoal.emprestimo = null;
+        await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
+    }
+
+    /**
+     * Atualiza a data de devolução prevista de um empréstimo ativo.
+     */
+    public async atualizarDataDevolucao(idUtilizador: number, idLivro: number, novaData: Date): Promise<void> {
+        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livroPessoal = livrosPessoais.find(l => l.idLivro === idLivro);
+        if (!livroPessoal || !livroPessoal.emprestimo) return;
+
+        livroPessoal.emprestimo.dataDevolucao = novaData;
         await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
     }
 }

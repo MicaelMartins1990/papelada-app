@@ -30,7 +30,16 @@ const routes: Routes = [
             },
             {
                 path: 'emprestimos',
-                loadChildren: () => import('../emprestimos/emprestimos.module').then(m => m.EmprestimosPageModule)
+                children: [
+                    {
+                        path: '',
+                        loadChildren: () => import('../emprestimos/emprestimos.module').then(m => m.EmprestimosPageModule)
+                    },
+                    {
+                        path: 'detalhe/:idLivro',
+                        loadChildren: () => import('../emprestimo-detalhe/emprestimo-detalhe.module').then(m => m.EmprestimoDetalhePageModule)
+                    },
+                ]
             },
             {
                 path: 'perfil',
