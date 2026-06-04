@@ -36,3 +36,19 @@ Criação de um ícone próprio para a app:
 Não houve auxílio de IA
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+#Micael Martins
+
+Criação das formas geometricas para alterar no perfil:
+Houve ajuda de IA, para perceber como se conseguia criar através de código.
+
+Correção do problema para não ter que ir sempre para o login:
+Pedido de ajuda para perceber como codificar de forma a não aparecer sempre a página de login
+
+Em alguns estilos de página para ficarem mais direitos:
+Utilizacao de IA
+
+No resto das tarefas não foi usado IA
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
