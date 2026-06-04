@@ -89,6 +89,30 @@ Solução:
 
 # Flávio Fernandes
 
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 1 de junho de 2026, 21:00H 
+
+Objetivo:
+Implementar a Tarefa 3 do protótipo funcional: registar o empréstimo de um livro.
+
+Atividades realizadas:
+- Implementei a página de Empréstimos;
+- Adicionei um formulário para escolher o livro, indicar a pessoa e definir a data de devolução;
+- Usei o LivroService já existente para registar o empréstimo;
+- Adicionei uma lista de empréstimos ativos com o livro, a pessoa e a data prevista de devolução;
+- Testei o fluxo principal da tarefa para confirmar que o empréstimo fica visível depois de ser guardado.
+
+Problemas:
+- Algumas heurísticas de usabilidade ainda não estão totalmente aplicadas;
+- A mensagem de erro do formulário ainda é genérica e devia indicar com mais precisão qual o campo em falta.
+
+Solução:
+- Mantive a implementação simples para um primeiro incremento na aplicação;
+- Adicionei validação básica para impedir guardar um empréstimo incompleto sendo que a mensagem de erro deve fazer veriicação campo a campo para cumprir as heuristicas de nielson ;
+- Deixei melhorias planeadas como a forma como é lsitada os livros o planeado é abrir um modal porque se a lista for longa não faz sentido abrir uma lsita de seleção tao longa; 
+
+# Flávio Fernandes
 --------------------------------------------------------------------------------------------------------------------------------
 
 # 1 de junho de 2026
