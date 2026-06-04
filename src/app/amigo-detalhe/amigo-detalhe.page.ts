@@ -95,6 +95,11 @@ export class AmigoDetalhePage implements OnInit {
 
     // --- Ação: empréstimo ---
 
+    /** Amigo pré-fixado para o formulário de empréstimo (o amigo deste perfil). */
+    public get amigoFixoEmprestimo(): Utilizador | null {
+        return this.amigo;
+    }
+
     public abrirEmprestimo() {
         this.modalEmprestimoAberto = true;
     }
@@ -105,5 +110,6 @@ export class AmigoDetalhePage implements OnInit {
 
     public async onEmprestimoRegistado() {
         this.modalEmprestimoAberto = false;
+        await this.showToast('Empréstimo registado com sucesso.');
     }
 }

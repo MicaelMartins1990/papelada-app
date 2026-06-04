@@ -100,6 +100,11 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
     --padding-start: 12px;
     --inner-padding-end: 12px;
+
+    .amigo-avatar {
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
 }
 
 .cartao-data {

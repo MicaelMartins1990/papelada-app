@@ -18,7 +18,7 @@
 }
 
 <!-- Pré-condição: sem amigos -->
-@if (!semLivrosDisponiveis && amigos.length === 0) {
+@if (!semLivrosDisponiveis && !temAmigoFixo && amigos.length === 0) {
 <div class="estado-info">
     <ion-icon name="people-outline"></ion-icon>
     <p>Ainda não tens amigos.</p>
@@ -63,16 +63,26 @@
     <!-- Destinatário -->
     <div class="campo">
         <label class="rotulo">Destinatário</label>
-        <ion-item lines="none" class="cartao-selecao">
-            <ion-select [(ngModel)]="idAmigoSelecionado" name="amigo" interface="action-sheet"
-                placeholder="Escolher amigo" cancelText="Cancelar" (ionChange)="erroAmigo = ''">
-                @for (amigo of amigos; track amigo.id) {
-                <ion-select-option [value]="amigo.id">
-                    {{ amigo.nome }} (&#64;{{ amigo.username }})
-                </ion-select-option>
-                }
-            </ion-select>
+        @if (amigoSelecionado) {
+        <ion-item lines="none" class="cartao-selecao" [button]="!temAmigoFixo"
+            (click)="abrirPickerAmigo()">
+            <div class="amigo-avatar" aria-hidden="true" slot="start">
+                {{ amigoSelecionado.nome.charAt(0) }}
+            </div>
+            <ion-label class="ion-text-wrap">
+                <h2>{{ amigoSelecionado.nome }}</h2>
+                <p>&#64;{{ amigoSelecionado.username }}</p>
+            </ion-label>
+            @if (!temAmigoFixo) {
+            <ion-icon slot="end" name="swap-horizontal-outline" color="medium"></ion-icon>
+            }
         </ion-item>
+        } @else {
+        <ion-button expand="block" fill="outline" class="botao-escolher" (click)="abrirPickerAmigo()">
+            <ion-icon slot="start" name="person-outline"></ion-icon>
+            Escolher amigo
+        </ion-button>
+        }
         @if (erroAmigo) { <p class="erro">{{ erroAmigo }}</p> }
     </div>
 
@@ -135,6 +145,51 @@
                     <ion-label class="ion-text-wrap">
                         <h2>{{ livro.titulo }}</h2>
                         <p>{{ livro.autor }}</p>
+                    </ion-label>
+                </ion-item>
+                }
+            </ion-list>
+            }
+        </ion-content>
+    </ng-template>
+</ion-modal>
+}
+
+<!-- Modal: escolher amigo (apenas quando o amigo não está pré-fixado) -->
+@if (!temAmigoFixo) {
+<ion-modal [isOpen]="modalAmigoAberto" (didDismiss)="modalAmigoAberto = false">
+    <ng-template>
+        <ion-header class="ion-no-border">
+            <ion-toolbar color="primary">
+                <ion-title>Escolher amigo</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="fecharPickerAmigo()" aria-label="Fechar">
+                        <ion-icon slot="icon-only" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+            <ion-toolbar color="primary">
+                <ion-searchbar placeholder="Procurar por nome ou @username" (ionInput)="pesquisarAmigo($event)"
+                    color="light"></ion-searchbar>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-no-padding">
+            @if (amigosFiltrados.length === 0) {
+            <div class="estado-info">
+                <ion-icon name="search-outline"></ion-icon>
+                <p>Nenhum amigo corresponde à pesquisa.</p>
+            </div>
+            } @else {
+            <ion-list class="lista-emprestimos">
+                @for (amigo of amigosFiltrados; track amigo.id) {
+                <ion-item button detail="false" class="item-emprestimo" (click)="selecionarAmigo(amigo)">
+                    <div class="amigo-avatar" aria-hidden="true" slot="start">
+                        {{ amigo.nome.charAt(0) }}
+                    </div>
+                    <ion-label class="ion-text-wrap">
+                        <h2>{{ amigo.nome }}</h2>
+                        <p>&#64;{{ amigo.username }}</p>
                     </ion-label>
                 </ion-item>
                 }

@@ -29,6 +29,8 @@ export class FormEmprestimoComponent implements OnInit {
     @Input() idUtilizador!: number;
     /** Quando definido, o livro fica fixo e o picker de livro não é apresentado. */
     @Input() livroFixo: LivroDisponivel | null = null;
+    /** Quando definido, o amigo fica fixo e o picker de amigo não é apresentado. */
+    @Input() amigoFixo: Utilizador | null = null;
 
     /** Emitido após registar o empréstimo com sucesso. */
     @Output() registado = new EventEmitter<void>();
@@ -41,6 +43,9 @@ export class FormEmprestimoComponent implements OnInit {
 
     public modalLivroAberto: boolean = false;
     public termoPesquisaLivro: string = '';
+
+    public modalAmigoAberto: boolean = false;
+    public termoPesquisaAmigo: string = '';
 
     public livroSelecionado: LivroDisponivel | null = null;
     public idAmigoSelecionado: number | null = null;
@@ -92,6 +97,11 @@ export class FormEmprestimoComponent implements OnInit {
             this.livroSelecionado = this.livroFixo;
         }
 
+        // Com amigo pré-fixado, esse é o amigo selecionado e o picker não é usado.
+        if (this.amigoFixo) {
+            this.idAmigoSelecionado = this.amigoFixo.id;
+        }
+
         this.aCarregar = false;
     }
 
@@ -99,12 +109,23 @@ export class FormEmprestimoComponent implements OnInit {
         return this.livroFixo !== null;
     }
 
+    public get temAmigoFixo(): boolean {
+        return this.amigoFixo !== null;
+    }
+
     public get semLivrosDisponiveis(): boolean {
         return !this.temLivroFixo && this.livrosDisponiveis.length === 0;
     }
 
+    public get amigoSelecionado(): Utilizador | null {
+        if (this.amigoFixo) return this.amigoFixo;
+        if (this.idAmigoSelecionado == null) return null;
+        return this.amigos.find(amigo => amigo.id === this.idAmigoSelecionado) ?? null;
+    }
+
     public get podeMostrarFormulario(): boolean {
-        return this.amigos.length > 0 && (this.temLivroFixo || this.livrosDisponiveis.length > 0);
+        return (this.temAmigoFixo || this.amigos.length > 0) &&
+            (this.temLivroFixo || this.livrosDisponiveis.length > 0);
     }
 
     public get livrosDisponiveisFiltrados(): LivroDisponivel[] {
@@ -133,6 +154,34 @@ export class FormEmprestimoComponent implements OnInit {
         this.livroSelecionado = livro;
         this.erroLivro = '';
         this.modalLivroAberto = false;
+    }
+
+    public get amigosFiltrados(): Utilizador[] {
+        const termo = this.termoPesquisaAmigo.toLowerCase().trim().replace(/^@/, '');
+        if (!termo) return this.amigos;
+        return this.amigos.filter(amigo =>
+            amigo.nome.toLowerCase().includes(termo) ||
+            amigo.username.toLowerCase().includes(termo));
+    }
+
+    public abrirPickerAmigo() {
+        if (this.temAmigoFixo) return;
+        this.termoPesquisaAmigo = '';
+        this.modalAmigoAberto = true;
+    }
+
+    public fecharPickerAmigo() {
+        this.modalAmigoAberto = false;
+    }
+
+    public pesquisarAmigo(event: any) {
+        this.termoPesquisaAmigo = event?.target?.value ?? '';
+    }
+
+    public selecionarAmigo(amigo: Utilizador) {
+        this.idAmigoSelecionado = amigo.id;
+        this.erroAmigo = '';
+        this.modalAmigoAberto = false;
     }
 
     public cancelar() {
