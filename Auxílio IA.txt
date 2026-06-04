@@ -1,0 +1,38 @@
+# Lucas Israel
+
+Todos os casos em que houve auxílio de IA passaram por revisão manual antes de serem de fato implementados.
+
+Criar conta, e login:
+Não houve auxílio de IA
+
+Preparação do Ionic Storage:
+Não houve auxílio de IA
+
+Separação de dados de um livro por utilizador:
+Auxílio de IA para refatorar algumas das páginas mais rapidamente, pois o processo de refatoração estava a impedir que outros membros trabalhassem no código em paralelo
+
+Adicionar, listar e consultar amigos:
+Não houve auxílio de IA
+
+Fotografia e armazenamento de capas de livro:
+Auxílio de IA para considerar diferentes formas de armazenamento de imagens localmente
+
+Preparação da app para Android:
+Não houve auxílio de IA
+
+Atribuir e filtrar géneros literários:
+Auxílio de IA para definir os dropdowns de escolha múltipla
+
+Compartilhamento de livros por e-mail/redes sociais:
+Auxílio de IA para solucionar erros ao abrir a app com o protocolo customizado
+
+Estilização final da aplicação para corresponder ao protótipo:
+Não houve auxílio de IA
+
+Implementar botão de voltar nativo do Android e bloquear rotação do ecrã:
+Não houve auxílio de IA
+
+Criação de um ícone próprio para a app:
+Não houve auxílio de IA
+
+------------------------------------------------------------------------------------------------------------------------------------
