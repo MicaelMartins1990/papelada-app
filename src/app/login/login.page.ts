@@ -14,8 +14,25 @@ export class LoginPage {
 
     username = '';
     password = '';
+    verificandoSessao = true;
 
     constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
+
+    async ionViewWillEnter() {
+        this.verificandoSessao = true; // Garante que esconde sempre que entramos aqui
+        // Espera que a BD inicie
+        await this.authService.esperarPronto();
+        
+        // Verifica se há um ID de utilizador guardado
+        const idAtual = this.authService.getIdUtilizador();
+
+        if (idAtual !== null) {
+            // Se houver, salta diretamente para a app
+            this.router.navigate(['/tabs/pesquisa'], { replaceUrl: true });
+        }else {
+            this.verificandoSessao = false; // Mostra o formulário de login
+        }
+    }
 
     async login() {
         if (!this.username || !this.password) {
@@ -29,7 +46,7 @@ export class LoginPage {
                 this.router.navigateByUrl('/tabs/pesquisa');
                 break;
             case Resultado.NAO_ENCONTRADO:
-                this.showToast('Username ou password estão incorretos.');
+                this.showToast('Utilizador ou palavra-passe estão incorretos.');
                 break;
             default:
                 this.showToast('Erro desconhecido ao iniciar sessão');
