@@ -358,3 +358,32 @@ Desenvolvido:
 # Lucas Israel
 
 ------------------------------------------------------------------------------------------------------------------------------------
+# 4 de Junho de 2026
+
+Objetivo: Melhoramento da zona de perfil
+
+#Desenvolvido:
+
+- É possível escolher uma forma diferente na página
+
+Objetivo: Linguagem toda uniforme
+
+#Desenvolvido:
+
+- O texto foi colocado todo em português.
+
+Objetivo: Correção do Iniciar Sessão
+
+#Desenvolvido:
+
+- Depois de sair da aplicação não volta para a página de login se já tivermos logado.
+
+# Micael Martis
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
