@@ -44,7 +44,8 @@
     <ion-grid class="botao-grelha">
         <ion-row>
             <ion-col text-center>
-                <ion-button class="botao-roxo botao-texto ion-margin-top" expand="block">
+                <ion-button class="botao-roxo botao-texto ion-margin-top" expand="block"
+                    (click)="abrirEmprestimo()">
                     Emprestar Livro
                 </ion-button>
             </ion-col>
@@ -64,3 +65,25 @@
     </div>
     }
 </ion-content>
+
+<!-- Modal: emprestar livro a este amigo (amigo pré-fixado) -->
+<ion-modal [isOpen]="modalEmprestimoAberto" (didDismiss)="fecharEmprestimo()">
+    <ng-template>
+        <ion-header class="ion-no-border">
+            <ion-toolbar color="primary">
+                <ion-title>Emprestar</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="fecharEmprestimo()" aria-label="Fechar">
+                        <ion-icon slot="icon-only" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            @if (modalEmprestimoAberto) {
+            <app-form-emprestimo [idUtilizador]="idUtilizador" [amigoFixo]="amigoFixoEmprestimo"
+                (registado)="onEmprestimoRegistado()" (cancelado)="fecharEmprestimo()"></app-form-emprestimo>
+            }
+        </ion-content>
+    </ng-template>
+</ion-modal>

@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { AmigoDetalhePageRoutingModule } from './amigo-detalhe-routing.module';
 
 import { AmigoDetalhePage } from './amigo-detalhe.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AmigoDetalhePageRoutingModule
+    AmigoDetalhePageRoutingModule,
+    SharedModule
   ],
   declarations: [AmigoDetalhePage]
 })
