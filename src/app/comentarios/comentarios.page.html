@@ -1,197 +1,210 @@
-<ion-header class="ion-no-border comentarios-header">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button aria-label="Voltar" (click)="voltarDetalhe()">
-        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Comentários</ion-title>
-  </ion-toolbar>
+<ion-header class="ion-no-border">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button defaultHref="/tabs/biblioteca" (click)="voltar()">
+                <ion-icon name="arrow-back-outline" class="icone-grande"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-no-padding">Comentários</ion-title>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content class="comentarios-content">
-  @if (aCarregar) {
+<ion-content class="ion-no-padding">
+    @if (aCarregar) {
     <div class="estado-vazio">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>A carregar comentários...</p>
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>A carregar comentários...</p>
     </div>
-  } @else if (!livro) {
+    } @else if (!livro) {
     <div class="estado-vazio">
-      <ion-icon name="alert-circle-outline"></ion-icon>
-      <p>Não foi possível carregar este livro.</p>
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>Não foi possível carregar este livro.</p>
     </div>
-  } @else {
-    <div class="comentarios-layout">
-      <section class="livro-contexto">
-        <img [src]="livro.capa" [alt]="livro.titulo" />
-        <div>
-          <h1>{{ livro.titulo }}</h1>
-          <p>{{ livro.autor }}</p>
-          <div class="contexto-avaliacoes">
-            <div class="estrelas pequenas" aria-label="Avaliação média do livro">
-              @for (estrela of estrelas; track estrela) {
-                <ion-icon [name]="avaliacaoMediaArredondada >= estrela ? 'star' : 'star-outline'"></ion-icon>
-              }
-            </div>
-            <span>
-              @if (totalAvaliacoes > 0) {
-                {{ mediaAvaliacoes | number:'1.1-1' }}/5 · {{ totalAvaliacoes }} {{ totalAvaliacoes === 1 ? 'avaliação' : 'avaliações' }}
-              } @else {
-                Sem avaliações
-              }
-            </span>
-          </div>
-        </div>
-      </section>
+    } @else {
 
-      <section class="secao-pessoal">
+    <ion-item class="prateleira">
+
+        <ion-thumbnail slot="start" class="capa">
+            <img [src]="livro.capa" [alt]="livro.titulo"/>
+        </ion-thumbnail>
+
+        <ion-label class="info">
+            <h3>{{ livro.titulo }}</h3>
+            <p>{{ livro.autor }}</p>
+
+            <div class="avaliacao-global">
+                <div class="estrelas ion-margin-top" aria-label="Avaliação média do livro">
+                    @for (estrela of estrelas; track estrela) {
+                    <ion-icon name="star"
+                        [class]="mediaAvaliacoes >= estrela ? 'estrela-cheia' : 'estrela-vazia'">
+                    </ion-icon>
+                    }
+                </div>
+                <p>
+                    @if (totalAvaliacoes > 0) {
+                    {{ totalAvaliacoes }} {{ totalAvaliacoes === 1 ? 'avaliação' : 'avaliações' }}
+                    } @else {
+                    Sem avaliações
+                    }
+                </p>
+            </div>
+        </ion-label>
+    </ion-item>
+
+    <section class="secao">
         <h2>A tua avaliação</h2>
 
         @if (temAvaliacaoPessoal()) {
-          <article class="avaliacao-pessoal-card">
-            <div class="avaliacao-pessoal-topo">
-              <div class="estrelas medias" aria-label="A tua avaliação">
-                @for (estrela of estrelas; track estrela) {
-                  <ion-icon [name]="(avaliacaoPessoal?.avaliacao ?? 0) >= estrela ? 'star' : 'star-outline'"></ion-icon>
-                }
-              </div>
-              <div class="botoes-pessoais">
-                <ion-button fill="clear" class="botao-editar" (click)="abrirModalComentario()">
-                  <ion-icon slot="start" name="create-outline"></ion-icon>
-                  Editar
-                </ion-button>
-                <ion-button fill="clear" class="botao-apagar-inline" (click)="apagarComentario()">
-                  <ion-icon slot="start" name="trash-outline"></ion-icon>
-                  Apagar
-                </ion-button>
-              </div>
+
+        @if (temComentarioPessoal()) {
+        <div class="comentario">
+            <div class="cabecalho">
+                <div>
+                    <p class="nome">Tu</p>
+                </div>
+                <div class="estrelas" aria-label="Avaliação pessoal do livro">
+                    @for (estrela of estrelas; track estrela) {
+                    <ion-icon name="star"
+                        [class]="(avaliacaoPessoal?.avaliacao || 0) >= estrela ? 'estrela-cheia' : 'estrela-vazia'">
+                    </ion-icon>
+                    }
+                </div>
             </div>
-
-            @if (temComentarioPessoal()) {
-              <p class="texto-comentario-pessoal">{{ avaliacaoPessoal?.comentario }}</p>
-            } @else {
-              <p class="sem-comentario">Ainda não adicionaste comentário.</p>
-            }
-          </article>
-        } @else {
-          <div class="avaliacao-pessoal-vazia">
-            <p>Ainda não avaliaste este livro.</p>
-            <ion-button class="botao-avaliar-pessoal" (click)="abrirModalComentario()">
-              Avaliar este livro
-            </ion-button>
-          </div>
+            <p class="conteudo">{{ avaliacaoPessoal?.comentario }}</p>
+        </div>
         }
-      </section>
+        @else {
+        <div class="avaliacao-container avaliacao-pessoal ion-margin-top">
+            <div>
+                <div class="estrelas" aria-label="Avaliação pessoal do livro">
+                    @for (estrela of estrelas; track estrela) {
+                    <ion-icon name="star"
+                        [class]="(avaliacaoPessoal?.avaliacao || 0) >= estrela ? 'estrela-cheia' : 'estrela-vazia'">
+                    </ion-icon>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+        <ion-row class="botao-grelha">
+            <ion-col text-center>
+                <ion-button class="botao-roxo botao-texto ion-margin-top" expand="block" (click)="abrirModalComentario()">
+                    <ion-icon slot="start" name="create-outline"></ion-icon>
+                    Editar
+                </ion-button>
+            </ion-col>
+            <ion-col text-center>
+                <ion-button class="botao-vermelho botao-texto ion-margin-top" expand="block" (click)="apagarComentario()">
+                    <ion-icon slot="start" name="trash-outline"></ion-icon>
+                    Apagar
+                </ion-button>                
+            </ion-col>
+        </ion-row>
+        } @else {
+        <div>
+            <p class="mensagem-erro">Ainda não avaliaste este livro.</p>
+            <ion-button class="botao-roxo" expand="block" (click)="abrirModalComentario()">
+                Avaliar Livro
+            </ion-button>
+        </div>
+        }
+    </section>
 
-      <section class="comentarios-lista">
+    <section class="secao">
         <h2>Comentários</h2>
 
         @if (!temComentariosComunidade()) {
-          <div class="estado-vazio estado-vazio-comentarios">
-            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-            @if (temAvaliacoesLivro()) {
-              <p>Este livro já tem avaliações, mas ainda não tem comentários escritos.</p>
-            } @else {
-              <p>Ainda não há comentários para este livro.</p>
-            }
-          </div>
+        <div class="ion-padding mensagem-erro">
+            <ion-icon name="chatbubble-ellipses-outline" class="icone-gigante"></ion-icon>
+            <p>Ainda não há comentários neste livro.</p>
+        </div>
         } @else {
-          @for (comentario of comentariosComunidade; track comentario.nome + comentario.dataAvaliacao + comentario.comentario) {
-            <article class="comentario-card">
-              <header>
+        @for (comentario of comentariosComunidade; track comentario.nome + comentario.dataAvaliacao + comentario.comentario) {
+        <div class="comentario">
+            <div class="cabecalho">
                 <div>
-                  <h3>{{ comentario.nome }}</h3>
-                  <p>{{ comentario.dataLegivel }}</p>
+                    <p class="nome">
+                        {{ comentario.nome }}
+                        @if (comentario.pertenceAoUtilizadorAtual) { (Tu) }
+                    </p>
+                    <p>{{ comentario.dataLegivel }}</p>
                 </div>
+                <div class="estrelas" aria-label="Avaliação pessoal do livro">
+                    @for (estrela of estrelas; track estrela) {
+                    <ion-icon name="star"
+                        [class]="comentario.avaliacao >= estrela ? 'estrela-cheia' : 'estrela-vazia'">
+                    </ion-icon>
+                    }
+                </div>
+            </div>
+            <p class="conteudo">{{ comentario.comentario }}</p>
+        </div>
+        }
+        }
+    </section>
+    }
 
-                @if (comentario.pertenceAoUtilizadorAtual) {
-                  <ion-chip class="chip-tu">Tu</ion-chip>
+    <ion-modal class="modal-adicionar" [isOpen]="modalAberto" (didDismiss)="fecharModalComentario()">
+        <ng-template>
+
+            <ion-header class="ion-no-border">
+                <ion-toolbar color="primary">
+                    <ion-title>Avaliar Livro</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button (click)="fecharModalComentario()" aria-label="Fechar">
+                            <ion-icon slot="icon-only" name="close"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content class="ion-padding">
+                @if (livro) {
+                <div class="modal-livro">
+                    <h2 style="margin-top: 0">{{ livro.titulo }}</h2>
+                    <p>{{ livro.autor }}</p>
+                </div>
                 }
 
-                <div class="estrelas pequenas">
-                  @for (estrela of estrelas; track estrela) {
-                    <ion-icon [name]="comentario.avaliacao >= estrela ? 'star' : 'star-outline'"></ion-icon>
-                  }
+                <div class="avaliacao-pessoal">
+                    <div class="estrelas ion-margin-bottom" aria-label="Escolher avaliação">
+                        @for (estrela of estrelas; track estrela) {
+                        <ion-icon name="star"
+                            [class]="avaliacaoAtual >= estrela ? 'estrela-cheia' : 'estrela-vazia'"
+                            (click)="setAvaliacao(estrela)">
+                        </ion-icon>
+                        }
+                    </div>
                 </div>
-              </header>
 
-              <div class="linha-card"></div>
-              <p class="texto-comentario">{{ comentario.comentario }}</p>
-            </article>
-          }
-        }
-      </section>
-    </div>
-  }
+                @if (mensagemErro) {
+                <ion-note class="mensagem-erro">
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                    {{ mensagemErro }}
+                </ion-note>
+                }
 
-  @if (livro) {
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button class="botao-comentar" (click)="abrirModalComentario()">
-        <span>Comentar</span>
-      </ion-fab-button>
-    </ion-fab>
-  }
+                <ion-item class="comentario ion-margin-bottom" lines="none">
+                    <ion-label position="stacked">Comentário (opcional)</ion-label>
+                    <ion-textarea [(ngModel)]="comentarioAtual" placeholder="O que achaste desta leitura?" rows="6">
+                    </ion-textarea>
+                </ion-item>
 
-  <ion-modal class="review-modal" [isOpen]="modalAberto" (didDismiss)="fecharModalComentario()">
-    <ng-template>
-      <section class="modal-card" role="dialog" aria-label="A tua avaliação">
-        <header class="modal-card-header">
-          <h2>A tua avaliação</h2>
-          <ion-button fill="clear" class="botao-fechar-modal" (click)="fecharModalComentario()">
-            Fechar
-          </ion-button>
-        </header>
-
-        <div class="modal-card-corpo">
-          @if (livro) {
-            <div class="modal-livro">
-              <strong>{{ livro.titulo }}</strong>
-              <span>{{ livro.autor }}</span>
-            </div>
-          }
-
-          <div class="estrelas editaveis" aria-label="Escolher avaliação">
-            @for (estrela of estrelas; track estrela) {
-              <ion-icon
-                [name]="avaliacaoAtual >= estrela ? 'star' : 'star-outline'"
-                [class.estrela-ativa]="avaliacaoAtual >= estrela"
-                [style.color]="avaliacaoAtual >= estrela ? '#ffd560' : '#815a70'"
-                (click)="setAvaliacao(estrela)">
-              </ion-icon>
-            }
-          </div>
-
-          @if (mensagemErro) {
-            <ion-note class="mensagem-erro">
-              <ion-icon name="alert-circle-outline"></ion-icon>
-              {{ mensagemErro }}
-            </ion-note>
-          }
-
-          <ion-item class="campo-comentario" lines="none">
-            <ion-label position="stacked">Comentário opcional</ion-label>
-            <ion-textarea
-              [(ngModel)]="comentarioAtual"
-              placeholder="O que achaste desta leitura?"
-              rows="6">
-            </ion-textarea>
-          </ion-item>
-
-          <div class="botoes-modal">
-            <ion-button class="botao-guardar" (click)="guardarComentario()">
-              <ion-icon slot="start" name="save-outline"></ion-icon>
-              Guardar
-            </ion-button>
-
-            @if (temAvaliacaoPessoal()) {
-              <ion-button class="botao-apagar" fill="clear" (click)="apagarComentario()">
-                <ion-icon slot="start" name="trash-outline"></ion-icon>
-                Apagar
-              </ion-button>
-            }
-          </div>
-        </div>
-      </section>
-    </ng-template>
-  </ion-modal>
+                <ion-row class="botao-grelha">
+                    <ion-col text-center>
+                        <ion-button class="botao-roxo" expand="block" (click)="guardarComentario()">
+                            <ion-icon slot="start" name="save-outline"></ion-icon>
+                            Guardar
+                        </ion-button>
+                    </ion-col>
+                    <ion-col text-center>
+                        <ion-button class="botao-vermelho" expand="block" (click)="apagarComentario()">
+                            <ion-icon slot="start" name="trash-outline"></ion-icon>
+                            Apagar
+                        </ion-button>              
+                    </ion-col>
+                </ion-row>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
 </ion-content>
