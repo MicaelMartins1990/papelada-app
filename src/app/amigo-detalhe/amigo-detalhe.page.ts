@@ -18,6 +18,7 @@ export class AmigoDetalhePage implements OnInit {
     public idUtilizador!: number;
     public amigo: Utilizador | null = null;
     public dadosLeitura: DadosLeitura | null = null;
+    public modalEmprestimoAberto: boolean = false;
     
     constructor(
         private route: ActivatedRoute,
@@ -90,5 +91,19 @@ export class AmigoDetalhePage implements OnInit {
         await alerta.present();
         const resultado = await alerta.onDidDismiss();
         return resultado.role === 'destructive';
+    }
+
+    // --- Ação: empréstimo ---
+
+    public abrirEmprestimo() {
+        this.modalEmprestimoAberto = true;
+    }
+
+    public fecharEmprestimo() {
+        this.modalEmprestimoAberto = false;
+    }
+
+    public async onEmprestimoRegistado() {
+        this.modalEmprestimoAberto = false;
     }
 }

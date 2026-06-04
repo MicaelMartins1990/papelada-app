@@ -41,11 +41,11 @@
                     <!-- Biblioteca (toggle de posse) -->
                     @if (estaNaBiblioteca) {
                     <ion-button class="botao-roxo" expand="block" (click)="removerDaBiblioteca()">
-                        Remover da<br/>Biblioteca
+                        Remover da<br/>Estante
                     </ion-button>
                     } @else {
                     <ion-button class="botao-roxo" expand="block" (click)="adicionarABiblioteca()">
-                        Adicionar à<br/>Biblioteca
+                        Adicionar à<br/>Estante
                     </ion-button>
                     }
                 </ion-col>
@@ -161,34 +161,7 @@
             </ion-button>
         </div>
     </section>
-
-    <!-- <section class="secao">
-        <h2>Livros Semelhantes</h2>
-        <p class="secao-subtitulo">Sugestões com base nos géneros deste livro.</p>
-
-        @if (livrosSemelhantes.length > 0) {
-        <div class="carrossel-semelhantes">
-            @for (item of livrosSemelhantes; track item.livro.id) {
-            <div class="cartao-semelhante" role="button" tabindex="0"
-                
-                (click)="abrirLivro(item.livro.id)">
-                <img [src]="item.livro.capa" [alt]="item.livro.titulo" />
-                <p class="titulo-semelhante">{{ item.livro.titulo }}</p>
-                <div class="chips-genero">
-                    @for (genero of item.generosPartilhados; track genero) {
-                    <span class="chip-genero">{{ genero }}</span>
-                    }
-                </div>
-            </div>
-            }
-        </div>
-        } @else {
-        <div class="semelhantes-vazio">
-            <ion-icon name="library-outline"></ion-icon>
-            <p>Ainda não há livros semelhantes para sugerir.</p>
-        </div>
-        }
-    </section> -->
+    
     <section class="lista-desejos">
         <h2>Livros Semelhantes</h2>
         

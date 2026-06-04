@@ -343,3 +343,18 @@ Desenvolvido:
 - Sugere livros fora da estante pessoal e dos desejos para aparecer sempre algo novo e não repetido
 - Aparece etiqueta de categoria para dar contexto ao utilizador 
 
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de junho de 2026
+# Objetivo: Atualizar a estilização para corresponder melhor aos protótipos
+
+# Desenvolvido:
+
+- Reestruturadas as páginas de Pesquisa e Biblioteca para organizar os livros em prateleiras e incluir as avaliações de cada livro
+- Estilizada a página de Detalhes de um livro
+- Estilizada a página de Comentários de um Livro
+- Pode parecer pouco mas isso me levou horas. Pelo menos agora está tudo de acordo com o protótipo
+
+# Lucas Israel
+
+------------------------------------------------------------------------------------------------------------------------------------
