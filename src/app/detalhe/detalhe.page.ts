@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { LivroService, LivroSemelhante } from '../services/livro';
 import { LivroPessoalService } from '../services/livro-pessoal';
 import { Livro } from '../models/livro';
@@ -45,7 +45,8 @@ export class DetalhePage implements OnInit {
         private authService: AuthService,
         private router: Router,
         private toastController: ToastController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private navController: NavController
     ) {
     }
 
@@ -102,6 +103,10 @@ export class DetalhePage implements OnInit {
         this.temEmprestimo = !!registo?.emprestimo;
         // Dica permanente enquanto o livro não está lido: avaliar fica bloqueado.
         this.mensagemErroAvaliacao = this.lido ? '' : 'Marca o livro como lido para o avaliares.';
+    }
+
+    public voltar() {
+        this.navController.back();
     }
 
     // --- Estado derivado para o template ---

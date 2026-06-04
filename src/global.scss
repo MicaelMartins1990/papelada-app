@@ -89,7 +89,6 @@ ion-title ion-icon {
 
 .mensagem-erro {
     text-align: center;
-    margin-top: 40px;
     color: #6a5a62;
 }
 
@@ -159,36 +158,26 @@ ion-title ion-icon {
     color: var(--ion-color-secondary)
 }
 
-/* Input */
+/* Botões */
 
-.input-group ion-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.text-input {
-    background: none !important;
-    --background: #ffffff;
-    --border-radius: 12px !important;
-    --icon-color: var(--ion-color-secondary);
+.botao-roxo, .botao-vermelho {
+    --border-width: 1px;
+    --border-style: solid;
+    --border-radius: 12px;
+    margin: 0;
+    text-transform: none;
+    font-weight: bold;
+    height: 100%;
 }
 
 .botao-roxo {
     --background: var(--ion-color-secondary);
-    --border-radius: 12px;
-    margin: 0;
-    text-transform: none;
-    font-weight: bold;
-    height: 100%;
+    --border-color: var(--ion-color-secondary);
 }
 
 .botao-vermelho {
     --background: #E66756;
-    --border-radius: 12px;
-    margin: 0;
-    text-transform: none;
-    font-weight: bold;
-    height: 100%;
+    --border-color: #c44c4c;    
 }
 
 .botao-contorno {
@@ -223,6 +212,20 @@ ion-title ion-icon {
 
 ion-fab-button.botao-roxo {
     width: 65px;
+}
+
+/* Input */
+
+.input-group ion-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.text-input {
+    background: none !important;
+    --background: #ffffff;
+    --border-radius: 12px !important;
+    --icon-color: var(--ion-color-secondary);
 }
 
 .secao-filtros {
@@ -309,4 +312,34 @@ ion-modal.modal-registar-livro {
 
 .section:not(:last-child) {
     margin-bottom: 15px;
+}
+
+/* Lista desejos */
+
+.capas-desejos {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+}
+
+.capa-desejo {
+    flex: 0 0 72px;
+    width: 72px;
+    height: 108px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #e8e1dc;
+    box-shadow: 0 2px 8px rgba(47, 41, 40, 0.12);
+    scroll-snap-align: start;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
 }

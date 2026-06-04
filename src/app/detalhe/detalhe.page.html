@@ -1,194 +1,232 @@
-<ion-header class="ion-no-border detalhe-header">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/biblioteca" text="" icon="arrow-back-outline"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Detalhes</ion-title>
-  </ion-toolbar>
+<ion-header class="ion-no-border">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button defaultHref="/tabs/biblioteca" (click)="voltar()">
+                <ion-icon name="arrow-back-outline" class="icone-grande"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="ion-no-padding">Detalhes</ion-title>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content class="detalhe-content">
-  @if (aCarregar) {
-    <div class="estado-vazio">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>A carregar livro...</p>
+<ion-content class="ion-padding">
+    @if (aCarregar) {
+    <div class="ion-text-center" style="margin-top: 40px;">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <p style="color: #666;">A carregar...</p>
     </div>
-  } @else if (livro) {
-    <section class="livro-hero">
-      <img [src]="livro.capa" [alt]="livro.titulo" />
-      <h1>{{ livro.titulo }}</h1>
-      <p>{{ livro.autor }}</p>
+    }
+    @else {
+
+    @if (!livro) {
+    <div class="ion-padding mensagem-erro">
+        <ion-icon name="alert-circle-outline" class="icone-gigante"></ion-icon>
+        <p>Ocorreu um erro ao carregar o livro.</p>
+    </div>
+    }
+
+    @else {
+
+    <section class="livro-hero secao">
+        <img [src]="livro.capa" [alt]="livro.titulo" />
+        <h1>{{ livro.titulo }}</h1>
+        <p>{{ livro.autor }}</p>
     </section>
 
     <section class="secao">
-      <h2>Ações Rápidas</h2>
-      <div class="acoes-grid">
-
-        <!-- Biblioteca (toggle de posse) -->
-        @if (estaNaBiblioteca) {
-        <ion-button class="botao-acao" (click)="removerDaBiblioteca()">
-          Remover da<br />Biblioteca
-        </ion-button>
-        } @else {
-        <ion-button class="botao-acao" (click)="adicionarABiblioteca()">
-          Adicionar à<br />Biblioteca
-        </ion-button>
-        }
-
-        <!-- Leitura (toggle independente) -->
-        @if (lido) {
-        <ion-button class="botao-acao" (click)="marcarComoNaoLido()">
-          Marcar como<br />Não Lido
-        </ion-button>
-        } @else {
-        <ion-button class="botao-acao" (click)="marcarComoLido()">
-          Marcar<br />como Lido
-        </ion-button>
-        }
-
-        <!-- Empréstimo -->
-        @if (temEmprestimo) {
-        <ion-button class="botao-acao" (click)="verEmprestimo()">
-          Ver<br />Empréstimo
-        </ion-button>
-        } @else {
-        <ion-button class="botao-acao" [disabled]="!estaNaBiblioteca" (click)="abrirEmprestimo()">
-          Emprestar
-        </ion-button>
-        }
-
-        <!-- Desejos -->
-        @if (estaNosDesejos) {
-        <ion-button class="botao-acao" (click)="removerDaListaDeDesejos()">
-          Remover dos<br />Desejos
-        </ion-button>
-        } @else {
-        <ion-button class="botao-acao" [disabled]="estaNaBiblioteca" (click)="adicionarAListaDeDesejos()">
-          Adicionar aos<br />Desejos
-        </ion-button>
-        }
-
-        <ion-button class="botao-acao" (click)="compartilharEmail()">
-          Compartilhar Livro
-        </ion-button>
-
-      </div>
+        <h2>Ações Rápidas</h2>
+        <ion-grid class="grelha-botoes ion-margin-top">
+            <ion-row>
+                <ion-col>
+                    <!-- Biblioteca (toggle de posse) -->
+                    @if (estaNaBiblioteca) {
+                    <ion-button class="botao-roxo" expand="block" (click)="removerDaBiblioteca()">
+                        Remover da<br/>Biblioteca
+                    </ion-button>
+                    } @else {
+                    <ion-button class="botao-roxo" expand="block" (click)="adicionarABiblioteca()">
+                        Adicionar à<br/>Biblioteca
+                    </ion-button>
+                    }
+                </ion-col>
+                <ion-col>
+                    <!-- Leitura (toggle independente) -->
+                    @if (lido) {
+                    <ion-button class="botao-roxo" expand="block" (click)="marcarComoNaoLido()">
+                        Marcar como<br/>Não Lido
+                    </ion-button>
+                    } @else {
+                    <ion-button class="botao-roxo" expand="block" (click)="marcarComoLido()">
+                        Marcar<br/>como Lido
+                    </ion-button>
+                    }
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <!-- Empréstimo -->
+                    @if (temEmprestimo) {
+                    <ion-button class="botao-roxo" expand="block" (click)="verEmprestimo()">
+                        Ver<br/>Empréstimo
+                    </ion-button>
+                    } @else {
+                    <ion-button class="botao-roxo" expand="block" [disabled]="!estaNaBiblioteca" (click)="abrirEmprestimo()">
+                        Emprestar
+                    </ion-button>
+                    }
+                </ion-col>
+                <ion-col>
+                    <!-- Desejos -->
+                    @if (estaNosDesejos) {
+                    <ion-button class="botao-roxo" expand="block" (click)="removerDaListaDeDesejos()">
+                        Remover dos<br />Desejos
+                    </ion-button>
+                    } @else {
+                    <ion-button class="botao-roxo" expand="block" [disabled]="estaNaBiblioteca" (click)="adicionarAListaDeDesejos()">
+                        Adicionar aos<br/>Desejos
+                    </ion-button>
+                    }
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <!-- Compartilhar livro -->
+                    <ion-button class="botao-roxo" expand="block" (click)="compartilharEmail()">
+                        Compartilhar<br/>Livro
+                    </ion-button>
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+        </ion-grid>
     </section>
 
     <section class="secao avaliacoes-secao">
-      <h2>Avaliações</h2>
+        <h2>Avaliações</h2>
 
-      <div class="resumo-avaliacoes">
-        <div>
-          <div class="estrelas grandes resumo-global-estrelas" aria-label="Avaliação média do livro">
-            @for (estrela of estrelas; track estrela) {
-              <ion-icon
-                [name]="avaliacaoMediaArredondada >= estrela ? 'star' : 'star-outline'">
-              </ion-icon>
-            }
-          </div>
-          <p class="contagem-avaliacoes">
-            {{ totalAvaliacoes }} {{ totalAvaliacoes === 1 ? 'Avaliação' : 'Avaliações' }}
-          </p>
+        <div class="avaliacao-container ion-margin-top">
+            <div class="avaliacao-global">
+                <div class="estrelas" aria-label="Avaliação média do livro">
+                    @for (estrela of estrelas; track estrela) {
+                    <ion-icon name="star"
+                        [class]="avaliacaoMediaArredondada >= estrela ? 'estrela-cheia' : 'estrela-vazia'">
+                    </ion-icon>
+                    }
+                </div>
+                <p class="contagem-avaliacoes">
+                    {{ totalAvaliacoes }} {{ totalAvaliacoes === 1 ? 'Avaliação' : 'Avaliações' }}
+                </p>
+            </div>
+
+            <ion-button class="botao-avaliar botao-roxo" [disabled]="!lido" (click)="abrirAvaliacao()">
+                Avaliar
+            </ion-button>
         </div>
 
-        <ion-button class="botao-avaliar" [disabled]="!lido" (click)="abrirAvaliacao()">
-          Avaliar
-        </ion-button>
-      </div>
-
-      @if (mensagemErroAvaliacao) {
+        @if (mensagemErroAvaliacao) {
         <ion-note class="mensagem-erro">
-          <ion-icon name="alert-circle-outline"></ion-icon>
-          {{ mensagemErroAvaliacao }}
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            {{ mensagemErroAvaliacao }}
         </ion-note>
-      }
-
-      <div class="media-global">
-        @if (totalAvaliacoes > 0) {
-          <strong>{{ mediaAvaliacoes | number:'1.1-1' }}/5</strong>
-          <span>Média global</span>
-        } @else {
-          <strong>Sem avaliações</strong>
-          <span>Sê a primeira pessoa a avaliar este livro.</span>
         }
-      </div>
 
-      <div class="distribuicao">
-        @for (linha of distribuicaoAvaliacoes; track linha.estrelas) {
-          <div class="linha-distribuicao">
-            <span>{{ linha.estrelas }}★</span>
-            <div class="barra-distribuicao">
-              <div [style.width.%]="totalAvaliacoes ? (linha.total / totalAvaliacoes) * 100 : 0"></div>
+        <div class="media-global ion-margin-top">
+            @if (totalAvaliacoes > 0) {
+            
+            <span>Média global: </span>
+            <strong>{{ mediaAvaliacoes | number:'1.1-1' }}/5</strong>
+
+            } @else {
+            <p><strong>Sem avaliações</strong></p>
+            <p><span>Sê a primeira pessoa a avaliar este livro.</span></p>
+            }
+        </div>
+
+        <div class="distribuicao ion-margin-top">
+            @for (linha of distribuicaoAvaliacoes; track linha.estrelas) {
+            <div class="linha-distribuicao">
+                <span>
+                    {{ linha.estrelas }}
+                    <ion-icon name="star" class="estrela-vazia"></ion-icon>
+                </span>
+                <div class="barra-distribuicao">
+                    <div [style.width.%]="totalAvaliacoes ? (linha.total / totalAvaliacoes) * 100 : 0"></div>
+                </div>
+                <span>{{ linha.total }}</span>
             </div>
-            <span>{{ linha.total }}</span>
-          </div>
-        }
-      </div>
-
-      <ion-button expand="block" class="botao-comentarios" (click)="abrirComentarios()">
-        Ver Comentários
-      </ion-button>
+            }
+        </div>
+        <div class="ion-margin-bottom">
+            <ion-button expand="block" class="botao-roxo" (click)="abrirComentarios()">
+                Ver Comentários
+            </ion-button>
+        </div>
     </section>
 
-    <section class="secao livros-semelhantes-secao">
-      <h2>Livros Semelhantes</h2>
-      <p class="secao-subtitulo">Sugestões com base nos géneros deste livro.</p>
+    <!-- <section class="secao">
+        <h2>Livros Semelhantes</h2>
+        <p class="secao-subtitulo">Sugestões com base nos géneros deste livro.</p>
 
-      @if (livrosSemelhantes.length > 0) {
+        @if (livrosSemelhantes.length > 0) {
         <div class="carrossel-semelhantes">
-          @for (item of livrosSemelhantes; track item.livro.id) {
-            <div
-              class="cartao-semelhante"
-              role="button"
-              tabindex="0"
-              [attr.aria-label]="'Ver ' + item.livro.titulo + ', de ' + item.livro.autor"
-              (click)="abrirLivro(item.livro.id)"
-              (keydown.enter)="abrirLivro(item.livro.id)"
-              (keydown.space)="abrirLivro(item.livro.id)">
-              <img [src]="item.livro.capa" [alt]="item.livro.titulo" />
-              <p class="titulo-semelhante">{{ item.livro.titulo }}</p>
-              <div class="chips-genero">
-                @for (genero of item.generosPartilhados; track genero) {
-                  <span class="chip-genero">{{ genero }}</span>
-                }
-              </div>
+            @for (item of livrosSemelhantes; track item.livro.id) {
+            <div class="cartao-semelhante" role="button" tabindex="0"
+                
+                (click)="abrirLivro(item.livro.id)">
+                <img [src]="item.livro.capa" [alt]="item.livro.titulo" />
+                <p class="titulo-semelhante">{{ item.livro.titulo }}</p>
+                <div class="chips-genero">
+                    @for (genero of item.generosPartilhados; track genero) {
+                    <span class="chip-genero">{{ genero }}</span>
+                    }
+                </div>
             </div>
-          }
+            }
         </div>
-      } @else {
+        } @else {
         <div class="semelhantes-vazio">
-          <ion-icon name="library-outline"></ion-icon>
-          <p>Ainda não há livros semelhantes para sugerir.</p>
+            <ion-icon name="library-outline"></ion-icon>
+            <p>Ainda não há livros semelhantes para sugerir.</p>
         </div>
-      }
+        }
+    </section> -->
+    <section class="lista-desejos">
+        <h2>Livros Semelhantes</h2>
+        
+        @if (livrosSemelhantes.length > 0) {
+        <p class="secao-subtitulo">Sugestões com base nos géneros deste livro.</p>
+        <div class="capas-desejos" role="list">
+            @for (item of livrosSemelhantes; track item.livro.id) {
+            <button class="capa-desejo" type="button" (click)="abrirLivro(item.livro.id)" role="listitem">
+                <img [src]="item.livro.capa" [alt]="item.livro.titulo" />
+            </button>
+            }
+        </div>
+        } @else {
+        <p class="lista-vazia">Ainda não há livros semelhantes para sugerir.</p>
+        }
     </section>
-  } @else {
-    <div class="estado-vazio">
-      <ion-icon name="alert-circle-outline"></ion-icon>
-      <p>Ocorreu um erro ao carregar o livro.</p>
-    </div>
-  }
+    }
+    }
 </ion-content>
 
 <!-- Modal: emprestar este livro (livro pré-fixado) -->
 <ion-modal [isOpen]="modalEmprestimoAberto" (didDismiss)="fecharEmprestimo()">
-  <ng-template>
-    <ion-header class="ion-no-border">
-      <ion-toolbar color="primary">
-        <ion-title>Emprestar</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="fecharEmprestimo()" aria-label="Fechar">
-            <ion-icon slot="icon-only" name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      @if (modalEmprestimoAberto) {
-      <app-form-emprestimo [idUtilizador]="idUtilizador" [livroFixo]="livroFixoEmprestimo"
-        (registado)="onEmprestimoRegistado()" (cancelado)="fecharEmprestimo()"></app-form-emprestimo>
-      }
-    </ion-content>
-  </ng-template>
+    <ng-template>
+        <ion-header class="ion-no-border">
+            <ion-toolbar color="primary">
+                <ion-title>Emprestar</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="fecharEmprestimo()" aria-label="Fechar">
+                        <ion-icon slot="icon-only" name="close"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            @if (modalEmprestimoAberto) {
+            <app-form-emprestimo [idUtilizador]="idUtilizador" [livroFixo]="livroFixoEmprestimo"
+                (registado)="onEmprestimoRegistado()" (cancelado)="fecharEmprestimo()"></app-form-emprestimo>
+            }
+        </ion-content>
+    </ng-template>
 </ion-modal>
