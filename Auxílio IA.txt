@@ -52,3 +52,17 @@ No resto das tarefas não foi usado IA
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
+#Flávio Fernandes
+
+Todo o auxílio de IA descrito abaixo passou por revisão e análise manual, com o objetivo de compreender o funcionamento do código antes de o implementar.
+
+HTML e CSS das páginas:
+Recorri à IA sobretudo como apoio na criação da estrutura HTML e da estilização CSS de cada página.
+Ainda assim, as pequenas alterações e ajustes foram sempre feitos manualmente, sem recurso a IA, de forma a perceber melhor a funcionalidade e o comportamento dos mesmos. 
+
+JavaScript:
+O JavaScript teve apoio de IA através do autocomplete do IDE (VS Code).
+ Todo o código gerado foi, no entanto, analisado para garantir a compreensão do seu funcionamento.
+
+A IA també foi uma mais valia para explorar diferentes abordagens a algumas funcionalidades sendo que todas eram abordadas de forma crítica. 
+
