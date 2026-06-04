@@ -43,7 +43,7 @@ export class PerfilPage {
         private utilizadorService: UtilizadorService,
         private alertController: AlertController 
     ) { }
-
+    /** Carrega as informações do perfil, estatísticas de leitura e lista de desejos ao entrar na página */
     async ionViewWillEnter() {
         await this.authService.esperarPronto();
         const idAtual = this.authService.getIdUtilizador();
@@ -65,25 +65,25 @@ export class PerfilPage {
             this.livrosDesejados = livrosDesejados;
         }
     }
-
+    /** Abre o modal de edição de perfil e prepara os campos com os dados atuais */
     abrirModal() {
         this.novoNome = this.nomeUtilizador;
         this.avatarEmEdicao = this.avatarAtual;
         this.isModalOpen = true;
     }
-
+    /** Fecha o modal de edição sem guardar alterações */
     fecharModal() {
         this.isModalOpen = false;
     }
-
+    /** Atualiza a cor do avatar selecionada no modo de edição */
     selecionarAvatar(cor: string) {
         this.avatarEmEdicao = cor;
     }
-
+    /** Atualiza a forma geométrica do avatar selecionada no modo de edição */
     selecionarForma(forma: any) {
         this.formaAtual = forma;
     }
-
+    /** Guarda as alterações do perfil (nome e avatar) e fecha o modal */
     async guardarPerfil() {
         if (this.idUtilizador === null) return;
 
@@ -102,7 +102,7 @@ export class PerfilPage {
         }
         this.fecharModal();
     }
-
+    /** Navega para a página de pesquisa filtrando pela lista de desejos */
     abrirListaDesejos() {
         this.router.navigate(['/tabs/pesquisa'], { queryParams: { filtro: 'desejos' } });
     }

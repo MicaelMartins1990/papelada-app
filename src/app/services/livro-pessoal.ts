@@ -60,23 +60,23 @@ export class LivroPessoalService {
     constructor(private storage: Storage) {
         this.init();
     }
-
+    /** Inicializa o serviço e a ligação ao armazenamento (storage) */
     async init() {
         if (!this._storage) {
             this._storage = await this.storage.create();
         }
     }
-
+    /** Gera a chave única usada para guardar/procurar os dados deste utilizador na base de dados local */
     private getChaveUtilizador(idUtilizador: number): string {
         return `livroutil_${idUtilizador}`;
     }
-
+    /** Vai buscar a lista de todos os livros pessoais do utilizador e aplica as migrações (se necessárias) */
     public async getLivrosPessoais(idUtilizador: number): Promise<LivroPessoal[]> {
         await this.init();
         const livroPesosal: LivroPessoal[] = await this._storage?.get(this.getChaveUtilizador(idUtilizador)) || [];
         return livroPesosal.map(registo => this.normalizarEmprestimo(migrarRegistoLivroPessoal(registo)));
     }
-
+    /** Junta os dados gerais do livro com os dados pessoais (se está lido, emprestado, etc.) e calcula a média de estrelas */
     public async getDadosExibicao(livro: Livro, idUtilizador: number, livrosPessoais: LivroPessoal[]): Promise<LivroExibido> {
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, livro.id, livrosPessoais);
 
@@ -112,12 +112,12 @@ export class LivroPessoalService {
         }
         return registo;
     }
-
+    /** Guarda a lista atualizada de livros pessoais do utilizador no armazenamento local */
     private async saveLivrosPessoais(idUtilizador: number, livroPesosal: LivroPessoal[]): Promise<void> {
         await this.init();
         await this._storage?.set(this.getChaveUtilizador(idUtilizador), livroPesosal);
     }
-
+    /** Procura o registo de um livro específico na lista do utilizador. Se não existir, cria um novo registo limpo */
     private async getOuCriarRegisto(idUtilizador: number, idLivro: number, livrosPessoais: LivroPessoal[]): Promise<LivroPessoal> {
         let livroPesosal = livrosPessoais.find(l => l.idLivro === idLivro);
         
@@ -158,7 +158,7 @@ export class LivroPessoalService {
         livroPessoal.lido = lido;
         await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
     }
-
+    /** Adiciona ou atualiza a nota e o comentário que o utilizador deu a um livro e regista a data atual */
     public async adicionarAvaliacao(idUtilizador: number, idLivro: number, nota: number, texto: string): Promise<void> {
         const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
@@ -169,7 +169,7 @@ export class LivroPessoalService {
         
         await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
     }
-
+    /** Apaga completamente a avaliação (estrelas, comentário e data) que o utilizador fez num livro */
     public async apagarAvaliacao(idUtilizador: number, idLivro: number): Promise<void> {
         const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
@@ -180,7 +180,7 @@ export class LivroPessoalService {
 
         await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
     }
-
+    /** Procura por todos os utilizadores da aplicação para encontrar todas as avaliações feitas a um livro específico */
     public async getAvaliacoesLivro(idLivro: number): Promise<LivroPessoal[]> {
         await this.init();
         const chaves = await this._storage?.keys() || [];
@@ -193,7 +193,7 @@ export class LivroPessoalService {
             .reduce((todos, lista) => todos.concat(lista), [])
             .filter((livroPessoal: LivroPessoal) => livroPessoal.idLivro === idLivro);
     }
-
+    /** Cria um registo indicando que este livro foi emprestado a um amigo, guardando as datas de início e devolução */
     public async registarEmprestimo(idUtilizador: number, idLivro: number, idRecipiente: number, dataDevolucao: Date): Promise<void> {
         const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);

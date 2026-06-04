@@ -16,7 +16,7 @@ export class CriarContaPage {
     password = '';
 
     constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
-
+    /** Valida os campos do formulário e tenta registar uma nova conta */
     async criarConta() {
         if (!this.nome || !this.username || !this.password) {
             this.showToast('Por favor preencha todos os campos.');
@@ -26,6 +26,7 @@ export class CriarContaPage {
 
         switch (resultado) {
             case Resultado.EXITO:
+                // Redireciona para a página inicial em caso de sucesso
                 this.router.navigateByUrl('/');
                 break;
             case Resultado.JA_EXISTE:
@@ -35,7 +36,7 @@ export class CriarContaPage {
                 this.showToast('Erro desconhecido ao criar conta');
         }
     }
-
+    /** Exibe uma mensagem rápidano ecrã para informar o utilizador */
     async showToast(message: string) {
         const toast = await this.toastController.create({ message: message, duration: 2000 });
         toast.present();

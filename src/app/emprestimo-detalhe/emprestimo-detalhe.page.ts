@@ -54,15 +54,15 @@ export class EmprestimoDetalhePage implements OnInit {
         private livroService: LivroService,
         private utilizadorService: UtilizadorService
     ) { }
-
+    /** Inicializa a página carregando os dados do empréstimo */
     async ngOnInit() {
         await this.carregar();
     }
-
+    /** Atualiza os dados sempre que o utilizador entra na página */
     async ionViewWillEnter() {
         await this.carregar();
     }
-
+    /** Pesquisa as informações do utilizador, do livro e do empréstimo associado */
     private async carregar() {
         this.aCarregar = true;
         await this.authService.esperarPronto();
@@ -98,23 +98,23 @@ export class EmprestimoDetalhePage implements OnInit {
         this.emprestimoEncontrado = true;
         this.aCarregar = false;
     }
-
+    /** Volta para a página anterior */
     public voltar() {
         this.navController.back();
     }
 
     // --- Alterar data de devolução ---
-
+    /** Abre o modal para editar a data de devolução do livro */
     public abrirAlterarData() {
         this.erroData = '';
         this.novaData = this.dataDevolucao ? this.dataParaIso(this.dataDevolucao) : null;
         this.modalDataAberto = true;
     }
-
+    /** Fecha o modal de alteração de data */
     public fecharAlterarData() {
         this.modalDataAberto = false;
     }
-
+    /** Valida e guarda a nova data de devolução escolhida */
     public async confirmarAlterarData() {
         if (!this.novaData) {
             this.erroData = 'Escolhe uma data de devolução.';
@@ -137,7 +137,7 @@ export class EmprestimoDetalhePage implements OnInit {
     }
 
     // --- Concluir empréstimo ---
-
+    /** Mostra um alerta para confirmar a conclusão do empréstimo */
     public async concluir() {
         const alerta = await this.alertController.create({
             header: 'Concluir empréstimo',
@@ -153,7 +153,7 @@ export class EmprestimoDetalhePage implements OnInit {
         });
         await alerta.present();
     }
-
+    /** Processa a finalização do empréstimo no serviço */
     private async executarConclusao() {
         try {
             await this.livroPessoalService.concluirEmprestimo(this.idUtilizador, this.idLivro);
@@ -164,24 +164,23 @@ export class EmprestimoDetalhePage implements OnInit {
         }
     }
 
-    // --- Helpers ---
-
+    /** Processa a finalização do empréstimo no serviço */
     public formatarDataLonga(data: Date | null): string {
         if (!data) return '';
         const d = new Date(data);
         return `${d.getDate()} de ${this.meses[d.getMonth()]} de ${d.getFullYear()}`;
     }
-
+    /** Verifica se uma data é anterior ao dia de hoje */
     private dataAnteriorAHoje(data: Date): boolean {
         return this.inicioDoDia(data).getTime() < this.inicioDoDia(new Date()).getTime();
     }
-
+    /** Retorna a data fornecida com o horário a zero */
     private inicioDoDia(data: Date): Date {
         const copia = new Date(data);
         copia.setHours(0, 0, 0, 0);
         return copia;
     }
-
+    /** Converte um objeto Date para formato string ISO (YYYY-MM-DD) */
     private dataParaIso(data: Date): string {
         const d = new Date(data);
         const ano = d.getFullYear();
@@ -189,11 +188,11 @@ export class EmprestimoDetalhePage implements OnInit {
         const dia = String(d.getDate()).padStart(2, '0');
         return `${ano}-${mes}-${dia}`;
     }
-
+    /** Retorna a data de hoje em formato ISO */
     private dataIsoHoje(): string {
         return this.dataParaIso(new Date());
     }
-
+    /** Exibe uma mensagem temporária com uma cor de estado específica */
     private async mostrarToast(mensagem: string, cor: 'success' | 'danger' | 'medium' = 'medium') {
         const toast = await this.toastController.create({
             message: mensagem,

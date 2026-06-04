@@ -17,7 +17,7 @@ export class LoginPage {
     verificandoSessao = true;
 
     constructor(private authService: AuthService, private router: Router, private toastController: ToastController) { }
-
+    /** Verifica automaticamente se já existe uma sessão ativa ao entrar na página */
     async ionViewWillEnter() {
         this.verificandoSessao = true; // Garante que esconde sempre que entramos aqui
         // Espera que a BD inicie
@@ -33,14 +33,14 @@ export class LoginPage {
             this.verificandoSessao = false; // Mostra o formulário de login
         }
     }
-
+    /** Valida as credenciais e efetua o login no serviço de autenticação */
     async login() {
         if (!this.username || !this.password) {
             this.showToast('Por favor preencha todos os campos.');
             return;
         }
         const resultado = await this.authService.login(this.username, this.password);
-
+        // Trata os diferentes resultados do serviço de autenticação
         switch (resultado) {
             case Resultado.EXITO:
                 this.router.navigateByUrl('/tabs/pesquisa');
@@ -52,7 +52,7 @@ export class LoginPage {
                 this.showToast('Erro desconhecido ao iniciar sessão');
         }
     }
-
+    /** Exibe uma mensagem rápida no ecrã para informar o utilizador */
     async showToast(message: string) {
         const toast = await this.toastController.create({ message: message, duration: 2000 });
         toast.present();

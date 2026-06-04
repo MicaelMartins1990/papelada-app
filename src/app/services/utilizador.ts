@@ -21,35 +21,35 @@ export class UtilizadorService {
     constructor(private storage: Storage, private livroService: LivroService) {
         this.estaPronto = this.init();
     }
-
+    /** Inicializa a ligação ao armazenamento (storage) local da aplicação */
     async init() {
         this._storage = await this.storage.create();
     }
-
+    /** Gera a chave única usada para guardar e procurar a lista de amigos de um utilizador */
     private getChaveUtilizador(idUtilizador: number): string {
         return `amigos_${idUtilizador}`;
     }
-
+    /** Retorna a lista de IDs de todos os amigos que o utilizador tem adicionados */
     async getAmigos(idUtilizador: number): Promise<number[]> {
         await this.esperarPronto();
         const amigos = await this._storage?.get(this.getChaveUtilizador(idUtilizador));
         return amigos || [];
     }
-
+    /** Procura e devolve os dados de um utilizador específico através do seu ID */
     async getUtilizador(id: number): Promise<Utilizador | null> {
         await this.esperarPronto();
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
         const utilizador = utilizadores.find((u: any) => u.id === id);
         return utilizador ? this.normalizarUtilizador(utilizador) : null;
     }
-
+    /** Procura e devolve os dados de um utilizador através do seu username (@nome) */
     async getUtilizadorUsername(username: string): Promise<Utilizador | null> {
         await this.esperarPronto();
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
         const utilizador = utilizadores.find((u: any) => u.username === username);
         return utilizador ? this.normalizarUtilizador(utilizador) : null;
     }
-
+    /** Recebe uma lista de IDs e devolve os dados completos de todos esses utilizadores (usado para listar amigos) */
     async getDadosUtilizadores(ids: number[]): Promise<Utilizador[]> {
         await this.esperarPronto();
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
@@ -57,7 +57,7 @@ export class UtilizadorService {
             .filter(utilizador => ids.includes(utilizador.id))
             .map(utilizador => this.normalizarUtilizador(utilizador));
     }
-
+    /** Atualiza o nome e o avatar do utilizador, guardando essas alterações na base de dados local */
     async atualizarPerfil(idUtilizador: number, nome: string, avatar: string): Promise<Utilizador | null> {
         await this.esperarPronto();
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
@@ -77,7 +77,7 @@ export class UtilizadorService {
 
         return utilizadorAtualizado;
     }
-
+    /** Vai buscar todos os livros que o utilizador tem na lista de desejos, juntando a informação da capa e título */
     async getLivrosDesejadosComCapa(idUtilizador: number): Promise<Livro[]> {
         await this.esperarPronto();
         const [livros, registosBrutos] = await Promise.all([
@@ -93,7 +93,7 @@ export class UtilizadorService {
 
         return livros.filter(livro => idsDesejados.has(livro.id));
     }
-
+    /** Adiciona um novo amigo usando o username, verificando antes se ele existe ou se já foi adicionado */
     async adicionarAmigo(idUtilizador: number, usernameAmigo: string): Promise<Resultado> {
         const amigos = await this.getAmigos(idUtilizador);
         const amigo = await this.getUtilizadorUsername(usernameAmigo);
@@ -106,7 +106,7 @@ export class UtilizadorService {
         await this._storage?.set(this.getChaveUtilizador(idUtilizador), amigos);
         return Resultado.EXITO;
     }
-
+    /** Remove um amigo da lista de amigos do utilizador, verificando se ele existe e se é realmente amigo antes de remover */
     async removerAmigo(idUtilizador: number, idAmigo: number): Promise<Resultado> {
         const amigos = await this.getAmigos(idUtilizador);
         const amigo = await this.getUtilizador(idAmigo);
@@ -119,7 +119,7 @@ export class UtilizadorService {
         await this._storage?.set(this.getChaveUtilizador(idUtilizador), amigos);
         return Resultado.EXITO;
     }
-
+    /** Regista um novo livro criado pelo utilizador, atribuindo-lhe um ID único e guardando-o na base de dados local */
     public async getDadosLeitura(idUtilizador: number) {
         await this.esperarPronto();
         const dadosLeitura: DadosLeitura = {
@@ -142,11 +142,11 @@ export class UtilizadorService {
         }
         return dadosLeitura;
     }
-
+    /** Aguarda que o armazenamento esteja totalmente pronto a usar antes de qualquer operação */
     async esperarPronto() {
         await this.estaPronto;
     }
-
+    /** Garante que um utilizador que seja devolvido pela base de dados tenha sempre um avatar válido */
     private normalizarUtilizador(utilizador: Utilizador): Utilizador {
         return {
             ...utilizador,

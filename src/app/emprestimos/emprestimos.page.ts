@@ -46,15 +46,15 @@ export class EmprestimosPage implements OnInit {
         private livroService: LivroService,
         private utilizadorService: UtilizadorService
     ) { }
-
+    /** Inicializa a página carregando os dados do utilizador e os seus empréstimos ativos */
     async ngOnInit() {
         await this.inicializar();
     }
-
+    /** Atualiza os dados sempre que o utilizador entra na página */
     async ionViewWillEnter() {
         await this.inicializar();
     }
-
+    /** Configura o ID do utilizador e inicia o carregamento dos empréstimos */
     private async inicializar() {
         this.aCarregar = true;
         await this.authService.esperarPronto();
@@ -67,7 +67,7 @@ export class EmprestimosPage implements OnInit {
         await this.carregarDados();
         this.aCarregar = false;
     }
-
+    /** Pesquisa a lista de empréstimos e associa os detalhes dos livros e dos recipientes */
     private async carregarDados() {
         const [registos, livros] = await Promise.all([
             this.livroPessoalService.getLivrosPessoais(this.idUtilizador),
@@ -105,12 +105,12 @@ export class EmprestimosPage implements OnInit {
     }
 
     // --- Pesquisa na lista de ativos ---
-
+    /** Atualiza o termo de pesquisa e filtra a lista de empréstimos */
     public pesquisar(event: any) {
         this.termoPesquisa = event?.target?.value ?? '';
         this.aplicarPesquisa();
     }
-
+    /** Filtra os empréstimos pelo título do livro ou nome do recipiente */
     private aplicarPesquisa() {
         const termo = this.termoPesquisa.toLowerCase().trim();
         this.emprestimosFiltrados = termo === ''
@@ -121,11 +121,11 @@ export class EmprestimosPage implements OnInit {
     }
 
     // --- Navegação ---
-
+    /** Abre a página de detalhes de um empréstimo específico */
     public abrirDetalhe(idLivro: number) {
         this.router.navigate(['/tabs/emprestimos/detalhe', idLivro]);
     }
-
+    /** Abre a página de detalhes de um amigo (se ele ainda existir no sistema) */
     public abrirAmigo(event: Event, idAmigo: number, conhecido: boolean) {
         event.stopPropagation();
         if (!conhecido) return;
@@ -133,22 +133,21 @@ export class EmprestimosPage implements OnInit {
     }
 
     // --- Modal de registo (formulário no componente partilhado) ---
-
+    /** Abre o modal para registar um novo empréstimo */
     public abrirRegisto() {
         this.modalRegistoAberto = true;
     }
-
+    /** Fecha o modal de registo de empréstimo */
     public fecharRegisto() {
         this.modalRegistoAberto = false;
     }
-
+    /** Fecha o modal e atualiza a lista após um novo empréstimo ser registado */
     public async onEmprestimoRegistado() {
         this.modalRegistoAberto = false;
         await this.carregarDados();
     }
 
-    // --- Helpers de data ---
-
+    /** Define o nível de urgência do empréstimo baseando-se na data de devolução */
     private calcularUrgencia(dataDevolucao: Date): Urgencia {
         const hoje = this.inicioDoDia(new Date());
         const devolucao = this.inicioDoDia(dataDevolucao);
@@ -156,20 +155,21 @@ export class EmprestimosPage implements OnInit {
         if (devolucao.getTime() === hoje.getTime()) return 'hoje';
         return 'aTempo';
     }
-
+    /** Normaliza uma data para o início do dia (00:00:00) */
     private inicioDoDia(data: Date): Date {
         const copia = new Date(data);
         copia.setHours(0, 0, 0, 0);
         return copia;
     }
 
+    /** Formata uma data no formato DD/MM/YYYY */
     public formatarData(data: Date): string {
         const d = new Date(data);
         const dia = String(d.getDate()).padStart(2, '0');
         const mes = String(d.getMonth() + 1).padStart(2, '0');
         return `${dia}/${mes}/${d.getFullYear()}`;
     }
-
+    /** Retorna o texto descritivo para o nível de urgência */
     public textoUrgencia(urgencia: Urgencia): string {
         switch (urgencia) {
             case 'atrasado': return 'Atrasado';

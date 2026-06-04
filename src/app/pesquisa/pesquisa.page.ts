@@ -47,19 +47,19 @@ export class PesquisaPage implements OnInit {
         private alertController: AlertController,
         private toastController: ToastController
     ) {}
-
+    /** Inicializa a página, aplica filtros da rota e carrega os dados */
     async ngOnInit() {
         this.aplicarFiltroDaRota();
         await this.carregarUtilizador();
         await this.carregarDados();
     }
-
+    /** Atualiza os dados sempre que o utilizador entra na página */
     async ionViewWillEnter() {
         this.aplicarFiltroDaRota();
         await this.carregarUtilizador();
         await this.carregarDados();
     }
-
+    /** Obtém o ID do utilizador autenticado */
     private async carregarUtilizador() {
         await this.authService.esperarPronto();
         const id = this.authService.getIdUtilizador();
@@ -69,7 +69,7 @@ export class PesquisaPage implements OnInit {
         }
         this.idUtilizador = id;
     }
-
+    /** Pesquisa todos os livros, géneros e registos pessoais para exibir na página */
     private async carregarDados() {
         this.aCarregar = true;
         if (this.idUtilizador == null) {
@@ -90,7 +90,7 @@ export class PesquisaPage implements OnInit {
         }
         this.aCarregar = false;
     }
-
+    /** Retorna a lista de livros após aplicar pesquisa, filtros de categoria e estado de posse */
     public get livrosFiltrados(): LivroExibido[] {
         const texto = this.termoPesquisa.toLowerCase().trim();
         return this.livros.filter(livro => {
@@ -104,37 +104,37 @@ export class PesquisaPage implements OnInit {
             return correspondeTexto && correspondeFiltro && correspondeGenero;
         });
     }
-
+    /** Atualiza o termo de pesquisa inserido pelo utilizador */
     public filtrarLivros(event: any) {
         this.termoPesquisa = event?.target?.value ?? '';
     }
-
+    /** Define o filtro atual (todos ou apenas desejos) */
     public alterarFiltro(event: any) {
         this.filtroAtual = event.detail.value as FiltroDescobrir;
     }
-
+    /** Verifica na URL se existe algum filtro para aplicar automaticamente */
     private aplicarFiltroDaRota() {
         const filtro = this.route.snapshot.queryParamMap.get('filtro');
         this.filtroAtual = filtro === 'desejos' ? 'desejos' : this.filtroAtual;
     }
-
+    /** Retorna o estado de posse de um livro específico */
     public obterPosse(livroId: number): Posse {
         return this.livrosPosse.get(livroId) ?? Posse.NENHUMA;
     }
-
+    /** Navega para a página de detalhes de um livro */
     public abrirDetalhe(livroId: number) {
         this.router.navigate(['/tabs/livro/detalhe', livroId]);
     }
-
+    /** Atualiza os dados após registar um livro manualmente no modal */
     public async livroRegistado() {
         await this.carregarDados();
         this.fecharModalRegisto();
     }
-
+    /** Fecha o modal de registo manual de livro */
     public fecharModalRegisto() {
         this.modal.dismiss();
     }
-
+    /** Exibe uma mensagem temporária (toast) de sucesso */
     private async mostrarToast(mensagem: string) {
         const toast = await this.toastController.create({
             message: mensagem,
@@ -144,7 +144,7 @@ export class PesquisaPage implements OnInit {
         });
         await toast.present();
     }
-
+    /** Alterna o estado de um livro na lista de desejos (adicionar/remover) */
     public async alternarListaDeDesejos(event: Event, livroId: number) {
         event.stopPropagation();
         const posseAtual = this.obterPosse(livroId);
@@ -159,11 +159,11 @@ export class PesquisaPage implements OnInit {
         await this.carregarDados();
         await this.mostrarToast(novaPosse === Posse.DESEJADO ? 'Livro adicionado aos desejos.' : 'Livro removido dos desejos.');
     }
-
+    /** Retorna o rótulo para o botão da lista de desejos */
     public labelMarcador(livroId: number): string {
         return this.obterPosse(livroId) === Posse.DESEJADO ? 'Remover dos desejos' : 'Adicionar aos desejos';
     }
-
+    /** Alerta de confirmação para remover um livro da lista de desejos */
     private async confirmarRemoverDosDesejos(): Promise<boolean> {
         const alerta = await this.alertController.create({
             header: 'Remover dos desejos?',

@@ -41,17 +41,17 @@ export class BibliotecaPage implements OnInit {
         private router: Router
     ) {
     }
-
+    /** Inicializa a página carregando o utilizador e os seus livros pessoais */
     async ngOnInit() {
         await this.carregarUtilizador();
         await this.carregarLivrosPessoais();
     }
-
+    /** Atualiza os dados sempre que o utilizador entra na página */
     async ionViewWillEnter() {
         await this.carregarUtilizador();
         await this.carregarLivrosPessoais();
     }
-
+    /** Obtém o ID do utilizador atual através do serviço de autenticação */
     private async carregarUtilizador() {
         await this.authService.esperarPronto();
         const id = this.authService.getIdUtilizador();
@@ -61,7 +61,7 @@ export class BibliotecaPage implements OnInit {
         }
         this.idUtilizador = id;
     }
-
+    /** Pesquisa os livros globais e pessoais, filtrando apenas os que estão na biblioteca */
     async carregarLivrosPessoais() {
         this.aCarregar = true;
 
@@ -94,7 +94,7 @@ export class BibliotecaPage implements OnInit {
         this.generos = generos;
         this.aCarregar = false;
     }
-
+    /** Retorna a lista de livros após aplicar filtros de categoria e texto de pesquisa */
     get livrosFiltrados(): LivroExibido[] {
         let livrosPorFiltro: LivroExibido[];
         switch (this.filtroAtual) {
@@ -125,38 +125,38 @@ export class BibliotecaPage implements OnInit {
             )
         );
     }
-
+    /** Atualiza o filtro selecionado (todos, por ler, lidos ou emprestados) */
     alterarFiltro(event: any) {
         this.filtroAtual = event.detail.value as FiltroEstante;
     }
-
+    /** Atualiza o termo de pesquisa de acordo com a entrada do utilizador */
     filtrarLivros(event: any) {
         this.termoPesquisa = event?.target?.value ?? event?.detail?.value ?? '';
     }
-
+    /** Fecha o modal de adicionar livro */
     public async fecharModalAdicionarLivro() {
         await this.modalAdicionarLivro.dismiss();
     }
-
+    /** Fecha o modal e navega para a página de pesquisa de novos livros */
     public async procurarLivros() {
         await this.fecharModalAdicionarLivro();
         await this.router.navigateByUrl('/tabs/pesquisa');
     }
-
+    /** Fecha o modal de adicionar e abre o modal de registo manual de livro */
     public async abrirRegistoLivro() {
         await this.fecharModalAdicionarLivro();
         await this.modalRegistoLivro.present();
     }
-
+    /** Fecha o modal de registo manual */
     public async fecharModalRegistoLivro() {
         await this.modalRegistoLivro.dismiss();
     }
-
+    /** Atualiza a estante após o registo de um novo livro e fecha o modal */
     public async livroRegistado() {
         await this.carregarLivrosPessoais();
         await this.fecharModalRegistoLivro();
     }
-
+    /** Devolve a mensagem apropriada quando não existem livros para exibir */
     get mensagemVazio(): string {
         if (this.termoPesquisa.trim() !== '') {
             return 'Nenhum livro corresponde à pesquisa.';

@@ -25,13 +25,13 @@ export class LivroService {
     constructor(private http: HttpClient, private storage: Storage) {
         this.init();
     }
-
+    /** Inicializa a ligação ao armazenamento (storage) local da aplicação */
     async init() {
         if (!this._storage) {
             this._storage = await this.storage.create();
         }
     }
-
+    /** Vai buscar a lista completa de livros, garantindo que os livros padrão da aplicação (JSON) estão sempre incluídos e misturados com os criados pelo utilizador */
     public async getLivros(): Promise<Livro[]> {
         await this.init();
         const livros = await this._storage?.get('livros');
@@ -55,7 +55,7 @@ export class LivroService {
 
         return livrosGuardados;
     }
-
+    /** Regista um novo livro criado manualmente pelo utilizador e guarda-o na base de dados local */
     public async registarLivro(titulo: string, autor: string, capa: string, generos: string[] = []): Promise<Livro> {
         const livros = await this.getLivros();
         const novoLivro: Livro = {
@@ -70,23 +70,23 @@ export class LivroService {
         await this._storage?.set('livros', livros);
         return novoLivro;
     }
-
+    /** Prepara o caminho da imagem da capa para ser lido corretamente pelo telemóvel (converte ficheiros locais do dispositivo se necessário) */
     public async carregarCapa(livro: Livro) {
         if (livro.inicial) return livro.capa;
         return Capacitor.convertFileSrc(livro.capa)
     }
-
+    /** Calcula qual deve ser o próximo ID (identificador) numérico disponível para um livro novo */
     private getNovoId(livros: Livro[]): number {
         if (livros.length === 0) return 1;
         return Math.max(...livros.map(livro => livro.id || 0)) + 1;
     }
-
+    /** Lê os livros pré-configurados que vêm dentro da própria aplicação (ficheiro livros.json) */
     private async carregarLivrosIniciais(): Promise<Livro[]> {
         const livros = await firstValueFrom(this.http.get<any[]>(this.livrosUrl));
         const livrosNormalizados = (livros || []).map(livro => this.normalizarLivro(livro, true));
         return livrosNormalizados;
     }
-
+    /** Garante que um livro tem todos os dados no formato correto antes de ser usado na aplicação */
     private normalizarLivro(livro: any, inicial: boolean = false): Livro {
         return {
             id: Number(livro.id),
@@ -97,7 +97,7 @@ export class LivroService {
             generos: livro.generos || []
         };
     }
-
+    /** Lê a lista de géneros literários possíveis a partir do ficheiro generos.json */
     public async getGeneros(): Promise<string[]> {
         return await firstValueFrom(this.http.get<string[]>(this.generosUrl));
     }

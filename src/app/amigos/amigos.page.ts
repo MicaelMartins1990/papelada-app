@@ -30,17 +30,17 @@ export class AmigosPage implements OnInit {
         private router: Router,
         private toastController: ToastController
     ) {}
-
+    /** Inicializa a página carregando o utilizador e os seus amigos */
     async ngOnInit() {
         await this.carregarUtilizador();
         await this.carregarDados();
     }
-
+    /** Atualiza os dados sempre que o utilizador entra na página */
     async ionViewWillEnter() {
         await this.carregarUtilizador();
         await this.carregarDados();
     }
-
+    /** Obtém o ID do utilizador atual através do serviço de autenticação */
     private async carregarUtilizador() {
         await this.authService.esperarPronto();
         const id = this.authService.getIdUtilizador();
@@ -50,7 +50,7 @@ export class AmigosPage implements OnInit {
         }
         this.idUtilizador = id;
     }
-
+    /** pesquisa a lista de amigos do serviço e prepara a listagem filtrada */
     private async carregarDados() {
         this.aCarregar = true;
         if (this.idUtilizador == null) {
@@ -62,7 +62,7 @@ export class AmigosPage implements OnInit {
         this.amigosFiltrados = [...this.amigos];
         this.aCarregar = false;
     }
-
+    /** Filtra a lista de amigos com base no nome ou username inserido */
     public filtrarAmigos(event: any) {
         const texto = event.target.value ? event.target.value.toLowerCase().trim() : '';
         const usernamePesquisa = texto.startsWith('@') ? texto.substring(1) : texto;
@@ -75,7 +75,7 @@ export class AmigosPage implements OnInit {
             );
         }
     }
-
+    /** Tenta adicionar um novo amigo utilizando o username inserido */
     public async adicionarAmigo() {
         let username = this.usernameInput.trim();
         if (username.startsWith('@')) username = username.substring(1);
@@ -107,12 +107,12 @@ export class AmigosPage implements OnInit {
                 this.showToast('Erro desconhecido a registar amigo.');
         }
     }
-
+    /** Exibe uma mensagem rápida no ecrã */
     async showToast(message: string) {
         const toast = await this.toastController.create({ message: message, duration: 2000 });
         toast.present();
     }
-
+    /** Fecha o modal e limpa o campo de input */
     public fecharModal() {
         this.usernameInput = '';
         this.modal.dismiss();

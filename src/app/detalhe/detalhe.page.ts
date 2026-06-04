@@ -49,7 +49,7 @@ export class DetalhePage implements OnInit {
         private navController: NavController
     ) {
     }
-
+    /** Inicializa a página, carrega os dados do livro, estado pessoal e recomendações */
     async ngOnInit() {
         const idParam = this.route.snapshot.paramMap.get('id');
 
@@ -74,14 +74,13 @@ export class DetalhePage implements OnInit {
 
         this.aCarregar = false;
     }
-
+    /** Atualiza o estado pessoal do livro ao retornar à página */
     async ionViewWillEnter() {
-        // Refrescar o estado pessoal ao voltar (ex.: depois de ver/concluir empréstimo)
         if (this.livro && this.idUtilizador != null) {
             await this.carregarEstadoPessoal();
         }
     }
-
+    /** Obtém o ID do utilizador atual */
     private async carregarUtilizador() {
         await this.authService.esperarPronto();
         const id = this.authService.getIdUtilizador();
@@ -91,7 +90,7 @@ export class DetalhePage implements OnInit {
         }
         this.idUtilizador = id;
     }
-
+    /** Carrega o estado de posse, leitura e empréstimo do livro para o utilizador */
     private async carregarEstadoPessoal() {
         if (!this.livro) {
             return;
@@ -126,7 +125,7 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Ação: biblioteca (toggle de posse) ---
-
+    /** Adiciona o livro à biblioteca pessoal do utilizador */
     async adicionarABiblioteca() {
         if (!this.livro) {
             return;
@@ -135,7 +134,7 @@ export class DetalhePage implements OnInit {
         await this.carregarEstadoPessoal();
         await this.mostrarToast('Livro adicionado à biblioteca.');
     }
-
+    /** Remove o livro da biblioteca pessoal, após validação */
     async removerDaBiblioteca() {
         if (!this.livro) {
             return;
@@ -157,7 +156,7 @@ export class DetalhePage implements OnInit {
         await this.carregarEstadoPessoal();
         await this.mostrarToast('Livro removido da biblioteca.');
     }
-
+    /** Exibe um alerta informando que o livro não pode ser removido pois está emprestado */
     private async avisarEmprestimoAtivo() {
         const alerta = await this.alertController.create({
             header: 'Livro emprestado',
@@ -168,7 +167,7 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Ação: leitura (toggle independente) ---
-
+    /** Atualiza o estado do livro para lido */
     async marcarComoLido() {
         if (!this.livro) {
             return;
@@ -177,7 +176,7 @@ export class DetalhePage implements OnInit {
         await this.carregarEstadoPessoal();
         await this.mostrarToast('Livro marcado como lido.');
     }
-
+    /** Atualiza o estado do livro para não lido */
     async marcarComoNaoLido() {
         if (!this.livro) {
             return;
@@ -188,7 +187,7 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Ação: desejos (toggle, só quando não está na biblioteca) ---
-
+    /** Adiciona o livro à lista de desejos do utilizador */
     async adicionarAListaDeDesejos() {
         if (!this.livro) {
             return;
@@ -197,7 +196,7 @@ export class DetalhePage implements OnInit {
         await this.carregarEstadoPessoal();
         await this.mostrarToast('Livro adicionado à lista de desejos.');
     }
-
+    /** Remove o livro da lista de desejos, após confirmação */
     async removerDaListaDeDesejos() {
         if (!this.livro) {
             return;
@@ -216,23 +215,23 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Ação: empréstimo ---
-
+    /** Abre o modal para registar um empréstimo do livro */
     public abrirEmprestimo() {
         if (!this.estaNaBiblioteca || this.temEmprestimo) {
             return;
         }
         this.modalEmprestimoAberto = true;
     }
-
+    /** Fecha o modal de empréstimo */
     public fecharEmprestimo() {
         this.modalEmprestimoAberto = false;
     }
-
+    /** Atualiza o estado pessoal após um empréstimo ser registado com sucesso */
     public async onEmprestimoRegistado() {
         this.modalEmprestimoAberto = false;
         await this.carregarEstadoPessoal();
     }
-
+    /** Navega para a página de detalhes de um empréstimo específico */
     public verEmprestimo() {
         if (this.livro) {
             this.router.navigate(['/tabs/emprestimos/detalhe', this.livro.id]);
@@ -240,7 +239,7 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Avaliações ---
-
+    /** Navega para a página de comentários para o utilizador avaliar o livro */
     public abrirAvaliacao() {
         if (!this.livro) {
             return;
@@ -256,7 +255,7 @@ export class DetalhePage implements OnInit {
             queryParams: { abrirModal: '1' }
         });
     }
-
+    /** Navega para a página que lista todos os comentários do livro */
     public abrirComentarios() {
         if (this.livro) {
             this.router.navigate(['/tabs/livro/comentarios', this.livro.id]);
@@ -264,7 +263,7 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Livros semelhantes (recomendação por género) ---
-
+    /** Carrega livros semelhantes com base nos géneros literários */
     private async carregarSemelhantes() {
         if (!this.livro) {
             return;
@@ -272,11 +271,11 @@ export class DetalhePage implements OnInit {
         const registos = await this.livroPessoalService.getLivrosPessoais(this.idUtilizador);
         this.livrosSemelhantes = await this.livroService.getLivrosSemelhantes(this.livro, registos);
     }
-
+    /** Navega para a página de detalhes de outro livro ao clicar numa recomendação */
     public abrirLivro(id: number) {
         this.router.navigate(['/tabs/livro/detalhe', id]);
     }
-
+    /** pesquisa as avaliações existentes para o livro atual */
     private async carregarAvaliacoes() {
         if (!this.livro) {
             return;
@@ -285,7 +284,7 @@ export class DetalhePage implements OnInit {
         const avaliacoesLivro = await this.livroPessoalService.getAvaliacoesLivro(this.livro.id);
         this.calcularResumoGlobal(avaliacoesLivro);
     }
-
+    /** Calcula a média, total e a distribuição de estrelas das avaliações do livro */
     private calcularResumoGlobal(avaliacoesLivro: LivroPessoal[]) {
         const avaliacoesValidas = avaliacoesLivro
             .map(registo => registo.avaliacao)
@@ -301,7 +300,7 @@ export class DetalhePage implements OnInit {
             total: avaliacoesValidas.filter(avaliacao => avaliacao === estrelas).length
         }));
     }
-
+    /** Exibe uma mensagem de confirmação temporária */
     private async mostrarToast(mensagem: string) {
         const toast = await this.toastController.create({
             message: mensagem,
@@ -311,7 +310,7 @@ export class DetalhePage implements OnInit {
         });
         await toast.present();
     }
-
+    /** Exibe um alerta de confirmação para ações destrutivas (ex: remover livro) */
     private async confirmarAcao(header: string, message: string, confirmText: string): Promise<boolean> {
         const alerta = await this.alertController.create({
             header,
@@ -327,7 +326,7 @@ export class DetalhePage implements OnInit {
     }
 
     // --- Compartilhamento por e-mail ---
-
+    /** Abre o menu nativo do dispositivo para compartilhar o livro com outras pessoas */
     public async compartilharEmail() {
         if (!this.livro) return;
         await Share.share({

@@ -48,7 +48,7 @@ export class ComentariosPage implements OnInit {
         private alertController: AlertController,
         private navController: NavController
     ) { }
-
+    /** Inicializa a página, carrega os dados do livro e verifica se deve abrir o modal de avaliação */
     async ngOnInit() {
         const idParam = this.route.snapshot.paramMap.get('id');
 
@@ -66,28 +66,28 @@ export class ComentariosPage implements OnInit {
             await this.abrirModalComentario();
         }
     }
-
+    /** Volta para a página de detalhes do livro */
     public voltarDetalhe() {
         this.router.navigateByUrl(`/tabs/livro/detalhe/${this.idLivro}`);
     }
-
+    /** Define a pontuação selecionada no modal */
     public setAvaliacao(nota: number) {
         this.avaliacaoAtual = nota;
         this.mensagemErro = '';
     }
-
+    /** Abre o modal para criar ou editar uma avaliação */
     public async abrirModalComentario() {
         this.avaliacaoAtual = this.avaliacaoPessoal?.avaliacao ?? 0;
         this.comentarioAtual = this.avaliacaoPessoal?.comentario ?? '';
         this.mensagemErro = '';
         this.modalAberto = true;
     }
-
+    /** Fecha o modal de comentário */
     public fecharModalComentario() {
         this.modalAberto = false;
         this.mensagemErro = '';
     }
-
+    /** Valida e guarda a avaliação e comentário pessoal */
     public async guardarComentario() {
         if (this.avaliacaoAtual < 1) {
             this.mensagemErro = 'Escolhe pelo menos 1 estrela para comentar.';
@@ -105,7 +105,7 @@ export class ComentariosPage implements OnInit {
         this.modalAberto = false;
         await this.mostrarToast('Avaliação guardada.');
     }
-
+    /** Apaga a avaliação e comentário após confirmação do utilizador */
     public async apagarComentario() {
         const confirmado = await this.confirmarApagarAvaliacao();
 
@@ -120,23 +120,23 @@ export class ComentariosPage implements OnInit {
         this.modalAberto = false;
         await this.mostrarToast('Avaliação apagada.');
     }
-
+    /** Verifica se o utilizador já atribuiu uma avaliação ou comentário */
     public temAvaliacaoPessoal(): boolean {
         return (this.avaliacaoPessoal?.avaliacao ?? 0) > 0 || !!this.avaliacaoPessoal?.comentario?.trim();
     }
-
+    /** Verifica se o utilizador já escreveu um comentário */
     public temComentarioPessoal(): boolean {
         return !!this.avaliacaoPessoal?.comentario?.trim();
     }
-
+    /** Verifica se existem avaliações globais para o livro */
     public temAvaliacoesLivro(): boolean {
         return this.totalAvaliacoes > 0;
     }
-
+    /** Verifica se existem comentários de outros utilizadores na comunidade */
     public temComentariosComunidade(): boolean {
         return this.comentariosComunidade.length > 0;
     }
-
+    /** Obtém e valida o ID do utilizador autenticado */
     private async carregarUtilizador() {
         await this.authService.esperarPronto();
         const id = this.authService.getIdUtilizador();
@@ -148,7 +148,7 @@ export class ComentariosPage implements OnInit {
 
         this.idUtilizador = id;
     }
-
+    /** Carrega os dados do livro e as avaliações da comunidade */
     private async carregarPagina() {
         const [livros, registosPessoais, avaliacoesLivro, utilizadores] = await Promise.all([
             this.livroService.getLivros(),
@@ -165,7 +165,7 @@ export class ComentariosPage implements OnInit {
             .map(registo => this.criarComentario(registo, utilizadores))
             .sort((a, b) => this.obterTimestamp(b.dataAvaliacao) - this.obterTimestamp(a.dataAvaliacao));
     }
-
+    /** Calcula a média e o total de avaliações do livro */
     private calcularResumoGlobal(avaliacoesLivro: LivroPessoal[]) {
         const avaliacoesValidas = avaliacoesLivro
             .map(registo => registo.avaliacao)
@@ -177,7 +177,7 @@ export class ComentariosPage implements OnInit {
             : avaliacoesValidas.reduce((total, avaliacao) => total + avaliacao, 0) / this.totalAvaliacoes;
         this.avaliacaoMediaArredondada = Math.round(this.mediaAvaliacoes);
     }
-
+    /** Cria a estrutura do comentário para exibição na comunidade */
     private criarComentario(
         registo: LivroPessoal,
         utilizadores: { id: number; nome: string }[]
@@ -194,7 +194,7 @@ export class ComentariosPage implements OnInit {
             pertenceAoUtilizadorAtual: registo.idUtilizador === this.idUtilizador
         };
     }
-
+    /** Converte uma data em formato string para timestamp numérico */
     private obterTimestamp(data: string | null): number {
         if (!data) {
             return 0;
@@ -203,7 +203,7 @@ export class ComentariosPage implements OnInit {
         const timestamp = new Date(data).getTime();
         return Number.isNaN(timestamp) ? 0 : timestamp;
     }
-
+    /** Formata a data da avaliação de forma relativa (ex: 'Hoje', 'Há X dias') */
     private formatarDataRelativa(data: string | null): string {
         const timestamp = this.obterTimestamp(data);
 
@@ -224,11 +224,11 @@ export class ComentariosPage implements OnInit {
 
         return `Há ${dias} dias`;
     }
-
+    /** Verifica nos parâmetros da URL se o modal deve abrir automaticamente */
     private deveAbrirModalAutomaticamente(): boolean {
         return this.route.snapshot.queryParamMap.get('abrirModal') === '1';
     }
-
+    /** Exibe um alerta para confirmar se o utilizador quer apagar a avaliação */
     private async confirmarApagarAvaliacao(): Promise<boolean> {
         const alerta = await this.alertController.create({
             header: 'Apagar avaliação?',
@@ -249,7 +249,7 @@ export class ComentariosPage implements OnInit {
         const resultado = await alerta.onDidDismiss();
         return resultado.role === 'confirm';
     }
-
+    /** Exibe uma mensagem de confirmação temporária*/
     private async mostrarToast(mensagem: string) {
         const toast = await this.toastController.create({
             message: mensagem,
@@ -259,7 +259,7 @@ export class ComentariosPage implements OnInit {
         });
         await toast.present();
     }
-
+    /** Volta para a página anterior */
     public voltar() {
         this.navController.back();
     }

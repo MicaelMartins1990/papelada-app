@@ -30,7 +30,7 @@ export class AmigoDetalhePage implements OnInit {
         private alertController: AlertController
     ) { 
     }
-
+    /** Inicializa a página e carrega os dados do utilizador e do amigo */
     async ngOnInit() {
         await Promise.all([
             this.carregarUtilizador(),
@@ -43,7 +43,7 @@ export class AmigoDetalhePage implements OnInit {
         if (!this.amigo) return;
         this.dadosLeitura = await this.utilizadorService.getDadosLeitura(idNum);
     }
-
+    /** Verifica se o utilizador está autenticado, caso contrário redireciona para o início */
     private async carregarUtilizador() {
         await this.authService.esperarPronto();
         const id = this.authService.getIdUtilizador();
@@ -53,7 +53,7 @@ export class AmigoDetalhePage implements OnInit {
         }
         this.idUtilizador = id;
     }
-
+    /** Remove o amigo selecionado após confirmação do utilizador */
     public async removerAmigo() {
         if (!this.amigo) return;
         const confirmado = await this.confirmarRemoverAmigo();
@@ -73,12 +73,12 @@ export class AmigoDetalhePage implements OnInit {
                 this.showToast('Erro desconhecido ao remover amigo.');
         }
     }
-
+    /** Exibe uma mensagem rápida no ecrã */
     async showToast(message: string) {
         const toast = await this.toastController.create({ message: message, duration: 2000 });
         toast.present();
     }
-
+    /** Mostra um alerta de confirmação para remover o amigo */
     private async confirmarRemoverAmigo(): Promise<boolean> {
         const alerta = await this.alertController.create({
             header: 'Remover amigo?',
@@ -95,19 +95,19 @@ export class AmigoDetalhePage implements OnInit {
 
     // --- Ação: empréstimo ---
 
-    /** Amigo pré-fixado para o formulário de empréstimo (o amigo deste perfil). */
+    /** Devolve o utilizador que está a ser visualizado nesta página */
     public get amigoFixoEmprestimo(): Utilizador | null {
         return this.amigo;
     }
-
+    /** Abre o modal para registar um novo empréstimo */
     public abrirEmprestimo() {
         this.modalEmprestimoAberto = true;
     }
-
+    /** Fecha o modal de empréstimo */
     public fecharEmprestimo() {
         this.modalEmprestimoAberto = false;
     }
-
+    /** Fecha o modal e mostra uma mensagem de sucesso após registar um empréstimo */
     public async onEmprestimoRegistado() {
         this.modalEmprestimoAberto = false;
         await this.showToast('Empréstimo registado com sucesso.');

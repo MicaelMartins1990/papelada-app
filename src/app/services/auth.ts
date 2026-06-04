@@ -25,22 +25,22 @@ export class AuthService {
     constructor(private storage: Storage) {
         this.estaPronto = this.init();
     }
-
+    /** Inicializa o armazenamento (storage) e verifica se já existe uma sessão aberta */
     async init() {
         this._storage = await this.storage.create();
         await this.checkLogin();
     }
-
+    /** Verifica no armazenamento local se existe um utilizador já logado */
     public async checkLogin() {
         const utilizador = await this._storage?.get('utilizador_logado');
         if (utilizador) {
             this.utilizadorLogado = utilizador.id;
         }
     }
-
+    /** Cria uma nova conta, encriptando a palavra-passe com bcrypt antes de guardar */
     public async criarConta(nome: string, username: string, password: string): Promise <Resultado> {
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
-
+        // Verifica se o username já existe
         if (utilizadores.find((u: any) => u.username === username)) return Resultado.JA_EXISTE;
 
         const id = this.getNovoId(utilizadores);
@@ -52,34 +52,36 @@ export class AuthService {
         await this._storage?.set('utilizadores', utilizadores);
         return Resultado.EXITO;
     }
-
+    /** Valida as credenciais e inicia sessão caso estejam corretas */
     public async login(username: string, password: string): Promise <Resultado> {
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
         const utilizador = utilizadores.find((u: Utilizador) => u.username === username);
+        // Verifica se utilizador existe e se a password coincide
         if (!utilizador) return Resultado.NAO_ENCONTRADO;
         if (!await bcrypt.compare(password, utilizador.passwordHash)) return Resultado.NAO_ENCONTRADO;
 
         const utilizadorNormalizado = this.normalizarUtilizador(utilizador);
-        this.utilizadorLogado = utilizadorNormalizado.id;
+        this.utilizadorLogado = utilizadorNormalizado.id;~
+        // Guarda o estado de login no storage
         await this._storage?.set('utilizadores', utilizadores.map(u => u.id === utilizadorNormalizado.id ? utilizadorNormalizado : u));
         await this._storage?.set('utilizador_logado', utilizadorNormalizado);
 
         return Resultado.EXITO;
     }
-
+    /** Remove a sessão do utilizador do storage */
     public async logout() {
         this.utilizadorLogado = null;
         await this._storage?.remove('utilizador_logado');
     }
-
+    /** Aguarda que o armazenamento esteja pronto para ser lido ou escrito */
     public async esperarPronto() {
         await this.estaPronto;
     }
-
+    /** Retorna o ID do utilizador atualmente logado */
     public getIdUtilizador(): number | null {
         return this.utilizadorLogado;
     }
-
+    /** Retorna uma lista de utilizadores sem dados sensíveis (password), ideal para listagens */
     public async getUtilizadoresPublicos(): Promise<UtilizadorPublico[]> {
         await this.esperarPronto();
         const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
@@ -91,15 +93,15 @@ export class AuthService {
             avatar: utilizador.avatar || AVATAR_PADRAO
         }));
     }
-
+    /** Verifica se o utilizador tem uma sessão ativa */
     public estaLogado(): boolean {
         return this.utilizadorLogado !== null;
     }
-    
+    /** Gera um novo ID sequencial para um novo utilizador */
     private getNovoId(utilizadores: Utilizador[]): number {
         return (utilizadores[utilizadores.length - 1]?.id || 0) + 1
     }
-
+    /** Garante que um utilizador tem sempre um avatar definido */
     private normalizarUtilizador(utilizador: Utilizador): Utilizador {
         return {
             ...utilizador,
