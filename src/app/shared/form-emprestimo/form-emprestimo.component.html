@@ -91,9 +91,15 @@
         <label class="rotulo">Data de devolução</label>
         <div class="cartao-data">
             <ion-datetime presentation="date" [min]="hojeIso" locale="pt-PT" name="data"
-                [(ngModel)]="dataDevolucaoSelecionada" (ionChange)="erroData = ''"
+                [(ngModel)]="dataDevolucaoSelecionada" (ionChange)="aoMudarData($event)"
                 [firstDayOfWeek]="1"></ion-datetime>
         </div>
+        @if (dataSugerida) {
+        <p class="nota-sugestao">
+            <ion-icon name="information-circle-outline" aria-hidden="true"></ion-icon>
+            Data sugerida (1 mês). Podes alterá-la.
+        </p>
+        }
         @if (erroData) { <p class="erro">{{ erroData }}</p> }
     </div>
 
