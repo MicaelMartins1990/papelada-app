@@ -334,3 +334,12 @@ Corrigir a convenção de cores dos botões na página de detalhes de livro e bl
 # Lucas Israel
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de junho de 2026
+# Objetivo: Implmentar sistema de recomendados 
+
+Desenvolvido: 
+- Sistema de recomendados aparece na pagina de detalhes de livro
+- Sugere livros fora da estante pessoal e dos desejos para aparecer sempre algo novo e não repetido
+- Aparece etiqueta de categoria para dar contexto ao utilizador 
+

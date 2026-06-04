@@ -3,7 +3,15 @@ import { Storage } from '@ionic/storage-angular';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Livro } from '../models/livro';
+import { LivroPessoal } from '../models/livro-pessoal';
+import { Posse } from '../enums/posse';
 import { Capacitor } from '@capacitor/core';
+
+/** Livro recomendado mais os géneros que partilha com o livro de referência. */
+export interface LivroSemelhante {
+    livro: Livro;
+    generosPartilhados: string[];
+}
 
 @Injectable({
     providedIn: 'root'
@@ -92,5 +100,45 @@ export class LivroService {
 
     public async getGeneros(): Promise<string[]> {
         return await firstValueFrom(this.http.get<string[]>(this.generosUrl));
+    }
+
+    /**
+     * Recomenda livros que partilham géneros com `livroBase`, excluindo o próprio
+     * livro e os que o utilizador já tem (biblioteca ou desejos). Ordena por número
+     * de géneros partilhados (desc), com desempate determinístico por título.
+     *
+     * Recebe os registos pessoais já carregados em vez de os ir buscar, para não
+     * acoplar este serviço ao LivroPessoalService nem duplicar a leitura.
+     */
+    public async getLivrosSemelhantes(
+        livroBase: Livro,
+        registosPessoais: LivroPessoal[],
+        limite: number = 12
+    ): Promise<LivroSemelhante[]> {
+        const generosBase = livroBase.generos || [];
+        if (generosBase.length === 0) {
+            return [];
+        }
+
+        const idsPossuidos = new Set(
+            registosPessoais
+                .filter(registo => registo.posse === Posse.NA_BIBLIOTECA || registo.posse === Posse.DESEJADO)
+                .map(registo => registo.idLivro)
+        );
+
+        const livros = await this.getLivros();
+
+        return livros
+            .filter(livro => livro.id !== livroBase.id && !idsPossuidos.has(livro.id))
+            .map(livro => ({
+                livro,
+                generosPartilhados: (livro.generos || []).filter(genero => generosBase.includes(genero))
+            }))
+            .filter(candidato => candidato.generosPartilhados.length > 0)
+            .sort((a, b) =>
+                b.generosPartilhados.length - a.generosPartilhados.length
+                || a.livro.titulo.localeCompare(b.livro.titulo)
+            )
+            .slice(0, limite);
     }
 }

@@ -266,3 +266,101 @@
 .estado-vazio ion-icon {
   font-size: 44px;
 }
+
+/* --- Livros semelhantes (carrossel) --- */
+
+.secao-subtitulo {
+  color: var(--papelada-purple);
+  font-size: 18px;
+  margin: -14px 0 20px;
+}
+
+.carrossel-semelhantes {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.carrossel-semelhantes::-webkit-scrollbar {
+  display: none;
+}
+
+.cartao-semelhante {
+  flex: 0 0 auto;
+  width: 150px;
+  scroll-snap-align: start;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: transform 0.15s ease;
+}
+
+.cartao-semelhante:active {
+  transform: scale(0.96);
+}
+
+.cartao-semelhante:focus-visible {
+  outline: 3px solid var(--papelada-purple);
+  outline-offset: 3px;
+}
+
+.cartao-semelhante img {
+  width: 150px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  display: block;
+}
+
+.titulo-semelhante {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 10px 0 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.chips-genero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-genero {
+  background: var(--papelada-purple);
+  color: #fffdf0;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 4px 10px;
+}
+
+.semelhantes-vazio {
+  color: var(--papelada-purple);
+  padding: 18px 12px 8px;
+  text-align: center;
+}
+
+.semelhantes-vazio ion-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 360px) {
+  .cartao-semelhante,
+  .cartao-semelhante img {
+    width: 134px;
+  }
+
+  .cartao-semelhante img {
+    height: 198px;
+  }
+}

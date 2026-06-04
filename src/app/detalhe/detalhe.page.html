@@ -130,6 +130,39 @@
         Ver Comentários
       </ion-button>
     </section>
+
+    <section class="secao livros-semelhantes-secao">
+      <h2>Livros Semelhantes</h2>
+      <p class="secao-subtitulo">Sugestões com base nos géneros deste livro.</p>
+
+      @if (livrosSemelhantes.length > 0) {
+        <div class="carrossel-semelhantes">
+          @for (item of livrosSemelhantes; track item.livro.id) {
+            <div
+              class="cartao-semelhante"
+              role="button"
+              tabindex="0"
+              [attr.aria-label]="'Ver ' + item.livro.titulo + ', de ' + item.livro.autor"
+              (click)="abrirLivro(item.livro.id)"
+              (keydown.enter)="abrirLivro(item.livro.id)"
+              (keydown.space)="abrirLivro(item.livro.id)">
+              <img [src]="item.livro.capa" [alt]="item.livro.titulo" />
+              <p class="titulo-semelhante">{{ item.livro.titulo }}</p>
+              <div class="chips-genero">
+                @for (genero of item.generosPartilhados; track genero) {
+                  <span class="chip-genero">{{ genero }}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="semelhantes-vazio">
+          <ion-icon name="library-outline"></ion-icon>
+          <p>Ainda não há livros semelhantes para sugerir.</p>
+        </div>
+      }
+    </section>
   } @else {
     <div class="estado-vazio">
       <ion-icon name="alert-circle-outline"></ion-icon>
