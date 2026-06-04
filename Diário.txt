@@ -382,8 +382,15 @@ Objetivo: Correção do Iniciar Sessão
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
+# 4 de junho de 2026
+# Objetivo: Preparar aspetos para a build real da app
 
+# Desenvolvido:
 
+- Integração do botão de "voltar" padrão do Android, que agora navega corretamente entre abas acedidas
+- Bloqueio da rotação de ecrã
+- Adicionado ícone próprio ao invés do padrão do Ionic com Capacitor Assets
 
+# Lucas Israel
 
-
+------------------------------------------------------------------------------------------------------------------------------------

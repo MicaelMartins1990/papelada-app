@@ -332,7 +332,7 @@ export class DetalhePage implements OnInit {
         if (!this.livro) return;
         await Share.share({
             title: this.livro.titulo,
-            text: `Confira este livro na Papelada!\nAbra no app: papelada://tabs/livro/detalhe/${this.livro.id}`,
+            text: `Confira o livro ${this.livro.titulo} na Papelada!\nAbra no app: papelada://tabs/livro/detalhe/${this.livro.id}`,
             dialogTitle: 'Compartilhar',
         });
     }
