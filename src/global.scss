@@ -43,13 +43,14 @@ ion-content {
     --background: var(--bg-color);
 }
 
-ion-toolbar {
-    /* Texto branco nos cabeçalhos */
-    --color: white;
+ion-toolbar ion-title {
+    font-size: 24px;
+    --color: var(--bg-color);
+    --icon-color: var(--bg-color);
 }
 
 ion-header {
-    border-bottom: 1px solid #5E4235 !important;
+    border-bottom: 1px solid var(--primary-border) !important;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4) !important;
 }
 
@@ -65,7 +66,7 @@ ion-tab-bar {
 /* Texto */
 
 ion-title {
-    font-weight: bold;
+    font-weight: 800;
     font-size: 24px;
 }
 
@@ -74,6 +75,88 @@ ion-title {
 ion-title ion-icon {
     vertical-align: middle;
     margin-right: 8px;
+}
+
+.icone-grande {
+    font-size: 30px;
+}
+
+.icone-gigante {
+    font-size: 48px;
+}
+
+/* Mensagens */
+
+.mensagem-erro {
+    text-align: center;
+    margin-top: 40px;
+    color: #6a5a62;
+}
+
+/* Livros */
+
+.prateleira {
+    border-radius: 0;
+    margin: 10px 0;
+    --background: none;
+    align-items: start;
+
+    &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 8px;
+        background: var(--ion-color-primary);
+        border-block: 1px solid var(--primary-border);
+    }
+
+    & .capa {
+    display: block;
+    width: 90px;
+    height: 120px;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    margin: 0 12px 0 0 !important;
+    }
+
+    & .info {
+        margin: 0 !important;
+
+        & h3 {
+            font-size: 18px;
+            font-weight: 800;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+           line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        & p {
+            font-size: 14px;
+            color: black;
+        }
+    }
+}
+
+/* Avaliação livro */
+
+.estrelas {
+    display: flex;
+    gap: 4px;
+}
+
+.estrela-cheia {
+    color: #FFDB59;
+    filter: drop-shadow(0.5px 0 0 var(--ion-color-secondary))
+            drop-shadow(-0.5px 0 0 var(--ion-color-secondary))
+            drop-shadow(0 0.5px 0 var(--ion-color-secondary))
+            drop-shadow(0 -0.5px 0 var(--ion-color-secondary));
+}
+
+.estrela-vazia {
+    color: var(--ion-color-secondary)
 }
 
 /* Input */
@@ -139,7 +222,7 @@ ion-title ion-icon {
 }
 
 ion-fab-button.botao-roxo {
-    width: 60px;
+    width: 65px;
 }
 
 .secao-filtros {
@@ -218,20 +301,11 @@ ion-modal.modal-adicionar {
     --box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-ion-modal.modal-adicionar-livro {
-    --width: 380px;
-    --max-width: 95%;
-    --height: 360px;
-    --border-radius: 24px;
-    --backdrop-opacity: 0.5;
-    --box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+ion-modal.modal-registar-livro {
+    --height: 680px;
 }
 
 /* Utilidades */
-
-.icone-grande {
-    font-size: 30px;
-}
 
 .section:not(:last-child) {
     margin-bottom: 15px;

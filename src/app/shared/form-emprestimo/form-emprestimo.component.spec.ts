@@ -41,7 +41,7 @@ describe('FormEmprestimoComponent', () => {
   it('usa o livro fixo como selecionado e bloqueia o picker', async () => {
     component.livroFixo = { id: 3, titulo: 'Livro fixo', autor: 'Autora', capa: '' };
     (component as any).livroPessoalService = {
-      getLivroPessoal: jasmine.createSpy('getLivroPessoal').and.resolveTo([])
+      getLivrosPessoais: jasmine.createSpy('getLivrosPessoais').and.resolveTo([])
     };
     (component as any).livroService = {
       getLivros: jasmine.createSpy('getLivros').and.resolveTo([])

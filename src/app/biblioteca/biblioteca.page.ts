@@ -32,6 +32,8 @@ export class BibliotecaPage implements OnInit {
 
     public idUtilizador!: number;
 
+    public estrelas = [1,2,3,4,5];
+
     constructor(
         private livroService: LivroService,
         private livroPessoalService: LivroPessoalService,
@@ -65,7 +67,7 @@ export class BibliotecaPage implements OnInit {
 
         const [livros, registosPessoais, generos] = await Promise.all([
             this.livroService.getLivros(),
-            this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+            this.livroPessoalService.getLivrosPessoais(this.idUtilizador),
             this.livroService.getGeneros()
         ]);
 

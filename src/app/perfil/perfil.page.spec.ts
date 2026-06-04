@@ -5,7 +5,7 @@ describe('PerfilPage', () => {
     const page = new PerfilPage(
       { logout: jasmine.createSpy('logout') } as any,
       { navigateByUrl: jasmine.createSpy('navigateByUrl') } as any,
-      { getLivroPessoal: jasmine.createSpy('getLivroPessoal').and.resolveTo([]) } as any,
+      { getLivrosPessoais: jasmine.createSpy('getLivrosPessoais').and.resolveTo([]) } as any,
       { create: jasmine.createSpy('create') } as any
     );
 

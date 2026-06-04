@@ -10,7 +10,7 @@ describe('ComentariosPage', () => {
     router = { navigateByUrl: jasmine.createSpy('navigateByUrl') };
     alertDismissRole = 'confirm';
     livroPessoalService = {
-      getLivroPessoal: jasmine.createSpy('getLivroPessoal').and.resolveTo([
+      getLivrosPessoais: jasmine.createSpy('getLivrosPessoais').and.resolveTo([
         {
           idLivro: 3,
           idUtilizador: 1,

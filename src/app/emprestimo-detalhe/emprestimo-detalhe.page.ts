@@ -76,7 +76,7 @@ export class EmprestimoDetalhePage implements OnInit {
         const idLivroParam = this.route.snapshot.paramMap.get('idLivro');
         this.idLivro = idLivroParam ? Number(idLivroParam) : NaN;
 
-        const registos = await this.livroPessoalService.getLivroPessoal(this.idUtilizador);
+        const registos = await this.livroPessoalService.getLivrosPessoais(this.idUtilizador);
         const registo = registos.find(r => r.idLivro === this.idLivro);
 
         if (!registo || !registo.emprestimo) {

@@ -24,56 +24,50 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
 
     @if (aCarregar) {
-    <div class="ion-text-center" style="margin-top: 50px;">
+    <div class="ion-text-center" style="margin-top: 40px;">
         <ion-spinner name="crescent" color="primary"></ion-spinner>
         <p style="color: #666;">A carregar...</p>
     </div>
     }
 
     @if (!aCarregar && livrosFiltrados.length === 0) {
-    <div class="ion-text-center" style="margin-top: 50px; color: #6a5a62;">
-        <ion-icon name="library-outline" style="font-size: 48px;"></ion-icon>
+    <div class="ion-padding mensagem-erro">
+        <ion-icon name="library-outline" class="icone-gigante"></ion-icon>
         <p>{{ mensagemVazio }}</p>
     </div>
     }
 
     @if (!aCarregar) {
-    <ion-list style="background: transparent;">
+    <div>
         @for (livro of livrosFiltrados; track livro.id) {
+        <ion-item [routerLink]="['/tabs/livro/detalhe', livro.id]" class="prateleira">
 
-        <ion-item [routerLink]="['/tabs/livro/detalhe', livro.id]" detail="true"
-            style="--background: #ffffff; --border-radius: 12px; margin-bottom: 10px; --padding-start: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); --detail-icon-color: #8c5a47;">
-
-            <ion-thumbnail slot="start" style="width: 60px; height: 90px;">
-                <img [alt]="livro.titulo" [src]="livro.capa"
-                    style="border-radius: 4px; object-fit: cover; width: 100%; height: 100%;" />
+            <ion-thumbnail slot="start" class="capa">
+                <img [src]="livro.capa" [alt]="livro.titulo"/>
             </ion-thumbnail>
 
-            <ion-label>
-                <h2 style="font-weight: bold; color: #000; white-space: normal;">{{ livro.titulo }}</h2>
-                <p style="color: #666;">{{ livro.autor }}</p>
+            <ion-label class="info">
+                <h3>{{ livro.titulo }}</h3>
+                <p>{{ livro.autor }}</p>
 
-                <p style="margin-top: 5px; display: flex; gap: 6px; flex-wrap: wrap;">
-                    @if (livro.lido) {
-                    <ion-badge color="success" style="--padding-start: 6px; --padding-end: 6px;">
-                        <ion-icon name="star"></ion-icon> {{ livro.avaliacao ? livro.avaliacao : '0' }}/5
-                    </ion-badge>
-                    } @else {
-                    <ion-badge color="medium" style="--padding-start: 6px; --padding-end: 6px;">Por ler</ion-badge>
-                    }
-                    @if (livro.emprestado) {
-                    <ion-badge color="warning" style="--padding-start: 6px; --padding-end: 6px;">
-                        <ion-icon name="book"></ion-icon> Emprestado
-                    </ion-badge>
-                    }
-                </p>
+                @if (livro.avaliacao !== null) {
+                <div class="avaliacao-global">
+                    <div class="estrelas" aria-label="Avaliação média do livro">
+                        @for (estrela of estrelas; track estrela) {
+                        <ion-icon name="star"
+                            [class]="livro.avaliacao >= estrela ? 'estrela-cheia' : 'estrela-vazia'">
+                        </ion-icon>
+                        }
+                    </div>
+                </div>
+                }
             </ion-label>
         </ion-item>
         }
-    </ion-list>
+    </div>
     }
 
     <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="botao-adicionar">
@@ -110,7 +104,7 @@
     </ion-toolbar>
 </ion-footer>
 
-<ion-modal trigger="abrir-adicionar-livro" class="modal-adicionar-livro" #modalAdicionarLivro>
+<ion-modal trigger="abrir-adicionar-livro" class="modal-adicionar modal-adicionar-livro" #modalAdicionarLivro>
     <ng-template>
         <ion-content class="ion-padding">
             <ion-title class="titulo-modal-adicionar">Adicionar Livro</ion-title>
@@ -134,7 +128,7 @@
     </ng-template>
 </ion-modal>
 
-<ion-modal class="modal-adicionar" #modalRegistoLivro>
+<ion-modal class="modal-adicionar modal-registar-livro" #modalRegistoLivro>
     <ng-template>
         <ion-content>
             <app-registar-livro [idUtilizador]="idUtilizador" [generos]="generos"

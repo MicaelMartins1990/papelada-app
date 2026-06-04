@@ -6,6 +6,8 @@ import { AuthService } from '../services/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Livro } from '../models/livro';
 import { Posse } from '../enums/posse';
+import { LivroExibido } from '../models/livro-exibido';
+import { LivroPessoal } from '../models/livro-pessoal';
 
 type FiltroDescobrir = 'todos' | 'desejos';
 
@@ -18,8 +20,9 @@ type FiltroDescobrir = 'todos' | 'desejos';
 export class PesquisaPage implements OnInit {
     @ViewChild('modalRegisto') modal!: IonModal;
 
-    public livros: Livro[] = [];
+    public livros: LivroExibido[] = [];
     public generos: string[] = [];
+    public livrosPessoais: LivroPessoal[] = [];
 
     public aCarregar: boolean = true;
 
@@ -32,6 +35,8 @@ export class PesquisaPage implements OnInit {
     
     public livrosPosse: Map<number, Posse> = new Map();
     public Posse = Posse;
+
+    public estrelas = [1, 2, 3, 4, 5];
 
     constructor(
         private livroService: LivroService,
@@ -73,10 +78,11 @@ export class PesquisaPage implements OnInit {
         }
         const [livros, livrosPessoais, generos] = await Promise.all([
             this.livroService.getLivros(),
-            this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+            this.livroPessoalService.getLivrosPessoais(this.idUtilizador),
             this.livroService.getGeneros()
         ]);
-        this.livros = livros;
+        this.livrosPessoais = livrosPessoais;
+        this.livros = await Promise.all(livros.map(async livro => await this.livroPessoalService.getDadosExibicao(livro, this.idUtilizador, livrosPessoais)));
         this.generos = generos;
         this.livrosPosse.clear();
         for (const registo of livrosPessoais) {
@@ -85,14 +91,14 @@ export class PesquisaPage implements OnInit {
         this.aCarregar = false;
     }
 
-    public get livrosFiltrados(): Livro[] {
+    public get livrosFiltrados(): LivroExibido[] {
         const texto = this.termoPesquisa.toLowerCase().trim();
         return this.livros.filter(livro => {
             const correspondeTexto = texto === '' ||
                 livro.titulo.toLowerCase().includes(texto) ||
                 livro.autor.toLowerCase().includes(texto);
             const correspondeFiltro = this.filtroAtual === 'todos' ||
-                this.obterPosse(livro.id) === Posse.DESEJADO;
+                livro.posse === Posse.DESEJADO;
             const correspondeGenero = this.generoFiltro === '' || 
                 (livro.generos && livro.generos.includes(this.generoFiltro));
             return correspondeTexto && correspondeFiltro && correspondeGenero;

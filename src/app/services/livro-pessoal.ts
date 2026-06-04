@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Emprestimo, LivroPessoal } from '../models/livro-pessoal';
 import { Posse } from '../enums/posse';
+import { Livro } from '../models/livro';
+import { LivroExibido } from '../models/livro-exibido';
 
 /**
  * Valores numéricos do enum legado `LivroStatus`, mantidos aqui apenas para a
@@ -69,10 +71,30 @@ export class LivroPessoalService {
         return `livroutil_${idUtilizador}`;
     }
 
-    public async getLivroPessoal(idUtilizador: number): Promise<LivroPessoal[]> {
+    public async getLivrosPessoais(idUtilizador: number): Promise<LivroPessoal[]> {
         await this.init();
         const livroPesosal: LivroPessoal[] = await this._storage?.get(this.getChaveUtilizador(idUtilizador)) || [];
         return livroPesosal.map(registo => this.normalizarEmprestimo(migrarRegistoLivroPessoal(registo)));
+    }
+
+    public async getDadosExibicao(livro: Livro, idUtilizador: number, livrosPessoais: LivroPessoal[]): Promise<LivroExibido> {
+        const livroPessoal = await this.getOuCriarRegisto(idUtilizador, livro.id, livrosPessoais);
+
+        const avaliacoesValidas = (await this.getAvaliacoesLivro(livro.id))
+            .map(registo => registo.avaliacao)
+            .filter((avaliacao): avaliacao is number => avaliacao !== null && avaliacao > 0);
+        const totalAvaliacoes = avaliacoesValidas.length;
+        const avaliacaoGlobal = totalAvaliacoes === 0 ? 0
+            : avaliacoesValidas.reduce((total, avaliacao) => total + avaliacao, 0) / totalAvaliacoes;
+
+        return {
+            ...livro,
+            posse: livroPessoal.posse,
+            lido: livroPessoal.lido,
+            emprestado: livroPessoal.emprestimo !== null,
+            avaliacao: avaliacaoGlobal,
+            totalAvaliacoes: totalAvaliacoes
+        }
     }
 
     /**
@@ -120,7 +142,7 @@ export class LivroPessoalService {
      * leitura nem o empréstimo.
      */
     public async definirPosse(idUtilizador: number, idLivro: number, novaPosse: Posse): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
         livroPessoal.posse = novaPosse;
         await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
@@ -131,14 +153,14 @@ export class LivroPessoalService {
      * posse nem o empréstimo.
      */
     public async definirLido(idUtilizador: number, idLivro: number, lido: boolean): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
         livroPessoal.lido = lido;
         await this.saveLivrosPessoais(idUtilizador, livrosPessoais);
     }
 
     public async adicionarAvaliacao(idUtilizador: number, idLivro: number, nota: number, texto: string): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
         
         livroPessoal.avaliacao = nota;
@@ -149,7 +171,7 @@ export class LivroPessoalService {
     }
 
     public async apagarAvaliacao(idUtilizador: number, idLivro: number): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
 
         livroPessoal.avaliacao = null;
@@ -173,7 +195,7 @@ export class LivroPessoalService {
     }
 
     public async registarEmprestimo(idUtilizador: number, idLivro: number, idRecipiente: number, dataDevolucao: Date): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = await this.getOuCriarRegisto(idUtilizador, idLivro, livrosPessoais);
         
         const novoEmprestimo: Emprestimo = {
@@ -191,7 +213,7 @@ export class LivroPessoalService {
      * O estado de leitura do livro mantém-se inalterado.
      */
     public async concluirEmprestimo(idUtilizador: number, idLivro: number): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = livrosPessoais.find(l => l.idLivro === idLivro);
         if (!livroPessoal) return;
 
@@ -203,7 +225,7 @@ export class LivroPessoalService {
      * Atualiza a data de devolução prevista de um empréstimo ativo.
      */
     public async atualizarDataDevolucao(idUtilizador: number, idLivro: number, novaData: Date): Promise<void> {
-        const livrosPessoais = await this.getLivroPessoal(idUtilizador);
+        const livrosPessoais = await this.getLivrosPessoais(idUtilizador);
         const livroPessoal = livrosPessoais.find(l => l.idLivro === idLivro);
         if (!livroPessoal || !livroPessoal.emprestimo) return;
 

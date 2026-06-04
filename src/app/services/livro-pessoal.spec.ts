@@ -41,7 +41,7 @@ describe('LivroPessoalService', () => {
 
     await service.registarEmprestimo(ID_UTILIZADOR, ID_LIVRO, ID_AMIGO, dataDevolucao);
 
-    const registos = await service.getLivroPessoal(ID_UTILIZADOR);
+    const registos = await service.getLivrosPessoais(ID_UTILIZADOR);
     const registo = registos.find(r => r.idLivro === ID_LIVRO);
 
     expect(registo?.emprestimo).toBeTruthy();
@@ -57,7 +57,7 @@ describe('LivroPessoalService', () => {
 
     await service.concluirEmprestimo(ID_UTILIZADOR, ID_LIVRO);
 
-    const registos = await service.getLivroPessoal(ID_UTILIZADOR);
+    const registos = await service.getLivrosPessoais(ID_UTILIZADOR);
     const registo = registos.find(r => r.idLivro === ID_LIVRO);
 
     expect(registo?.emprestimo).toBeNull();
@@ -72,7 +72,7 @@ describe('LivroPessoalService', () => {
 
     await service.atualizarDataDevolucao(ID_UTILIZADOR, ID_LIVRO, novaData);
 
-    const registos = await service.getLivroPessoal(ID_UTILIZADOR);
+    const registos = await service.getLivrosPessoais(ID_UTILIZADOR);
     const registo = registos.find(r => r.idLivro === ID_LIVRO);
 
     expect(registo?.emprestimo?.dataDevolucao.getTime()).toBe(novaData.getTime());
@@ -83,7 +83,7 @@ describe('LivroPessoalService', () => {
       await service.definirPosse(ID_UTILIZADOR, ID_LIVRO, Posse.DESEJADO);
       await service.definirLido(ID_UTILIZADOR, ID_LIVRO, true);
 
-      const registo = (await service.getLivroPessoal(ID_UTILIZADOR)).find(r => r.idLivro === ID_LIVRO);
+      const registo = (await service.getLivrosPessoais(ID_UTILIZADOR)).find(r => r.idLivro === ID_LIVRO);
       expect(registo?.posse).toBe(Posse.DESEJADO);
       expect(registo?.lido).toBeTrue();
     });
@@ -93,7 +93,7 @@ describe('LivroPessoalService', () => {
       await service.adicionarAvaliacao(ID_UTILIZADOR, ID_LIVRO, 4, 'bom');
       await service.definirPosse(ID_UTILIZADOR, ID_LIVRO, Posse.NENHUMA);
 
-      const registo = (await service.getLivroPessoal(ID_UTILIZADOR)).find(r => r.idLivro === ID_LIVRO);
+      const registo = (await service.getLivrosPessoais(ID_UTILIZADOR)).find(r => r.idLivro === ID_LIVRO);
       expect(registo?.lido).toBeTrue();
       expect(registo?.avaliacao).toBe(4);
       expect(registo?.comentario).toBe('bom');
@@ -101,7 +101,7 @@ describe('LivroPessoalService', () => {
 
     it('permite lido sem posse (li mas não tenho)', async () => {
       await service.definirLido(ID_UTILIZADOR, ID_LIVRO, true);
-      const registo = (await service.getLivroPessoal(ID_UTILIZADOR)).find(r => r.idLivro === ID_LIVRO);
+      const registo = (await service.getLivrosPessoais(ID_UTILIZADOR)).find(r => r.idLivro === ID_LIVRO);
       expect(registo?.posse).toBe(Posse.NENHUMA);
       expect(registo?.lido).toBeTrue();
     });

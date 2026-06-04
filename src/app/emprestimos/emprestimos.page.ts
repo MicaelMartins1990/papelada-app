@@ -70,7 +70,7 @@ export class EmprestimosPage implements OnInit {
 
     private async carregarDados() {
         const [registos, livros] = await Promise.all([
-            this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+            this.livroPessoalService.getLivrosPessoais(this.idUtilizador),
             this.livroService.getLivros()
         ]);
 

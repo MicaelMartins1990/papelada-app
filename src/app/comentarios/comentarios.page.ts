@@ -151,7 +151,7 @@ export class ComentariosPage implements OnInit {
   private async carregarPagina() {
     const [livros, registosPessoais, avaliacoesLivro, utilizadores] = await Promise.all([
       this.livroService.getLivros(),
-      this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+      this.livroPessoalService.getLivrosPessoais(this.idUtilizador),
       this.livroPessoalService.getAvaliacoesLivro(this.idLivro),
       this.authService.getUtilizadoresPublicos()
     ]);

@@ -95,7 +95,7 @@ export class DetalhePage implements OnInit {
         if (!this.livro) {
             return;
         }
-        const registos = await this.livroPessoalService.getLivroPessoal(this.idUtilizador);
+        const registos = await this.livroPessoalService.getLivrosPessoais(this.idUtilizador);
         const registo = registos.find(r => r.idLivro === this.livro!.id);
         this.posse = registo?.posse ?? Posse.NENHUMA;
         this.lido = registo?.lido ?? false;
@@ -264,7 +264,7 @@ export class DetalhePage implements OnInit {
         if (!this.livro) {
             return;
         }
-        const registos = await this.livroPessoalService.getLivroPessoal(this.idUtilizador);
+        const registos = await this.livroPessoalService.getLivrosPessoais(this.idUtilizador);
         this.livrosSemelhantes = await this.livroService.getLivrosSemelhantes(this.livro, registos);
     }
 

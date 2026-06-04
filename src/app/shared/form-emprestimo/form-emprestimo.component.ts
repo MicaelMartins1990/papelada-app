@@ -67,7 +67,7 @@ export class FormEmprestimoComponent implements OnInit {
         this.aCarregar = true;
         await this.utilizadorService.esperarPronto();
         const [registos, livros, idsAmigos] = await Promise.all([
-            this.livroPessoalService.getLivroPessoal(this.idUtilizador),
+            this.livroPessoalService.getLivrosPessoais(this.idUtilizador),
             this.livroService.getLivros(),
             this.utilizadorService.getAmigos(this.idUtilizador)
         ]);
