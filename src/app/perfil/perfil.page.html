@@ -8,11 +8,18 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <section class="perfil-identidade">
-        <div class="avatar-principal" [style.background]="avatarAtual" aria-hidden="true">
+    <section class="perfil-identidade ion-text-center">
+        <div class="avatar-principal" 
+             [style.background]="avatarAtual" 
+             [style.borderRadius]="formaAtual?.radius || '50%'"
+             [style.clip-path]="formaAtual?.clip || 'none'"
+             [style.alignItems]="formaAtual?.nome === 'Triângulo' ? 'flex-end' : 'center'"
+             [style.paddingBottom]="formaAtual?.nome === 'Triângulo' ? '15px' : '0'"
+             style="display: flex; justify-content: center; margin: 0 auto;"
+             aria-hidden="true">
             {{ inicial }}
         </div>
-        <h2>{{ nomeUtilizador || 'A carregar...' }}</h2>
+        <h2 style="margin-top: 15px;">{{ nomeUtilizador || 'A carregar...' }}</h2>
         @if (usernameUtilizador) {
         <p>@{{ usernameUtilizador }}</p>
         }
@@ -102,6 +109,27 @@
                         [attr.aria-label]="'Selecionar cor ' + cor"
                         (click)="selecionarAvatar(cor)">
                     </button>
+                    }
+                </div>
+
+                <h3 style="margin-top: 20px;">Escolher Forma</h3>
+                <div class="opcoes-forma" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px;">
+                    @for (forma of formasDisponiveis; track forma.nome) {
+                    <div class="ion-text-center" 
+                         style="cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;"
+                         [style.background]="formaAtual?.nome === forma.nome ? '#e4dacf' : 'transparent'"
+                         (click)="selecionarForma(forma)">
+                        
+                        <div [style.background]="avatarEmEdicao" 
+                             [style.borderRadius]="forma.radius"
+                             [style.clip-path]="forma.clip"
+                             [style.alignItems]="forma.nome === 'Triângulo' ? 'flex-end' : 'center'"
+                             [style.paddingBottom]="forma.nome === 'Triângulo' ? '5px' : '0'"
+                             style="width: 50px; height: 50px; display: flex; justify-content: center; color: white; font-weight: bold; font-size: 20px; margin: 0 auto;">
+                            {{ inicial }}
+                        </div>
+                        <p style="font-size: 12px; margin-top: 8px; margin-bottom: 0; color: #666; font-weight: bold;">{{ forma.nome }}</p>
+                    </div>
                     }
                 </div>
 
