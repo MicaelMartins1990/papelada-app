@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { LivroService } from '../services/livro';
+import { LivroService, LivroSemelhante } from '../services/livro';
 import { LivroPessoalService } from '../services/livro-pessoal';
 import { Livro } from '../models/livro';
 import { AuthService } from '../services/auth';
@@ -23,6 +23,7 @@ export class DetalhePage implements OnInit {
     public mediaAvaliacoes: number = 0;
     public avaliacaoMediaArredondada: number = 0;
     public distribuicaoAvaliacoes: { estrelas: number; total: number }[] = [];
+    public livrosSemelhantes: LivroSemelhante[] = [];
     public mensagemErroAvaliacao: string = '';
     public aCarregar: boolean = true;
     public erroCarregamento: boolean = false;
@@ -62,6 +63,7 @@ export class DetalhePage implements OnInit {
                 this.livro = livro;
                 await this.carregarEstadoPessoal();
                 await this.carregarAvaliacoes();
+                await this.carregarSemelhantes();
             } else {
                 this.erroCarregamento = true;
             }
@@ -254,6 +256,20 @@ export class DetalhePage implements OnInit {
         if (this.livro) {
             this.router.navigate(['/tabs/livro/comentarios', this.livro.id]);
         }
+    }
+
+    // --- Livros semelhantes (recomendação por género) ---
+
+    private async carregarSemelhantes() {
+        if (!this.livro) {
+            return;
+        }
+        const registos = await this.livroPessoalService.getLivroPessoal(this.idUtilizador);
+        this.livrosSemelhantes = await this.livroService.getLivrosSemelhantes(this.livro, registos);
+    }
+
+    public abrirLivro(id: number) {
+        this.router.navigate(['/tabs/livro/detalhe', id]);
     }
 
     private async carregarAvaliacoes() {
