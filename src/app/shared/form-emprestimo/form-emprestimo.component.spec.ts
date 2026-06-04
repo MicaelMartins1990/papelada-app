@@ -22,6 +22,41 @@ describe('FormEmprestimoComponent', () => {
     expect(component.formularioCompleto).toBeTrue();
   });
 
+  it('arranca com a data de devolução sugerida em hoje + 1 mês', () => {
+    const esperada = new Date();
+    esperada.setMonth(esperada.getMonth() + 1);
+    const iso = `${esperada.getFullYear()}-${String(esperada.getMonth() + 1).padStart(2, '0')}-${String(esperada.getDate()).padStart(2, '0')}`;
+
+    expect(component.dataDevolucaoSelecionada).toBe(iso);
+    expect(component.dataSugerida).toBeTrue();
+  });
+
+  it('fica completo assim que livro e amigo estão selecionados (data já sugerida)', () => {
+    component.livroSelecionado = { id: 1, titulo: 'A', autor: 'B', capa: '' };
+    component.idAmigoSelecionado = 2;
+
+    expect(component.formularioCompleto).toBeTrue();
+  });
+
+  it('a data sugerida não é anterior a hoje', () => {
+    const anterior = (component as any).dataAnteriorAHoje(new Date(component.dataDevolucaoSelecionada!));
+    expect(anterior).toBeFalse();
+  });
+
+  it('deixa de marcar a data como sugerida quando o utilizador escolhe outra', () => {
+    expect(component.dataSugerida).toBeTrue();
+
+    component.aoMudarData({ detail: { value: '2099-12-31' } });
+
+    expect(component.dataSugerida).toBeFalse();
+  });
+
+  it('mantém a data como sugerida se o evento repetir o valor sugerido', () => {
+    component.aoMudarData({ detail: { value: component.dataDevolucaoSelecionada } });
+
+    expect(component.dataSugerida).toBeTrue();
+  });
+
   it('filtra os livros disponíveis por título ou autor', () => {
     component.livrosDisponiveis = [
       { id: 1, titulo: 'Duna', autor: 'Frank Herbert', capa: '' },

@@ -49,7 +49,12 @@ export class FormEmprestimoComponent implements OnInit {
 
     public livroSelecionado: LivroDisponivel | null = null;
     public idAmigoSelecionado: number | null = null;
-    public dataDevolucaoSelecionada: string | null = null;
+
+    /** Data de devolução sugerida (hoje + 1 mês) com que o formulário arranca. */
+    public readonly dataSugeridaIso: string = this.dataIsoSugerida();
+    public dataDevolucaoSelecionada: string | null = this.dataSugeridaIso;
+    /** Verdadeiro enquanto a data continua a ser a sugestão automática (mostra o aviso). */
+    public dataSugerida: boolean = true;
 
     public erroLivro: string = '';
     public erroAmigo: string = '';
@@ -184,6 +189,20 @@ export class FormEmprestimoComponent implements OnInit {
         this.modalAmigoAberto = false;
     }
 
+    /**
+     * Reage à alteração da data no calendário. Limpa o erro e, quando a data
+     * escolhida difere da sugestão automática, deixa de a tratar como sugerida
+     * (escondendo o aviso). Comparar o dia evita que um eventual `ionChange`
+     * disparado na montagem com o valor inicial apague o aviso (ver design.md §4).
+     */
+    public aoMudarData(event: any) {
+        this.erroData = '';
+        const valor: string | null = event?.detail?.value ?? null;
+        if (valor && valor.slice(0, 10) !== this.dataSugeridaIso) {
+            this.dataSugerida = false;
+        }
+    }
+
     public cancelar() {
         this.cancelado.emit();
     }
@@ -247,12 +266,22 @@ export class FormEmprestimoComponent implements OnInit {
         return copia;
     }
 
-    private dataIsoHoje(): string {
-        const hoje = new Date();
-        const ano = hoje.getFullYear();
-        const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-        const dia = String(hoje.getDate()).padStart(2, '0');
+    private formatarIso(data: Date): string {
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const dia = String(data.getDate()).padStart(2, '0');
         return `${ano}-${mes}-${dia}`;
+    }
+
+    private dataIsoHoje(): string {
+        return this.formatarIso(new Date());
+    }
+
+    /** Data sugerida de devolução: hoje + 1 mês (overflow nativo do JavaScript). */
+    private dataIsoSugerida(): string {
+        const data = new Date();
+        data.setMonth(data.getMonth() + 1);
+        return this.formatarIso(data);
     }
 
     private async mostrarToast(mensagem: string, cor: 'success' | 'danger' | 'medium' = 'medium') {

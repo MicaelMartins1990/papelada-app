@@ -394,3 +394,33 @@ Objetivo: Correção do Iniciar Sessão
 # Lucas Israel
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de junho de 2026
+#Objetivo:  
+Adicionar funcionalidade ao botao de emprestar livro no perfil de um amigo, com amigo ja selecionado 
+
+# Desenvolvido: 
+- Reutilização do modal de emprestimo detalhe mas com u component de card-amigo com o avatar e nome e user do amigo já preenchido
+- Centralizar components na pagina de emprestimos 
+
+# Flávio Fernandes
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+# 4 de junho de 2026
+
+#Objetivo:  
+Ao criar emprestimo sugerir data de devolução de 1 mes depois 
+
+# Desenvolvido:
+- Ao abrir modal de emprestimo aparece ja pre selecionado a data mas com aviso para o utilizador para que este nao deixe por engano a data, se trocar a data esse aviso desaparece. 
+
+Problema:  
+- O JavaScript por defeito faz overflow de dqatas isto é se for dia 31 de janeiro e como o dia 31 de fevereiro nao exisite ele nao coloca para o ultimo dia do mês de fevereiro mas sim para o dia 3 de março. 
+
+Solução:  
+- Como o contexto deste assunto é emprestimos de livros a amigos não são dias de diferenças que fazem algum tipo de problema logo a solução foi ignorar e deixar ficar. 
+
+# Flávio Fernandes
+
+------------------------------------------------------------------------------------------------------------------------------------
