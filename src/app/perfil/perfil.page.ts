@@ -26,6 +26,15 @@ export class PerfilPage {
     public avataresDisponiveis: string[] = ['#8c5a47', '#2b8b3b', '#3b5998', '#e91e63', '#ff9800'];
     public avatarAtual: string = AVATAR_PADRAO;
     public avatarEmEdicao: string = AVATAR_PADRAO;
+
+    public formasDisponiveis = [
+        { nome: 'Círculo', radius: '50%', clip: 'none' },
+        { nome: 'Triângulo', radius: '0', clip: 'polygon(50% 0%, 0% 100%, 100% 100%)', align: 'flex-end' },
+        { nome: 'Quadrado', radius: '8px', clip: 'none' },
+        { nome: 'Hexágono', radius: '0', clip: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' },
+        { nome: 'Losango', radius: '0', clip: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }
+    ];
+    public formaAtual: any = this.formasDisponiveis[0];
     private idUtilizador: number | null = null;
 
     constructor(
@@ -69,6 +78,10 @@ export class PerfilPage {
 
     selecionarAvatar(cor: string) {
         this.avatarEmEdicao = cor;
+    }
+
+    selecionarForma(forma: any) {
+        this.formaAtual = forma;
     }
 
     async guardarPerfil() {
