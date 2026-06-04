@@ -1,26 +1,35 @@
 <ion-header class="ion-no-border">
     <ion-toolbar color="primary">
         <ion-title>
-            Efetuar Login
+            Iniciar Sessão
         </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+    @if (verificandoSessao) {
+        <div style="height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <ion-spinner color="primary" name="crescent"></ion-spinner>
+            <p style="margin-top: 15px; color: #666;">A iniciar sessão...</p>
+        </div>
+    } 
+    
+    @else {
     <div class="input-group section">
-        <ion-label>Username</ion-label>
-        <ion-input [(ngModel)]="username" class="text-input section" type="username" fill="outline" placeholder="Insira seu username"></ion-input>
+        <ion-label>Utilizador</ion-label>
+        <ion-input [(ngModel)]="username" class="text-input section" type="username" fill="outline" placeholder="Insira o seu nome de utilizador"></ion-input>
     </div>
     <div class="input-group section">
-        <ion-label>Password</ion-label>
-        <ion-input [(ngModel)]="password" class="text-input section" type="password" fill="outline" placeholder="Insira sua password"></ion-input>
+        <ion-label>Palavra-passe</ion-label>
+        <ion-input [(ngModel)]="password" class="text-input section" type="password" fill="outline" placeholder="Insira a sua palavra-passe"></ion-input>
     </div>
 
-    <ion-button expand="block" class="ion-margin-top" color="secondary" (click)="login()">Login</ion-button>
+    <ion-button expand="block" class="ion-margin-top" color="secondary" (click)="login()">Entrar</ion-button>
     <ion-button expand="block" fill="clear" routerLink="/criar-conta">Criar nova conta</ion-button>
 
     <!-- Somente para o desenvolvimento, remover na aplicação final -->
     <div>
         <ion-button expand="block" class="botao-vermelho" (click)="clearData()">Excluir todos os dados</ion-button>
     </div>
+    }
 </ion-content>
