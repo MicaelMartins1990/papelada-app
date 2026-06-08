@@ -13,6 +13,7 @@ describe('DetalhePage', () => {
       {} as any,
       router as any,
       {} as any,
+      {} as any,
       {} as any
     );
   });

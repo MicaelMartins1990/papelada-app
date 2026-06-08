@@ -83,7 +83,8 @@ describe('ComentariosPage', () => {
           present: jasmine.createSpy('present').and.resolveTo(),
           onDidDismiss: jasmine.createSpy('onDidDismiss').and.callFake(() => Promise.resolve({ role: alertDismissRole }))
         })
-      } as any
+      } as any,
+      {} as any
     );
   });
 

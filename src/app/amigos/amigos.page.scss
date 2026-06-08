@@ -31,5 +31,43 @@ ion-label p {
 }
 
 ion-modal.modal-adicionar {
-    --height: 200px
+    --height: 460px;
+}
+
+.lista-sugestoes {
+    max-height: 190px;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding: 0;
+    border: 1px solid var(--ion-color-tertiary);
+    border-radius: 10px;
+
+    ion-item {
+        --inner-padding-start: 10px;
+        --inner-padding-end: 10px;
+    }
+
+    .amigo-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
+    }
+}
+
+.estado-pesquisa {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6a5a62;
+
+    ion-icon {
+        margin-right: 8px;
+        font-size: 22px;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.95rem;
+    }
 }

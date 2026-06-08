@@ -1,0 +1,30 @@
+.login-content {
+    --padding-start: 20px;
+    --padding-end: 20px;
+}
+
+.login-content::part(scroll) {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 420px;
+}
+
+.estado-sessao {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    p {
+        margin-top: 15px;
+        color: #666;
+    }
+}

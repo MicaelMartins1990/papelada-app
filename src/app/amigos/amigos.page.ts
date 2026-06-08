@@ -23,6 +23,8 @@ export class AmigosPage implements OnInit {
 
     public amigos: Utilizador[] = [];
     public amigosFiltrados: Utilizador[] = [];
+    public sugestoesAmigos: Utilizador[] = [];
+    public aPesquisarUtilizadores: boolean = false;
 
     constructor(
         private utilizadorService: UtilizadorService,
@@ -77,7 +79,36 @@ export class AmigosPage implements OnInit {
     }
     /** Tenta adicionar um novo amigo utilizando o username inserido */
     public async adicionarAmigo() {
-        let username = this.usernameInput.trim();
+        await this.adicionarAmigoPorUsername(this.usernameInput);
+    }
+    /** Adiciona diretamente o utilizador escolhido na lista de sugestões */
+    public async adicionarSugestao(amigo: Utilizador) {
+        await this.adicionarAmigoPorUsername(amigo.username);
+    }
+    /** Pesquisa utilizadores enquanto o username é escrito no modal */
+    public async pesquisarUtilizadoresAdicionar() {
+        const termo = this.usernameInput.trim();
+        if (!termo) {
+            this.sugestoesAmigos = [];
+            return;
+        }
+
+        this.aPesquisarUtilizadores = true;
+        const utilizadores = await this.utilizadorService.pesquisarUtilizadores(termo);
+        const idsAmigos = new Set(this.amigos.map(amigo => amigo.id));
+        this.sugestoesAmigos = utilizadores.filter(utilizador =>
+            utilizador.id !== this.idUtilizador &&
+            !idsAmigos.has(utilizador.id)
+        );
+        this.aPesquisarUtilizadores = false;
+    }
+    /** Indica se a pesquisa do modal tem texto suficiente para mostrar estado */
+    public get temPesquisaAdicionar(): boolean {
+        return this.usernameInput.trim().length > 0;
+    }
+    /** Tenta adicionar um novo amigo utilizando um username */
+    private async adicionarAmigoPorUsername(usernameOriginal: string) {
+        let username = usernameOriginal.trim();
         if (username.startsWith('@')) username = username.substring(1);
 
         if (!username) {
@@ -115,6 +146,8 @@ export class AmigosPage implements OnInit {
     /** Fecha o modal e limpa o campo de input */
     public fecharModal() {
         this.usernameInput = '';
+        this.sugestoesAmigos = [];
+        this.aPesquisarUtilizadores = false;
         this.modal.dismiss();
     }
 }

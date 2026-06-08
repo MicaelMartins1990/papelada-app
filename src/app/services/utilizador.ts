@@ -49,6 +49,22 @@ export class UtilizadorService {
         const utilizador = utilizadores.find((u: any) => u.username === username);
         return utilizador ? this.normalizarUtilizador(utilizador) : null;
     }
+    /** Procura utilizadores pelo nome ou username, aceitando pesquisa com ou sem @ */
+    async pesquisarUtilizadores(termo: string): Promise<Utilizador[]> {
+        await this.esperarPronto();
+        const texto = termo.trim().toLowerCase();
+        const usernamePesquisa = texto.startsWith('@') ? texto.substring(1) : texto;
+
+        if (!usernamePesquisa) return [];
+
+        const utilizadores: Utilizador[] = (await this._storage?.get('utilizadores')) || [];
+        return utilizadores
+            .filter(utilizador =>
+                utilizador.nome.toLowerCase().includes(texto) ||
+                utilizador.username.toLowerCase().includes(usernamePesquisa)
+            )
+            .map(utilizador => this.normalizarUtilizador(utilizador));
+    }
     /** Recebe uma lista de IDs e devolve os dados completos de todos esses utilizadores (usado para listar amigos) */
     async getDadosUtilizadores(ids: number[]): Promise<Utilizador[]> {
         await this.esperarPronto();
