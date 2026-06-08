@@ -1,3 +1,20 @@
 ion-input {
     background: white;
 }
+
+.criar-conta-content {
+    --padding-start: 20px;
+    --padding-end: 20px;
+}
+
+.criar-conta-content::part(scroll) {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 420px;
+}

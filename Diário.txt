@@ -448,3 +448,14 @@ Solução:
 # Flávio Fernandes
 
 ------------------------------------------------------------------------------------------------------------------------------------
+
+#8 de junho 
+
+# Objetivo: analisar as avaliações heuristicas que recebemos e corrigir o que for necessario
+
+# Desenvolvido: 
+- Pagina de login e criar conta agora tem os elementos centrados para mais facil acesso obdecendo ao "principio" de tiny fingers.
+- Em relação à parte de pesquisar amigos foi nos feita um comentario em relação a não para encontrar noutro dispositivo isto deve se ao facto de usarmos local storage em vez de uma Base de dados, por isso a nossa melhoria nao foi bem de encontra ao comentario feito mas sim em relação à forma como o processo de adcionar amigo é feito. 
+
+# Flávio Fernandes
+------------------------------------------------------------------------------------------------------------------------------------

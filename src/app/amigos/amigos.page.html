@@ -65,8 +65,38 @@
 
             <div class="ion-margin-top">
                 <div class="input-group section">
-                    <ion-input [(ngModel)]="usernameInput" class="text-input" type="username" fill="outline" placeholder="Digita o @username"></ion-input>
+                    <ion-input [(ngModel)]="usernameInput" (ionInput)="pesquisarUtilizadoresAdicionar()" class="text-input" type="username" fill="outline" placeholder="Digita o @username"></ion-input>
                 </div>
+
+                @if (aPesquisarUtilizadores) {
+                <div class="estado-pesquisa">
+                    <ion-spinner name="crescent" color="primary"></ion-spinner>
+                </div>
+                }
+
+                @if (!aPesquisarUtilizadores && temPesquisaAdicionar && sugestoesAmigos.length === 0) {
+                <div class="estado-pesquisa vazio">
+                    <ion-icon name="search-outline"></ion-icon>
+                    <p>Nenhum utilizador encontrado.</p>
+                </div>
+                }
+
+                @if (!aPesquisarUtilizadores && sugestoesAmigos.length > 0) {
+                <ion-list class="lista-sugestoes">
+                    @for (sugestao of sugestoesAmigos; track sugestao.id) {
+                    <ion-item button detail="false" (click)="adicionarSugestao(sugestao)">
+                        <div class="amigo-avatar" aria-hidden="true" slot="start">
+                            {{ sugestao.nome.charAt(0) }}
+                        </div>
+
+                        <ion-label>
+                            <h3>{{ sugestao.nome }}</h3>
+                            <p>{{ sugestao.username }}</p>
+                        </ion-label>
+                    </ion-item>
+                    }
+                </ion-list>
+                }
 
                 <ion-grid class="botao-grelha">
                 <ion-row>

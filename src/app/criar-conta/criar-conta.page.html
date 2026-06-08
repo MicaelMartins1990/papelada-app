@@ -6,21 +6,23 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding criar-conta-content">
 
-    <div class="input-group section">
-        <ion-label>Nome de Exibição</ion-label>
-        <ion-input [(ngModel)]="nome" class="text-input" fill="outline" placeholder="Insira seu nome"></ion-input>
-    </div>
-    <div class="input-group section">
-        <ion-label>Utilizador</ion-label>
-        <ion-input [(ngModel)]="username" class="text-input" type="username" fill="outline" placeholder="Insira o seu utilizador"></ion-input>
-    </div>
-    <div class="input-group section">
-        <ion-label>Palavra-passe</ion-label>
-        <ion-input [(ngModel)]="password" class="text-input" type="password" fill="outline" placeholder="Insira a sua palavra-passe"></ion-input>
-    </div>
+    <div class="auth-form">
+        <div class="input-group section">
+            <ion-label>Nome de Exibição</ion-label>
+            <ion-input [(ngModel)]="nome" class="text-input" fill="outline" placeholder="Insira seu nome"></ion-input>
+        </div>
+        <div class="input-group section">
+            <ion-label>Utilizador</ion-label>
+            <ion-input [(ngModel)]="username" class="text-input" type="username" fill="outline" placeholder="Insira o seu utilizador"></ion-input>
+        </div>
+        <div class="input-group section">
+            <ion-label>Palavra-passe</ion-label>
+            <ion-input [(ngModel)]="password" class="text-input" type="password" fill="outline" placeholder="Insira a sua palavra-passe"></ion-input>
+        </div>
 
-    <ion-button expand="block" class="ion-margin-top" color="secondary" (click)="criarConta()">Criar conta</ion-button>
-    <ion-button expand="block" fill="clear" routerLink="/">Já tenho conta</ion-button>
+        <ion-button expand="block" class="ion-margin-top" color="secondary" (click)="criarConta()">Criar conta</ion-button>
+        <ion-button expand="block" fill="clear" routerLink="/">Já tenho conta</ion-button>
+    </div>
 </ion-content>
