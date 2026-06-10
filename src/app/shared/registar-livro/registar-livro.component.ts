@@ -14,10 +14,14 @@ export class RegistarLivroComponent {
     private livroService = inject(LivroService);
     private toastController = inject(ToastController);
 
+    /** Id do utilizador autenticado, usado ao registar o livro no serviço. */
     @Input() idUtilizador!: number;
+    /** Lista de géneros disponíveis para associar ao livro. */
     @Input() generos: string[] = [];
 
+    /** Emitido após o livro ser registado com sucesso. */
     @Output() registado = new EventEmitter<void>();
+    /** Emitido quando o utilizador cancela o registo. */
     @Output() cancelado = new EventEmitter<void>();
 
     public tituloInput: string = '';
@@ -25,10 +29,15 @@ export class RegistarLivroComponent {
     public imagemCapa: string = '';
     public generosInput: string[] = [];
 
+    /** Verdadeiro quando título, autor e capa estão preenchidos, habilitando o botão de registo. */
     public get formularioCompleto(): boolean {
         return !!this.tituloInput.trim() && !!this.autorInput.trim() && !!this.imagemCapa;
     }
 
+    /**
+     * Invoca a câmara para capturar a capa do livro.
+     * Mostra toast de erro se a captura ou o processamento falharem.
+     */
     public async tirarFoto() {
         const res = await this.carregarCapa();
         if (res !== Resultado.EXITO) {
@@ -36,6 +45,11 @@ export class RegistarLivroComponent {
         }
     }
 
+    /**
+     * Valida o formulário e regista o livro via serviço.
+     * Em caso de sucesso limpa o formulário e emite `registado`;
+     * em caso de erro mostra toast de falha sem propagar a exceção.
+     */
     public async registarLivro() {
         if (!this.formularioCompleto) return;
 
@@ -54,11 +68,19 @@ export class RegistarLivroComponent {
         }
     }
 
+    /** Limpa o formulário e emite `cancelado` para o componente pai descartar a vista. */
     public cancelar() {
         this.limparFormulario();
         this.cancelado.emit();
     }
 
+    /**
+     * Abre a câmara do dispositivo, obtém a imagem capturada e redimensiona-a
+     * para no máximo 300 px no lado mais curto, mantendo a proporção original.
+     * A imagem final é guardada em `imagemCapa` como data URL JPEG (qualidade 85 %).
+     * Devolve `Resultado.EXITO` em caso de sucesso, `Resultado.NAO_ENCONTRADO` se
+     * não houver webPath, ou `Resultado.ERRO` em qualquer outra falha.
+     */
     public async carregarCapa(): Promise<Resultado> {
         try {
             const image = await Camera.getPhoto({
@@ -101,6 +123,7 @@ export class RegistarLivroComponent {
         }
     }
 
+    /** Repõe todos os campos do formulário para os valores iniciais. */
     private limparFormulario() {
         this.tituloInput = '';
         this.autorInput = '';
@@ -108,6 +131,11 @@ export class RegistarLivroComponent {
         this.generosInput = [];
     }
 
+    /**
+     * Cria e apresenta um toast Ionic com a mensagem e cor indicadas.
+     * Toasts de sucesso têm duração de 1800 ms e ícone de confirmação;
+     * toasts de erro têm duração de 2000 ms sem ícone.
+     */
     private async mostrarToast(mensagem: string, cor: 'success' | 'danger') {
         const toast = await this.toastController.create({
             message: mensagem,
