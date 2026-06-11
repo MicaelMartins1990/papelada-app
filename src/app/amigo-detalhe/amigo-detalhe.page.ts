@@ -63,6 +63,7 @@ export class AmigoDetalhePage implements OnInit {
 
         if (resultado === Resultado.EXITO) {
             this.navController.back();
+            return;
         }
 
         switch (resultado) {
